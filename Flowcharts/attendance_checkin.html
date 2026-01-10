@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Check-in/Check-out Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: #0083b0;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #0083b0;
+        }
+
+        .step-content h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .step-content p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .decision {
+            background: #fff9e6;
+            border-left-color: #f59e0b;
+        }
+
+        .process {
+            background: #e6f4ff;
+            border-left-color: #0083b0;
+        }
+
+        .success {
+            background: #e6f7e6;
+            border-left-color: #22c55e;
+        }
+
+        .error {
+            background: #ffe6e6;
+            border-left-color: #ef4444;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 24px;
+            color: #0083b0;
+            margin: -10px 0;
+        }
+
+        .branch {
+            margin-left: 50px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 3px dashed #0083b0;
+        }
+
+        .branch-title {
+            font-weight: bold;
+            color: #0083b0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .branch-step {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .branch-step::before {
+            content: "→";
+            color: #0083b0;
+            font-weight: bold;
+            min-width: 20px;
+        }
+
+        .parallel-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 10px 0;
+            margin-left: 50px;
+        }
+
+        .parallel-step {
+            background: #f0f8ff;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid #0083b0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .parallel-step strong {
+            display: block;
+            color: #0083b0;
+            margin-bottom: 5px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+
+        .legend-box.process {
+            background: #e6f4ff;
+            border-left-color: #0083b0;
+        }
+
+        .legend-box.decision {
+            background: #fff9e6;
+            border-left-color: #f59e0b;
+        }
+
+        .legend-box.success {
+            background: #e6f7e6;
+            border-left-color: #22c55e;
+        }
+
+        .legend-box.error {
+            background: #ffe6e6;
+            border-left-color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .branch {
+                margin-left: 20px;
+            }
+
+            .parallel-steps {
+                margin-left: 20px;
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📍 Attendance Check-in/Check-out Flowchart</h1>
+        
+        <div class="flowchart">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Employee Opens Dashboard</h3>
+                    <p>Employee navigates to Employee Self-Service Portal and logs in</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Click Clock In/Clock Out Button</h3>
+                    <p>Employee clicks the "Clock In" or "Clock Out" button on hero snapshot section</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step process">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Request Geolocation Permission</h3>
+                    <p>Browser requests permission to access device location (GPS)</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>User Grants Permission?</h3>
+                    <p>Employee allows or denies browser location access</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">❌ If Permission Denied:</div>
+                <div class="branch-step">System shows error message</div>
+                <div class="branch-step">Display alternative: Manual location entry option</div>
+                <div class="branch-step">Employee enters location manually or retries</div>
+                <div class="branch-step">Return to Step 3</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step process">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Capture Geolocation Data</h3>
+                    <p>System captures: Latitude, Longitude, Address, Accuracy, Timestamp</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step process">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Reverse Geocoding</h3>
+                    <p>Convert coordinates to human-readable address using mapping service</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>Validate Location</h3>
+                    <p>Check if location is within approved company zones or remote work boundaries</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Location Valid?</h3>
+                    <p>Is employee within authorized work location radius?</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">⚠️ If Location Invalid:</div>
+                <div class="branch-step">System flags as "Out of Location" alert</div>
+                <div class="branch-step">Warning message shown to employee</div>
+                <div class="branch-step">Record still created but marked with alert</div>
+                <div class="branch-step">Manager gets notification for review</div>
+                <div class="branch-step">Continue to Step 7</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step process">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h3>Send Data to Server</h3>
+                    <p>Geolocation data transmitted to backend server for recording</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step process">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h3>Record Attendance Entry</h3>
+                    <p>Database stores: Employee ID, Timestamp, GPS Coordinates, Address, Type (In/Out)</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">9</div>
+                <div class="step-content">
+                    <h3>Update UI & Dashboard</h3>
+                    <p>Button changes from "Clock In" ↔ "Clock Out", attendance table updated</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">10</div>
+                <div class="step-content">
+                    <h3>Show Success Notification</h3>
+                    <p>Display green notification with location details and time confirmation</p>
+                </div>
+            </div>
+
+            <div class="parallel-steps">
+                <div class="parallel-step">
+                    <strong>📧 Email Notification</strong>
+                    Employee receives email confirmation
+                </div>
+                <div class="parallel-step">
+                    <strong>📊 Dashboard Update</strong>
+                    Attendance history refreshed
+                </div>
+                <div class="parallel-step">
+                    <strong>📱 HR Records</strong>
+                    HR system updated automatically
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">11</div>
+                <div class="step-content">
+                    <h3>Attendance Complete ✓</h3>
+                    <p>Check-in/Check-out recorded with full geolocation details for audit trail</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box process"></div>
+                <span>Process Step</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box decision"></div>
+                <span>Decision Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box success"></div>
+                <span>Success Path</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box error"></div>
+                <span>Error/Alert</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

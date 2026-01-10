@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="dashboardStyle.css">
+    <!-- Geolocation Service -->
+    <script src="geolocationService.js" defer></script>
+</head>
+<body>
+    <nav class="navigation-wrapper" id="main-navigation">
+  <div class="navigation-container">
+    <a href="/" class="navigation-logo-link" aria-label="LEXIcore Homepage">
+      <div class="navigation-logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5l10-5zM2 17l10 5l10-5M2 12l10 5l10-5"/></svg>
+      </div>
+      <span class="section-title navigation-brand-name">LEXIcore</span>
+    </a>
+
+    <div class="navigation-desktop-menu">
+      <ul class="navigation-links-list">
+        <li><a href="/" class="navigation-link">Dashboard</a></li>
+        <li><a href="#" class="navigation-link">Attendance</a></li>
+        <li><a href="#" class="navigation-link">Leave</a></li>
+        <li><a href="#" class="navigation-link">Payroll</a></li>
+        <li><a href="#" class="navigation-link">Directory</a></li>
+      </ul>
+    </div>
+
+    <div class="navigation-actions">
+      <button class="navigation-action-btn" aria-label="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.268 21a2 2 0 0 0 3.464 0m-10.47-5.674A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <span class="navigation-badge"></span>
+      </button>
+      <button class="navigation-action-btn navigation-profile-trigger" aria-label="User Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></g></svg>
+      </button>
+      <a href="#" class="btn btn-primary btn-sm" id="sign-out-btn" style="margin: 0 var(--spacing-md);">Sign Out</a>
+      <button class="navigation-mobile-toggle" id="mobile-menu-open" aria-expanded="false" aria-controls="mobile-overlay" aria-label="Open menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="navigation-mobile-overlay" id="mobile-overlay" aria-hidden="true">
+  <div class="navigation-overlay-header">
+    <div class="navigation-logo-link">
+      <div class="navigation-logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5l10-5zM2 17l10 5l10-5M2 12l10 5l10-5"/></svg>
+      </div>
+      <span class="section-title navigation-brand-name">LEXIcore</span>
+    </div>
+    <button class="navigation-mobile-close" id="mobile-menu-close" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 16l3-3l3 3"/></g></svg>
+    </button>
+  </div>
+  
+  <div class="navigation-overlay-content">
+    <ul class="navigation-mobile-links">
+      <li class="navigation-mobile-item"><a href="/" class="navigation-mobile-link">Dashboard</a></li>
+      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Attendance Tracking</a></li>
+      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Leave Management</a></li>
+      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Payroll & Tax</a></li>
+      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Employee Profile</a></li>
+      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">HR Announcements</a></li>
+    </ul>
+    
+    <div class="navigation-overlay-footer">
+      <a href="#" class="btn btn-primary btn-lg navigation-full-btn">Sign Out</a>
+    </div>
+  </div>
+</div>
+
+<script defer data-name="navigation-logic">
+  const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
+  const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+  const mobileOverlay = document.getElementById('mobile-overlay');
+  const bodyElement = document.body;
+
+  function openMobileMenu() {
+    mobileOverlay.classList.add('is-open');
+    mobileOverlay.setAttribute('aria-hidden', 'false');
+    mobileMenuOpenBtn.setAttribute('aria-expanded', 'true');
+    bodyElement.style.overflow = 'hidden';
+  }
+
+  function closeMobileMenu() {
+    mobileOverlay.classList.remove('is-open');
+    mobileOverlay.setAttribute('aria-hidden', 'true');
+    mobileMenuOpenBtn.setAttribute('aria-expanded', 'false');
+    bodyElement.style.overflow = '';
+  }
+
+  mobileMenuOpenBtn.addEventListener('click', openMobileMenu);
+  mobileMenuCloseBtn.addEventListener('click', closeMobileMenu);
+
+  mobileOverlay.addEventListener('click', (e) => {
+    if (e.target === mobileOverlay) {
+      closeMobileMenu();
+    }
+  });
+
+  const mobileLinks = mobileOverlay.querySelectorAll('.navigation-mobile-link');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+  });
+
+  let lastScrollTop = 0;
+  const navWrapper = document.getElementById('main-navigation');
+
+  window.addEventListener('scroll', () => {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > 50) {
+      navWrapper.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+      navWrapper.style.padding = 'var(--spacing-xs) 0';
+    } else {
+      navWrapper.style.boxShadow = 'none';
+      navWrapper.style.padding = 'var(--spacing-sm) 0';
+    }
+    
+    lastScrollTop = scrollTop;
+  }, { passive: true });
+</script><main class="dashboard-wrapper">
+  <!-- SECTION 1: HERO SNAPSHOT -->
+  <section class="hero-snapshot">
+    <div class="hero-snapshot-inner">
+      <div class="hero-snapshot-grid">
+        <div class="hero-card hero-welcome">
+          <h1 class="hero-title">Welcome back, Alex</h1>
+          <p class="hero-subtitle">January 12, 2026 Monday</p>
+        </div>
+        <div class="hero-card hero-action-card">
+          <button class="btn btn-primary btn-lg action-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>
+            Clock In
+          </button>
+        </div>
+        <div class="hero-card hero-action-card">
+          <button class="btn btn-secondary btn-lg action-trigger">
+            Request Leave
+          </button>
+        </div>
+        <div class="hero-card hero-status-card">
+          <div class="card-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+          </div>          
+          <div class="card-content">
+            <span class="card-label">Pending Approvals</span>
+            <span class="card-value">3 Requests</span>
+          </div>
+        </div>
+        <div class="hero-card hero-info-card">
+          <div class="card-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8m8 4H8m8 4H8"/></g></svg>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Recent Update</span>
+            <span class="card-value">Policy V2.4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: DASHBOARD CARDS -->
+  <section class="features-dashboard">
+    <div class="features-inner">
+      <h2 class="section-title">Your Workspace</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Attendance Summary</h3>
+          <p class="section-content">164 Hours recorded this month. 98% On-time arrival rate.</p>
+          <a href="#" class="btn btn-link btn-sm">View Log</a>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Leave Balance</h3>
+          <p class="section-content">12 Annual Days remaining. 5 Sick Days available for the year.</p>
+          <a href="#" class="btn btn-link btn-sm">Plan Vacation</a>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8m8 4H8m8 4H8"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Recent Payslips</h3>
+          <p class="section-content">September 2026 payslip is now available for download.</p>
+          <a href="#" class="btn btn-link btn-sm">Download PDF</a>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Help & Support</h3>
+          <p class="section-content">Need assistance with the portal? Access our 24/7 knowledge base.</p>
+          <a href="#" class="btn btn-link btn-sm">Support Hub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: ANNOUNCEMENTS TIMELINE -->
+  <section class="announcements-timeline">
+    <div class="announcements-inner">
+      <h2 class="section-title">Company Announcements</h2>
+      <div class="timeline-container">
+        <div class="timeline-item pinned">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 24, 2026</span>
+            <h3 class="section-subtitle">Annual Benefits Open Enrollment <span class="badge badge-unread">Pinned</span></h3>
+            <p class="section-content">Please review and select your health and wellness plans for the 2027 fiscal year by November 15th.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 20, 2026</span>
+            <h3 class="section-subtitle">New Work-from-Home Policy Update</h3>
+            <p class="section-content">The executive team has released updated guidelines regarding hybrid work arrangements. Effective immediately.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 15, 2026</span>
+            <h3 class="section-subtitle">Town Hall Recording Available</h3>
+            <p class="section-content">Missed the meeting? You can now watch the full recording of the Q3 Town Hall on the internal portal.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 10, 2026</span>
+            <h3 class="section-subtitle">Office Infrastructure Maintenance</h3>
+            <p class="section-content">Network maintenance will occur this Sunday between 2:00 AM and 6:00 AM. Expect brief outages.</p>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-footer">
+        <a href="#" class="btn btn-outline btn-lg">View All Announcements</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: EXCEL-LIKE ATTENDANCE TABLE -->
+  <section class="attendance-services">
+    <div class="attendance-inner">
+      <div class="attendance-header">
+        <div>
+          <h2 class="section-title">Current Pay Period Attendance</h2>
+          <div style="margin-top: var(--spacing-sm); display: flex; align-items: center; gap: var(--spacing-md);">
+            <label for="date-start" style="font-size: var(--font-size-sm); color: var(--color-on-surface-secondary);">Date :</label>
+            <div class="date-range-picker">
+              <input type="date" id="date-start" class="date-input" value="2026-10-18" aria-label="Start date">
+              <span style="color: var(--color-on-surface-secondary); font-size: var(--font-size-sm);">to</span>
+              <input type="date" id="date-end" class="date-input" value="2026-10-24" aria-label="End date">
+              <button class="btn btn-primary btn-sm" id="apply-date-range" style="margin-left: var(--spacing-md);">Apply</button>
+            </div>
+          </div>
+        </div>
+        <div class="attendance-actions">
+          <button class="btn btn-outline btn-sm">Export to CSV</button>
+          <button class="btn btn-outline btn-sm">Print View</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="attendance-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Total Hours</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jan 09, 2026</td>
+              <td>08:55 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>12:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Coffee Shop, Antipolo</small></td>
+              <td>01:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>01:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>05:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>8.5h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 08, 2026</td>
+              <td>09:02 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasong Tamo</small></td>
+              <td>12:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasong Tamo</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Café Lunch, Pasong</small></td>
+              <td>01:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasong Tamo</small></td>
+              <td>02:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasong Tamo</small></td>
+              <td>05:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasong Tamo</small></td>
+              <td>8.7h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 07, 2026</td>
+              <td>08:48 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Midtown, NY</small></td>
+              <td>12:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Midtown, NY</small></td>
+              <td>01:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Spot, Midtown</small></td>
+              <td>01:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Midtown</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Midtown</small></td>
+              <td>05:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Midtown</small></td>
+              <td>8.4h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 06, 2026</td>
+              <td>09:10 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cogeo</small></td>
+              <td>12:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cogeo</small></td>
+              <td>01:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Food Court, Cogeo</small></td>
+              <td>01:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cogeo</small></td>
+              <td>02:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cogeo</small></td>
+              <td>06:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cogeo</small></td>
+              <td>8.8h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 05, 2026</td>
+              <td>09:00 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati</small></td>
+              <td>12:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Break, Makati</small></td>
+              <td>01:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati</small></td>
+              <td>02:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati</small></td>
+              <td>05:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati</small></td>
+              <td>8.5h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 02, 2026</td>
+              <td>08:50 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>12:25 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>01:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Diner, Antipolo</small></td>
+              <td>01:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>02:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>05:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>9.0h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 01, 2026</td>
+              <td>08:30 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Manila, BGC</small></td>
+              <td>12:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Manila, BGC</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Restaurant, Manila</small></td>
+              <td>01:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Manila</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Manila</small></td>
+              <td>05:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Manila</small></td>
+              <td>8.9h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 31, 2025</td>
+              <td>09:05 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Quezon City</small></td>
+              <td>12:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Quezon City</small></td>
+              <td>01:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Venue, QC</small></td>
+              <td>01:55 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Quezon City</small></td>
+              <td>02:25 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Quezon City</small></td>
+              <td>05:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Quezon City</small></td>
+              <td>8.3h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 30, 2025</td>
+              <td>08:45 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati CBD</small></td>
+              <td>12:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati CBD</small></td>
+              <td>01:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Café Break, CBD</small></td>
+              <td>01:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati CBD</small></td>
+              <td>02:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati CBD</small></td>
+              <td>05:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati CBD</small></td>
+              <td>8.6h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 29, 2025</td>
+              <td>09:15 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Taguig, Fort</small></td>
+              <td>12:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Taguig, Fort</small></td>
+              <td>01:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Place, Fort</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Taguig</small></td>
+              <td>02:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Taguig</small></td>
+              <td>06:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Taguig</small></td>
+              <td>8.5h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 26, 2025</td>
+              <td>08:55 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasay City</small></td>
+              <td>12:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasay City</small></td>
+              <td>01:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Food Hall, Pasay</small></td>
+              <td>02:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasay</small></td>
+              <td>02:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasay</small></td>
+              <td>05:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasay</small></td>
+              <td>8.7h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 25, 2025</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0.0h</td>
+              <td><span class="status-tag status-leave">Holiday</span></td>
+            </tr>
+            <tr>
+              <td>Dec 24, 2025</td>
+              <td>09:00 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Ortigas, San Juan</small></td>
+              <td>12:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Ortigas, San Juan</small></td>
+              <td>01:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Bistro, Ortigas</small></td>
+              <td>01:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, San Juan</small></td>
+              <td>02:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, San Juan</small></td>
+              <td>05:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, San Juan</small></td>
+              <td>8.4h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 23, 2025</td>
+              <td>08:40 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Las Piñas</small></td>
+              <td>12:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Las Piñas</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Venue, Las Piñas</small></td>
+              <td>01:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Las Piñas</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Las Piñas</small></td>
+              <td>05:55 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Las Piñas</small></td>
+              <td>8.9h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 20, 2025</td>
+              <td>09:20 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cavite, Kawit</small></td>
+              <td>12:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cavite, Kawit</small></td>
+              <td>01:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Restaurant, Kawit</small></td>
+              <td>02:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cavite</small></td>
+              <td>02:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cavite</small></td>
+              <td>06:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cavite</small></td>
+              <td>8.8h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5"><strong>Total for this Cut-off</strong></td>
+              <td colspan="3"><strong>128.8h</strong></td>
+              <td colspan="1"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: FAST-CREATE PROCESS PANEL -->
+  <section class="process-requests">
+    <div class="process-inner">
+      <h2 class="section-title">Quick Requests</h2>
+      <div class="process-grid">
+        <div class="process-item">
+          <h3 class="section-subtitle">Leave Request</h3>
+          <p class="section-content">Submit for vacation, sick leave, or personal time off.</p>
+          <button class="btn btn-accent btn-sm">Start Request</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">Expense Claim</h3>
+          <p class="section-content">Upload receipts for travel or business expenses.</p>
+          <button class="btn btn-accent btn-sm">New Claim</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">Shift Swap</h3>
+          <p class="section-content">Request to trade shifts with an available colleague.</p>
+          <button class="btn btn-accent btn-sm">Find Swap</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">Overtime Log</h3>
+          <p class="section-content">Record additional hours for manager approval.</p>
+          <button class="btn btn-accent btn-sm">Log Hours</button>
+        </div>
+        <div class="process-item">
+
+          <h3 class="section-subtitle">Training Grant</h3>
+          <p class="section-content">Apply for professional development funding.</p>
+          <button class="btn btn-accent btn-sm">Apply Now</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">IT Support</h3>
+          <p class="section-content">Report technical issues with your hardware or software.</p>
+          <button class="btn btn-accent btn-sm">Open Ticket</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5.5: EMPLOYEE CREDENTIALS MANAGEMENT -->
+  <section class="credentials-management">
+    <div class="credentials-inner">
+      <div class="credentials-header">
+        <div>
+          <h2 class="section-title">Professional Credentials</h2>
+          <p class="section-content">Manage your licenses, certifications, and professional qualifications.</p>
+        </div>
+        <button class="btn btn-primary btn-lg" id="add-credential-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>
+          Add Credential
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="credentials-table">
+          <thead>
+            <tr>
+              <th>Credential Type</th>
+              <th>Credential Name</th>
+              <th>Issuing Organization</th>
+              <th>Issue Date</th>
+              <th>Expiry Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="credentials-tbody">
+            <tr>
+              <td>Certification</td>
+              <td>AWS Certified Solutions Architect</td>
+              <td>Amazon Web Services</td>
+              <td>Mar 15, 2023</td>
+              <td>Mar 15, 2026</td>
+              <td><span class="status-tag" style="background: #c8e6c9; color: #2e7d32;">Active</span></td>
+              <td style="display: flex; gap: 8px;">
+                <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+                <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>Professional Engineer (PE) License</td>
+              <td>State Board of Professional Engineers</td>
+              <td>Jan 10, 2022</td>
+              <td>Jan 10, 2027</td>
+              <td><span class="status-tag" style="background: #c8e6c9; color: #2e7d32;">Active</span></td>
+              <td style="display: flex; gap: 8px;">
+                <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+                <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Certification</td>
+              <td>PMP - Project Management Professional</td>
+              <td>Project Management Institute</td>
+              <td>Jun 20, 2021</td>
+              <td>Jun 20, 2024</td>
+              <td><span class="status-tag" style="background: #fff3e0; color: #f57c00;">Expiring Soon</span></td>
+              <td style="display: flex; gap: 8px;">
+                <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+                <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credential Modal -->
+  <div id="credential-modal" class="credential-modal" style="display: none;">
+    <div class="credential-modal-content">
+      <div class="credential-modal-header">
+        <h3 class="section-subtitle">Add Professional Credential</h3>
+        <button class="credential-modal-close" onclick="closeCredentialModal()">&times;</button>
+      </div>
+      <form id="credential-form" class="credential-form" onsubmit="submitCredential(event)">
+        <div class="form-group">
+          <label for="cred-type">Credential Type *</label>
+          <select id="cred-type" required>
+            <option value="">Select Type</option>
+            <option value="Certification">Certification</option>
+            <option value="License">License</option>
+            <option value="Diploma">Diploma</option>
+            <option value="Degree">Degree</option>
+            <option value="Training">Training</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cred-name">Credential Name *</label>
+          <input type="text" id="cred-name" placeholder="e.g., AWS Certified Solutions Architect" required>
+        </div>
+        <div class="form-group">
+          <label for="cred-org">Issuing Organization *</label>
+          <input type="text" id="cred-org" placeholder="e.g., Amazon Web Services" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cred-issue-date">Issue Date *</label>
+            <input type="date" id="cred-issue-date" required>
+          </div>
+          <div class="form-group">
+            <label for="cred-expiry-date">Expiry Date</label>
+            <input type="date" id="cred-expiry-date">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cred-credential-id">Credential ID / Reference Number</label>
+          <input type="text" id="cred-credential-id" placeholder="Optional credential ID or reference number">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" onclick="closeCredentialModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Credential</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SECTION 6: SUPPORT HUB -->
+  <section class="support-hub-docs">
+    <div class="support-inner">
+      <h2 class="section-title">Documents & Resources</h2>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="support-icon">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Tax Documents</h3>
+          <p class="section-content">Access your W-2 and other annual tax filings here.</p>
+          <a href="#" class="btn btn-link">View Files</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M11 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v3.5M8 9h1m-1 3.994h3m-3 4.003h2"/><path d="M21 15.994c0 4-2.5 6-3.5 6s-3.5-2-3.5-6c1 0 2.5-.5 3.5-1.5c1 1 2.5 1.5 3.5 1.5"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Employee Handbook</h3>
+          <p class="section-content">The definitive guide to culture and policies.</p>
+          <a href="#" class="btn btn-link">Read Guide</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">FAQ Database</h3>
+          <p class="section-content">Common questions regarding payroll and HR.</p>
+          <a href="#" class="btn btn-link">Search FAQs</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 20a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1Zm17-4a8 8 0 1 0-16 0m8-12v4m-2-4h4"/></svg>
+          </div>
+          <h3 class="section-subtitle">Benefits Guide</h3>
+          <p class="section-content">Summary of insurance and retirement plans.</p>
+          <a href="#" class="btn btn-link">View Summary</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Holiday Calendar</h3>
+          <p class="section-content">Full list of corporate holidays for the next year.</p>
+          <a href="#" class="btn btn-link">View Dates</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 10v4h4"/><path d="m11 14l1.535-1.605a5 5 0 0 1 8 1.5M16 2v4m5 12l-1.535 1.605a5 5 0 0 1-8-1.5"/><path d="M21 22v-4h-4m4-9.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4.3M3 10h4m1-8v4"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Request History</h3>
+          <p class="section-content">Track the status of all your previous submissions.</p>
+          <a href="#" class="btn btn-link">Check Status</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: CONTACT HR -->
+  <section class="contact-hr">
+    <div class="contact-inner">
+      <h2 class="section-title">Contact HR Support</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3 class="section-subtitle">General Inquiries</h3>
+          <p class="section-content">Email: hr.support@Lexicore.com<br>SLA: 24 Business Hours</p>
+          <button class="btn btn-outline btn-sm">Email Now</button>
+        </div>
+        <div class="contact-card">
+          <h3 class="section-subtitle">Live Chat</h3>
+          <p class="section-content">Available Mon-Fri<br>09:00 AM - 05:00 PM EST</p>
+          <button class="btn btn-primary btn-sm">Start Chat</button>
+        </div>
+        <div class="contact-card">
+          <h3 class="section-subtitle">Payroll Issues</h3>
+          <p class="section-content">Email: payroll@Lexicore.com<br>SLA: 48 Business Hours</p>
+          <button class="btn btn-outline btn-sm">Open Ticket</button>
+        </div>
+        <div class="contact-card">
+          <h3 class="section-subtitle">Benefits Specialist</h3>
+          <p class="section-content">Schedule a 15-min call<br>via our booking portal.</p>
+          <button class="btn btn-secondary btn-sm">Book Call</button>
+        </div>
+        <div class="contact-card">
+          <h3 class="section-subtitle">Emergency HR</h3>
+          <p class="section-content">Internal: Ext 9999<br>Available 24/7 for criticals.</p>
+          <button class="btn btn-accent btn-sm">Call Now</button>
+        </div>
+        <div class="contact-card">
+          <h3 class="section-subtitle">Office Concierge</h3>
+          <p class="section-content">For physical workspace<br>and facility management.</p>
+          <button class="btn btn-outline btn-sm">Contact</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script defer data-name="dashboard-interactions">
+  // Employee ID (in production, get from authentication token)
+  const EMPLOYEE_ID = 1;
+
+  /**
+   * Initialize button state based on current clock status
+   */
+  async function initializeClockButtonState() {
+    try {
+      const status = await GeolocationService.getStatus(EMPLOYEE_ID);
+      const clockButton = document.querySelector('.hero-action-card .btn-primary, .hero-action-card .btn-secondary');
+      
+      if (clockButton && status.data) {
+        const isClockedIn = status.data.status === 'clocked-in';
+        
+        if (isClockedIn) {
+          clockButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock Out';
+          clockButton.classList.remove('btn-primary');
+          clockButton.classList.add('btn-secondary');
+        } else {
+          clockButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock In';
+          clockButton.classList.remove('btn-secondary');
+          clockButton.classList.add('btn-primary');
+        }
+      }
+    } catch (error) {
+      console.log('Could not fetch clock status:', error);
+    }
+  }
+
+  // Initialize on page load
+  window.addEventListener('DOMContentLoaded', initializeClockButtonState);
+
+  /**
+   * Handle Sign Out button click
+   */
+  const signOutBtn = document.getElementById('sign-out-btn');
+  if (signOutBtn) {
+    signOutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Show confirmation dialog
+      if (confirm('Are you sure you want to sign out?')) {
+        // Reset clock status on sign out
+        this.textContent = 'Signing Out...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          // Redirect to login page (adjust URL as needed)
+          window.location.href = '../LoginUI/login.html';
+        }, 1000);
+      }
+    });
+  }
+
+  // Handle Quick Action Button Clicks with Geolocation
+  const actionButtons = document.querySelectorAll('.action-trigger');
+  actionButtons.forEach(button => {
+    button.addEventListener('click', async function() {
+      const isClockIn = this.textContent.includes('Clock In');
+      const isClockOut = this.textContent.includes('Clock Out') || this.textContent.includes('Clock Out');
+      
+      if (!isClockIn && !isClockOut) {
+        // For other buttons, use original behavior
+        const originalText = this.innerHTML;
+        this.innerHTML = 'Processing...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          this.innerHTML = 'Success!';
+          this.style.backgroundColor = 'var(--color-accent)';
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.disabled = false;
+            this.style.backgroundColor = '';
+          }, 2000);
+        }, 1000);
+        return;
+      }
+
+      // Geolocation-based clock in/out
+      const originalText = this.innerHTML;
+      this.innerHTML = 'Getting location...';
+      this.disabled = true;
+
+      try {
+        let result;
+        if (isClockIn) {
+          result = await GeolocationService.sendTimeIn(EMPLOYEE_ID);
+        } else {
+          result = await GeolocationService.sendTimeOut(EMPLOYEE_ID);
+        }
+
+        if (result.success) {
+          this.innerHTML = '✓ Success!';
+          this.style.backgroundColor = 'var(--color-accent)';
+          
+          // Show location details
+          const locationData = result.data.data.location;
+          const timestamp = new Date(result.data.data.timestamp);
+          const timeStr = timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          
+          console.log(`${isClockIn ? 'Clocked In' : 'Clocked Out'} at:`, locationData);
+          
+          // Update attendance table with geolocation
+          updateAttendanceWithGeoLocation(isClockIn, locationData, timeStr);
+          
+          // Change button text and state after successful clock in
+          if (isClockIn) {
+            const self = this;
+            setTimeout(() => {
+              self.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock Out';
+              self.classList.remove('btn-primary');
+              self.classList.add('btn-secondary');
+              self.disabled = false;
+              self.style.backgroundColor = '';
+            }, 3000);
+          } else {
+            // After clock out, change back to Clock In
+            const self = this;
+            setTimeout(() => {
+              self.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock In';
+              self.classList.remove('btn-secondary');
+              self.classList.add('btn-primary');
+              self.disabled = false;
+              self.style.backgroundColor = '';
+            }, 3000);
+          }
+          
+          // Show notification to user
+          showLocationNotification(
+            isClockIn ? 'Clocked In' : 'Clocked Out',
+            locationData.address,
+            locationData
+          );
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.disabled = false;
+            this.style.backgroundColor = '';
+          }, 3000);
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        this.innerHTML = '✗ Error';
+        this.style.backgroundColor = '#dc3545';
+        
+        // Show error to user
+        showErrorNotification(error.message);
+        
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.disabled = false;
+          this.style.backgroundColor = '';
+        }, 3000);
+      }
+    });
+  });
+
+  /**
+   * Show location notification to user
+   */
+  function showLocationNotification(title, address, locationData) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    `;
+    
+    notification.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 8px;">${title}</div>
+      <div style="font-size: 14px; opacity: 0.95;">
+        📍 ${address}<br>
+        <small style="opacity: 0.8;">Lat: ${locationData.latitude.toFixed(4)}, Lon: ${locationData.longitude.toFixed(4)}</small>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 5000);
+  }
+
+  /**
+   * Show error notification to user
+   */
+  function showErrorNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #dc3545;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    `;
+    
+    notification.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 4px;">⚠️ Error</div>
+      <div style="font-size: 14px;">${message}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 5000);
+  }
+
+  // Initialize - Check current clock status on page load
+  async function initializeClockStatus() {
+    try {
+      const status = await GeolocationService.getStatus(EMPLOYEE_ID);
+      if (status.success) {
+        updateClockButtonStatus(status.data.data.status);
+      }
+    } catch (error) {
+      console.log('Could not load clock status:', error);
+    }
+  }
+
+  /**
+   * Update clock button based on current status
+   */
+  function updateClockButtonStatus(status) {
+    const clockButtons = document.querySelectorAll('.action-trigger');
+    clockButtons.forEach(button => {
+      if (button.textContent.includes('Clock')) {
+        if (status === 'clocked-in') {
+          button.textContent = '⏹ Clock Out';
+          button.style.backgroundColor = 'var(--color-secondary)';
+        } else if (status === 'clocked-out' || status === 'not-clocked-in') {
+          button.textContent = '▶ Clock In';
+          button.style.backgroundColor = 'var(--color-primary)';
+        }
+      }
+    });
+  }
+
+  /**
+   * Add new attendance record to table
+   */
+  function addAttendanceRecord(date, checkInTime, checkInLocation, checkOutTime, checkOutLocation, checkInTime2, checkOutTime2, hours) {
+    const tbody = document.querySelector('.attendance-table tbody');
+    
+    // Create new row
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td>${date}</td>
+      <td>${checkInTime}</td>
+      <td><span class="location-badge">📍 ${checkInLocation.name}</span></td>
+      <td>${checkOutTime || '—'}</td>
+      <td>${checkOutLocation ? `<span class="location-badge">📍 ${checkOutLocation.name}</span>` : '—'}</td>
+      <td>${checkInTime2 || '—'}</td>
+      <td>${checkOutTime2 || '—'}</td>
+      <td>${hours}</td>
+      <td><span class="status-tag status-present">Present</span></td>
+    `;
+    
+    // Insert at the beginning (after header)
+    if (tbody.rows.length > 0) {
+      tbody.insertBefore(newRow, tbody.rows[0]);
+    } else {
+      tbody.appendChild(newRow);
+    }
+
+    // Remove last row if we have more than 6 rows to maintain display
+    if (tbody.rows.length > 6) {
+      tbody.removeChild(tbody.rows[tbody.rows.length - 1]);
+    }
+
+    // Update total hours
+    updateTotalHours();
+  }
+
+  /**
+   * Update total hours in the footer
+   */
+  function updateTotalHours() {
+    const tbody = document.querySelector('.attendance-table tbody');
+    let totalHours = 0;
+
+    Array.from(tbody.rows).forEach(row => {
+      const hoursCell = row.cells[7]?.textContent;
+      if (hoursCell) {
+        const hours = parseFloat(hoursCell);
+        if (!isNaN(hours)) {
+          totalHours += hours;
+        }
+      }
+    });
+
+    const tfoot = document.querySelector('.attendance-table tfoot tr');
+    if (tfoot && tfoot.cells[5]) {
+      tfoot.cells[5].innerHTML = `<strong>${totalHours.toFixed(1)}h</strong>`;
+    }
+  }
+
+  /**
+   * Update attendance table with real geolocation data
+   * Handles multiple clock in/out entries per day
+   */
+  function updateAttendanceWithGeoLocation(isClockIn, locationData, time) {
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    
+    const tbody = document.querySelector('.attendance-table tbody');
+    const firstRow = tbody.rows[0];
+
+    if (isClockIn) {
+      // Check if today already has a row
+      let todayRow = null;
+      for (let i = 0; i < tbody.rows.length; i++) {
+        if (tbody.rows[i].cells[0].textContent.includes(today.getDate().toString())) {
+          todayRow = tbody.rows[i];
+          break;
+        }
+      }
+
+      if (!todayRow) {
+        // Create new row for today
+        addAttendanceRecord(
+          dateStr,
+          time,
+          {
+            name: locationData.address,
+            coords: `${locationData.latitude.toFixed(4)}, ${locationData.longitude.toFixed(4)}`
+          },
+          null,
+          null,
+          null,
+          null,
+          '0h'
+        );
+      } else {
+        // Check if first clock-in is empty or if this is second clock-in
+        const firstCheckInCell = todayRow.cells[1];
+        const secondCheckInCell = todayRow.cells[5];
+        
+        if (!firstCheckInCell.textContent || firstCheckInCell.textContent.trim() === '') {
+          // Update first clock-in
+          firstCheckInCell.textContent = time;
+          todayRow.cells[2].innerHTML = `<span class="location-badge">📍 ${locationData.address}</span><br><small style="color: var(--color-on-surface-secondary);">${locationData.latitude.toFixed(4)}, ${locationData.longitude.toFixed(4)}</small>`;
+        } else {
+          // Update second clock-in (after lunch break)
+          secondCheckInCell.textContent = time;
+        }
+      }
+    } else {
+      // Clock out - determine if first or second clock-out
+      if (firstRow) {
+        const firstCheckOutCell = firstRow.cells[3];
+        const secondCheckOutCell = firstRow.cells[6];
+        
+        // If first check-out is empty, fill it; otherwise fill second check-out
+        if (!firstCheckOutCell.textContent || firstCheckOutCell.textContent.trim() === '') {
+          firstCheckOutCell.textContent = time;
+          firstRow.cells[4].innerHTML = `<span class="location-badge">📍 ${locationData.address}</span><br><small style="color: var(--color-on-surface-secondary);">${locationData.latitude.toFixed(4)}, ${locationData.longitude.toFixed(4)}</small>`;
+        } else {
+          secondCheckOutCell.textContent = time;
+        }
+        
+        // Calculate total hours worked
+        calculateTotalHoursForDay(firstRow);
+        updateTotalHours();
+      }
+    }
+  }
+
+  /**
+   * Calculate total hours for the day accounting for breaks
+   */
+  function calculateTotalHoursForDay(row) {
+    try {
+      const checkIn1 = row.cells[1].textContent;
+      const checkOut1 = row.cells[3].textContent;
+      const checkIn2 = row.cells[5].textContent;
+      const checkOut2 = row.cells[6].textContent;
+
+      let totalHours = 0;
+
+      // Calculate first shift
+      if (checkIn1 && checkOut1) {
+        const hours1 = parseFloat(calculateHoursWorked(checkIn1, checkOut1));
+        totalHours += isNaN(hours1) ? 0 : hours1;
+      }
+
+      // Calculate second shift
+      if (checkIn2 && checkOut2) {
+        const hours2 = parseFloat(calculateHoursWorked(checkIn2, checkOut2));
+        totalHours += isNaN(hours2) ? 0 : hours2;
+      }
+
+      row.cells[7].textContent = totalHours.toFixed(1) + 'h';
+    } catch (e) {
+      console.error('Error calculating hours:', e);
+    }
+  }
+
+  /**
+   * Calculate hours worked between two times
+   */
+  function calculateHoursWorked(startTime, endTime) {
+    try {
+      const [startHour, startMin] = startTime.match(/\d+/g).slice(0, 2).map(Number);
+      const [endHour, endMin] = endTime.match(/\d+/g).slice(0, 2).map(Number);
+      const isPM = endTime.includes('PM');
+      
+      let endHourAdjusted = endHour;
+      if (isPM && endHour !== 12) endHourAdjusted = endHour + 12;
+      if (!isPM && endHour === 12) endHourAdjusted = 0;
+
+      const startTotalMin = startHour * 60 + startMin;
+      const endTotalMin = endHourAdjusted * 60 + endMin;
+      const diffMin = endTotalMin - startTotalMin;
+      const hours = (diffMin / 60).toFixed(1);
+
+      return hours + 'h';
+    } catch (e) {
+      return '0h';
+    }
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeClockStatus);
+  } else {
+    initializeClockStatus();
+  }
+
+  // Simple Scroll Reveal Effect
+  const revealElements = document.querySelectorAll('.feature-card, .process-item, .support-card, .contact-card');
+  
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  revealElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'all 0.5s ease-out';
+    observer.observe(el);
+  });
+
+  // Date Range Picker Handler
+  const dateStartInput = document.getElementById('date-start');
+  const dateEndInput = document.getElementById('date-end');
+  const applyDateRangeBtn = document.getElementById('apply-date-range');
+
+  // Validate and apply date range
+  function validateAndApplyDateRange() {
+    const startDate = new Date(dateStartInput.value);
+    const endDate = new Date(dateEndInput.value);
+
+    if (startDate > endDate) {
+      alert('Start date must be before end date');
+      return;
+    }
+
+    // Format dates for display
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    const formattedStart = startDate.toLocaleDateString('en-US', options);
+    const formattedEnd = endDate.toLocaleDateString('en-US', options);
+
+    // Update the section title to show selected range
+    const sectionTitle = document.querySelector('.attendance-services .section-title');
+    sectionTitle.textContent = `Attendance (${formattedStart} - ${formattedEnd})`;
+
+    // Show confirmation
+    applyDateRangeBtn.textContent = 'Applied!';
+    applyDateRangeBtn.style.backgroundColor = 'var(--color-accent)';
+    
+    setTimeout(() => {
+      applyDateRangeBtn.textContent = 'Apply';
+      applyDateRangeBtn.style.backgroundColor = '';
+    }, 2000);
+  }
+
+  if (applyDateRangeBtn) {
+    applyDateRangeBtn.addEventListener('click', validateAndApplyDateRange);
+    
+    // Allow Enter key to apply
+    dateEndInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        validateAndApplyDateRange();
+      }
+    });
+  }
+
+  /* CREDENTIAL MANAGEMENT FUNCTIONALITY */
+  const addCredentialBtn = document.getElementById('add-credential-btn');
+  const credentialModal = document.getElementById('credential-modal');
+  const credentialForm = document.getElementById('credential-form');
+  const credentialsTbody = document.getElementById('credentials-tbody');
+
+  // Open modal for adding new credential
+  addCredentialBtn.addEventListener('click', () => {
+    credentialForm.reset();
+    document.querySelector('.credential-modal-header h3').textContent = 'Add Professional Credential';
+    credentialForm.querySelector('button[type="submit"]').textContent = 'Add Credential';
+    credentialForm.dataset.editingIndex = -1;
+    openCredentialModal();
+  });
+
+  function openCredentialModal() {
+    credentialModal.style.display = 'flex';
+  }
+
+  function closeCredentialModal() {
+    credentialModal.style.display = 'none';
+    credentialForm.reset();
+  }
+
+  // Close modal when clicking outside
+  credentialModal.addEventListener('click', (e) => {
+    if (e.target === credentialModal) {
+      closeCredentialModal();
+    }
+  });
+
+  // Edit credential
+  function editCredential(button) {
+    const row = button.closest('tr');
+    const cells = row.querySelectorAll('td');
+    
+    document.getElementById('cred-type').value = cells[0].textContent.trim();
+    document.getElementById('cred-name').value = cells[1].textContent.trim();
+    document.getElementById('cred-org').value = cells[2].textContent.trim();
+    document.getElementById('cred-issue-date').value = formatDateForInput(cells[3].textContent.trim());
+    document.getElementById('cred-expiry-date').value = formatDateForInput(cells[4].textContent.trim());
+    
+    credentialForm.dataset.editingRow = row;
+    document.querySelector('.credential-modal-header h3').textContent = 'Edit Professional Credential';
+    credentialForm.querySelector('button[type="submit"]').textContent = 'Update Credential';
+    openCredentialModal();
+  }
+
+  // Delete credential
+  function deleteCredential(button) {
+    if (confirm('Are you sure you want to delete this credential?')) {
+      button.closest('tr').style.opacity = '0.5';
+      button.closest('tr').style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        button.closest('tr').remove();
+        showNotification('Credential Deleted', 'The credential has been removed.', 'success');
+      }, 300);
+    }
+  }
+
+  // Format date for input field
+  function formatDateForInput(dateStr) {
+    if (!dateStr || dateStr === '—') return '';
+    
+    const date = new Date(dateStr);
+    if (isNaN(date)) return '';
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+
+  // Format date for display
+  function formatDateForDisplay(dateStr) {
+    if (!dateStr) return '—';
+    
+    const date = new Date(dateStr + 'T00:00:00');
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    return date.toLocaleDateString('en-US', options);
+  }
+
+  // Check if credential is expiring soon
+  function getCredentialStatus(expiryDate) {
+    if (!expiryDate) return 'Active';
+    
+    const today = new Date();
+    const expiry = new Date(expiryDate + 'T00:00:00');
+    const daysUntilExpiry = Math.floor((expiry - today) / (1000 * 60 * 60 * 24));
+    
+    if (daysUntilExpiry < 0) {
+      return 'Expired';
+    } else if (daysUntilExpiry <= 90) {
+      return 'Expiring Soon';
+    } else {
+      return 'Active';
+    }
+  }
+
+  // Get status badge HTML
+  function getStatusBadgeHtml(status) {
+    const statusMap = {
+      'Active': { bg: '#c8e6c9', color: '#2e7d32' },
+      'Expiring Soon': { bg: '#fff3e0', color: '#f57c00' },
+      'Expired': { bg: '#ffcdd2', color: '#c62828' }
+    };
+    
+    const styles = statusMap[status] || statusMap['Active'];
+    return `<span class="status-tag" style="background: ${styles.bg}; color: ${styles.color};">${status}</span>`;
+  }
+
+  // Submit credential form
+  credentialForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const credType = document.getElementById('cred-type').value;
+    const credName = document.getElementById('cred-name').value;
+    const credOrg = document.getElementById('cred-org').value;
+    const issueDate = document.getElementById('cred-issue-date').value;
+    const expiryDate = document.getElementById('cred-expiry-date').value;
+    
+    const issueDateFormatted = formatDateForDisplay(issueDate);
+    const expiryDateFormatted = formatDateForDisplay(expiryDate);
+    const status = getCredentialStatus(expiryDate);
+    const statusBadge = getStatusBadgeHtml(status);
+    
+    const editingRow = credentialForm.dataset.editingRow;
+    
+    if (editingRow) {
+      // Update existing row
+      editingRow.innerHTML = `
+        <td>${credType}</td>
+        <td>${credName}</td>
+        <td>${credOrg}</td>
+        <td>${issueDateFormatted}</td>
+        <td>${expiryDateFormatted}</td>
+        <td>${statusBadge}</td>
+        <td style="display: flex; gap: 8px;">
+          <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+          <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+        </td>
+      `;
+      showNotification('Credential Updated', 'Your credential has been updated successfully.', 'success');
+    } else {
+      // Add new row
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${credType}</td>
+        <td>${credName}</td>
+        <td>${credOrg}</td>
+        <td>${issueDateFormatted}</td>
+        <td>${expiryDateFormatted}</td>
+        <td>${statusBadge}</td>
+        <td style="display: flex; gap: 8px;">
+          <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+          <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+        </td>
+      `;
+      credentialsTbody.insertBefore(newRow, credentialsTbody.firstChild);
+      showNotification('Credential Added', 'Your credential has been added successfully.', 'success');
+    }
+    
+    closeCredentialModal();
+  });
+
+  // Show notification helper
+  function showNotification(title, message, type = 'info') {
+    const bgColor = type === 'success' ? '#4caf50' : type === 'error' ? '#dc3545' : '#2196f3';
+    
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${bgColor};
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      animation: slideInRight 0.3s ease;
+    `;
+    
+    notification.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 8px;">${title}</div>
+      <div style="font-size: 14px; opacity: 0.95;">${message}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 4000);
+  }
+</script><footer class="footer-section">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-brand-column">
+        <div class="footer-logo">
+          <span class="footer-logo-text">LEXI<span>core</span></span>
+        </div>
+        <p class="footer-brand-description section-content">
+          Empowering modern enterprises with intelligent self-service solutions. Streamlining attendance, payroll, and HR management through a unified, professional dashboard.
+        </p>
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6M2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></g></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6c2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4c-.9-4.2 4-6.6 7-3.8c1.1 0 3-1.2 3-1.2"/></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-links-grid">
+        <div class="footer-link-column">
+          <h2 class="footer-column-title section-subtitle">Platform</h2>
+          <nav class="footer-nav">
+            <a href="#" class="footer-link">Attendance Tracking</a>
+            <a href="#" class="footer-link">Leave Management</a>
+            <a href="#" class="footer-link">Payroll Access</a>
+            <a href="#" class="footer-link">Employee Profile</a>
+            <a href="#" class="footer-link">HR Announcements</a>
+          </nav>
+        </div>
+
+        <div class="footer-link-column">
+          <h2 class="footer-column-title section-subtitle">Company</h2>
+          <nav class="footer-nav">
+            <a href="/Homepage" class="footer-link">About LEXIcore</a>
+            <a href="#" class="footer-link">Our Solutions</a>
+            <a href="#" class="footer-link">Security & Privacy</a>
+            <a href="#" class="footer-link">Careers</a>
+            <a href="#" class="footer-link">Contact Support</a>
+          </nav>
+        </div>
+
+        <div class="footer-link-column">
+          <h2 class="footer-column-title section-subtitle">Quick Actions</h2>
+          <div class="footer-newsletter">
+            <p class="footer-newsletter-text section-content">Stay updated with the latest HR tech trends and platform updates.</p>
+            <form class="footer-newsletter-form" action="#" method="POST">
+              <div class="footer-input-group">
+                <input type="email" class="footer-newsletter-input" placeholder="Work email address" required aria-label="Email for newsletter">
+                <button type="submit" class="footer-newsletter-btn" aria-label="Subscribe">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7l7 7l-7 7"/></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <p class="footer-copyright section-content">&copy; 2026 LEXIcore Enterprise Solutions. All rights reserved.</p>
+        <div class="footer-legal-links">
+          <a href="#" class="footer-legal-link">Terms of Service</a>
+          <a href="#" class="footer-legal-link">Privacy Policy</a>
+          <a href="#" class="footer-legal-link">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script defer data-name="footer-interactivity">
+  const newsletterForm = document.querySelector('.footer-newsletter-form');
+  
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = newsletterForm.querySelector('.footer-newsletter-input');
+      const email = input.value;
+      
+      if (email) {
+        const originalBtn = newsletterForm.querySelector('.footer-newsletter-btn');
+        const originalContent = originalBtn.innerHTML;
+        
+        originalBtn.innerHTML = '<span style="font-size: 12px; font-weight: bold;">OK</span>';
+        originalBtn.style.color = 'var(--color-accent)';
+        input.value = '';
+        input.placeholder = 'Thank you for subscribing!';
+        input.disabled = true;
+        
+        setTimeout(() => {
+          originalBtn.innerHTML = originalContent;
+          originalBtn.style.color = 'var(--color-primary)';
+          input.placeholder = 'Work email address';
+          input.disabled = false;
+        }, 3000);
+      }
+    });
+  }
+</script>
+
+
+
+</body>
+</html>

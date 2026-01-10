@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Workflow Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .step-content h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .step-content p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .decision {
+            background: #fff9e6;
+            border-left-color: #f59e0b;
+        }
+
+        .success {
+            background: #e6f7e6;
+            border-left-color: #22c55e;
+        }
+
+        .failure {
+            background: #ffe6e6;
+            border-left-color: #ef4444;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 24px;
+            color: #667eea;
+            margin: -10px 0;
+        }
+
+        .branch {
+            margin-left: 50px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 3px dashed #667eea;
+        }
+
+        .branch-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .branch-step {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .branch-step::before {
+            content: "→";
+            color: #667eea;
+            font-weight: bold;
+            min-width: 20px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+
+        .legend-box.main {
+            background: #f5f5f5;
+            border-left-color: #667eea;
+        }
+
+        .legend-box.decision {
+            background: #fff9e6;
+            border-left-color: #f59e0b;
+        }
+
+        .legend-box.success {
+            background: #e6f7e6;
+            border-left-color: #22c55e;
+        }
+
+        .legend-box.failure {
+            background: #ffe6e6;
+            border-left-color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .branch {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Approval Workflow Flowchart</h1>
+        
+        <div class="flowchart">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Employee Submits Request</h3>
+                    <p>Employee fills out form (Leave, Expense, Overtime, Adjustment) and clicks Submit</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>System Validates Request</h3>
+                    <p>System checks for required fields, data format, and employee eligibility</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Validation Passed?</h3>
+                    <p>All required information is valid and complete</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">❌ If Validation Failed:</div>
+                <div class="branch-step">System sends error message to employee</div>
+                <div class="branch-step">Employee corrects and resubmits</div>
+                <div class="branch-step">Returns to Step 2</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Request Routed to Manager</h3>
+                    <p>Request appears in manager's "Pending Approvals" queue with notification</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Manager Reviews Request</h3>
+                    <p>Manager examines request details, supporting documents, and employee history</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Manager Decision</h3>
+                    <p>Manager clicks Approve, Reject, or Request More Info</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">ℹ️ If More Info Needed:</div>
+                <div class="branch-step">Manager sends message to employee requesting details</div>
+                <div class="branch-step">Employee receives notification and responds</div>
+                <div class="branch-step">Returns to Step 4</div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">❌ If Rejected:</div>
+                <div class="branch-step">Request status changes to "Rejected"</div>
+                <div class="branch-step">Employee receives rejection notification with reason</div>
+                <div class="branch-step">Employee can resubmit or appeal</div>
+                <div class="branch-step">Workflow ends</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Request Approved ✓</h3>
+                    <p>Manager clicks "Approve" button</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>System Processes Approval</h3>
+                    <p>Request is recorded in system, compliance checks run, leave balance updated (if applicable)</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h3>Notifications Sent</h3>
+                    <p>Employee receives approval confirmation, HR and Payroll are notified if needed</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h3>Request Complete ✓</h3>
+                    <p>Request appears in Employee's "Approved Requests" history with confirmation number</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box main"></div>
+                <span>Standard Step</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box decision"></div>
+                <span>Decision Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box success"></div>
+                <span>Approved Path</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box failure"></div>
+                <span>Rejected Path</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

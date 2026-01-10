@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Request Process Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: #f5576c;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .step-content h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .step-content p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .decision {
+            background: #fff9e6;
+            border-left-color: #f59e0b;
+        }
+
+        .success {
+            background: #e6f7e6;
+            border-left-color: #22c55e;
+        }
+
+        .warning {
+            background: #ffe6e6;
+            border-left-color: #ef4444;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 24px;
+            color: #f5576c;
+            margin: -10px 0;
+        }
+
+        .branch {
+            margin-left: 50px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 3px dashed #f5576c;
+        }
+
+        .branch-title {
+            font-weight: bold;
+            color: #f5576c;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .branch-step {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .branch-step::before {
+            content: "→";
+            color: #f5576c;
+            font-weight: bold;
+            min-width: 20px;
+        }
+
+        .info-box {
+            margin-left: 50px;
+            margin-top: 10px;
+            padding: 12px;
+            background: #fef9e7;
+            border-left: 3px solid #fbbf24;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .info-box strong {
+            color: #f59e0b;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+
+        .legend-box.main {
+            background: #f5f5f5;
+            border-left-color: #f5576c;
+        }
+
+        .legend-box.decision {
+            background: #fff9e6;
+            border-left-color: #f59e0b;
+        }
+
+        .legend-box.success {
+            background: #e6f7e6;
+            border-left-color: #22c55e;
+        }
+
+        .legend-box.warning {
+            background: #ffe6e6;
+            border-left-color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .branch {
+                margin-left: 20px;
+            }
+
+            .info-box {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏖️ Leave Request Process Flowchart</h1>
+        
+        <div class="flowchart">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Employee Clicks "Request Leave"</h3>
+                    <p>Employee navigates to dashboard and clicks the "Request Leave" button</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Leave Request Form Opens</h3>
+                    <p>Modal or new page displays leave request form with required fields</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Form Fields:</strong> Leave Type, Start Date, End Date, Reason, Supporting Documents (optional)
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Employee Fills Out Form</h3>
+                    <p>Employee selects leave type, dates, provides reason for absence</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Leave Types:</strong> Annual Leave, Sick Leave, Personal Leave, Bereavement, Sabbatical, Maternity/Paternity
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>System Checks Leave Balance</h3>
+                    <p>System calculates days requested and compares to employee's available balance</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Sufficient Balance?</h3>
+                    <p>Does employee have enough leave days remaining?</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">❌ If Insufficient Balance:</div>
+                <div class="branch-step">System shows error message</div>
+                <div class="branch-step">Display available balance and days needed</div>
+                <div class="branch-step">Option to adjust dates or cancel request</div>
+                <div class="branch-step">Return to Step 3</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Date Conflict Check</h3>
+                    <p>Check if dates overlap with approved PTO, blackout dates, or critical projects</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">⚠️ If Conflict Detected:</div>
+                <div class="branch-step">System shows warning about conflict</div>
+                <div class="branch-step">Display the conflicting dates/events</div>
+                <div class="branch-step">Allow employee to proceed or modify dates</div>
+                <div class="branch-step">Conflict flagged for manager review</div>
+                <div class="branch-step">Continue to Step 6</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>Employee Reviews & Submits</h3>
+                    <p>Employee reviews all details and clicks "Submit Request"</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h3>System Validates Request</h3>
+                    <p>Final validation: all fields present, dates valid, no system errors</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h3>Request Routed to Manager</h3>
+                    <p>Request appears in manager's pending approvals with notification</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step">
+                <div class="step-number">9</div>
+                <div class="step-content">
+                    <h3>Manager Reviews Request</h3>
+                    <p>Manager examines leave dates, reason, team coverage, and employee history</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step decision">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Manager Approval?</h3>
+                    <p>Manager decides to Approve, Reject, or Request Adjustment</p>
+                </div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">❌ If Rejected:</div>
+                <div class="branch-step">Manager provides reason for rejection</div>
+                <div class="branch-step">Employee receives rejection notification</div>
+                <div class="branch-step">Employee can resubmit with different dates</div>
+                <div class="branch-step">Process ends</div>
+            </div>
+
+            <div class="branch">
+                <div class="branch-title">ℹ️ If Adjustment Requested:</div>
+                <div class="branch-step">Manager suggests alternative dates</div>
+                <div class="branch-step">Employee receives request for adjustment</div>
+                <div class="branch-step">Return to Step 6 to resubmit with new dates</div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">10</div>
+                <div class="step-content">
+                    <h3>Leave Approved ✓</h3>
+                    <p>Manager clicks "Approve" button</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">11</div>
+                <div class="step-content">
+                    <h3>System Processes Approval</h3>
+                    <p>Leave balance deducted, HR records updated, calendar marked as unavailable</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">12</div>
+                <div class="step-content">
+                    <h3>Notifications Sent</h3>
+                    <p>Employee receives confirmation, HR notified, Payroll updated for processing</p>
+                </div>
+            </div>
+
+            <div class="arrow">⬇</div>
+
+            <div class="step success">
+                <div class="step-number">13</div>
+                <div class="step-content">
+                    <h3>Leave Request Complete ✓</h3>
+                    <p>Request visible in Employee's Approved Leave History with confirmation details</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box main"></div>
+                <span>Standard Step</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box decision"></div>
+                <span>Decision Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box success"></div>
+                <span>Approved Path</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box warning"></div>
+                <span>Rejected/Adjustment</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
