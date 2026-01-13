@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - LEXIcore</title>
+    <link rel="stylesheet" href="../styles/AdminStyle.css">
+</head>
+<body>
+    <!-- Authentication Check - Will redirect non-admin users -->
+    <div id="authCheck" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <h2>Verifying Admin Access...</h2>
+        <p>Please wait while we verify your credentials.</p>
+    </div>
+    <nav class="navigation-wrapper" id="main-navigation">
+        <div class="navigation-container">
+            <a href="/" class="navigation-logo-link" aria-label="LEXIcore Homepage">
+                <div class="navigation-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5l10-5zM2 17l10 5l10-5M2 12l10 5l10-5"/></svg>
+                </div>
+                <span class="section-title navigation-brand-name">LEXIcore Admin</span>
+            </a>
+
+            <div class="navigation-desktop-menu">
+                <ul class="navigation-links-list">
+                    <li><a href="admin.html" class="navigation-link active">Dashboard</a></li>
+                </ul>
+            </div>
+
+            <div class="navigation-actions">
+                <a href="#" class="btn btn-primary btn-sm" id="sign-out-btn" style="margin: 0 var(--spacing-md);">Sign Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-wrapper">
+        <!-- SECTION 1: ADMIN HEADER -->
+        <section class="admin-header">
+            <div class="admin-header-content">
+                <h1 class="admin-title">Administration Dashboard</h1>
+                <p class="admin-subtitle">Manage employees, schedules, leave balances, and announcements</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ADMIN NAVIGATION TABS -->
+        <section class="admin-tabs-section">
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="employees">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g></svg>
+                    Employees
+                </button>
+                <button class="admin-tab" data-tab="attendance">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+                    Attendance
+                </button>
+                <button class="admin-tab" data-tab="leave">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+                    Leave Balance
+                </button>
+                <button class="admin-tab" data-tab="announcements">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6l8 5l8-5"/></svg>
+                    Announcements
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: TAB CONTENTS -->
+        <section class="admin-content">
+
+            <!-- EMPLOYEES TAB -->
+            <div class="admin-tab-content active" id="employees-tab">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Employee Management</h2>
+                        <button class="btn btn-primary btn-sm" onclick="openCreateEmployeeModal()">+ Create Employee</button>
+                    </div>
+
+                    <div class="employees-controls">
+                        <input type="text" id="employeeSearchInput" placeholder="Search employee by name or ID..." class="search-input">
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Position</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeesTableBody">
+                                <tr>
+                                    <td>EMP001</td>
+                                    <td>Alex Witiwitwiw</td>
+                                    <td>Alex.witiwitwiw@company.com</td>
+                                    <td>Software Engineer</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon" onclick="openEditEmployeeModal('EMP001')" title="Edit">✎</button>
+                                        <button class="btn-icon btn-danger" onclick="deleteEmployee('EMP001')" title="Delete">🗑</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMP002</td>
+                                    <td>Rendon Labrador</td>
+                                    <td>Rendon.labrador@company.com</td>
+                                    <td>HR Manager</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon" onclick="openEditEmployeeModal('EMP002')" title="Edit">✎</button>
+                                        <button class="btn-icon btn-danger" onclick="deleteEmployee('EMP002')" title="Delete">🗑</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ATTENDANCE TAB -->
+            <div class="admin-tab-content" id="attendance-tab">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Edit Employee Attendance</h2>
+                    </div>
+
+                    <div class="attendance-controls">
+                        <input type="text" id="attendanceSearchInput" placeholder="Search employee..." class="search-input">
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Clock In</th>
+                                    <th>Clock Out</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <tr>
+                                    <td>EMP001</td>
+                                    <td>Alex Witiwitwiw</td>
+                                    <td>2026-01-13</td>
+                                    <td>08:00 AM</td>
+                                    <td>05:30 PM</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="openEditAttendanceModal('EMP001', '2026-01-13')" title="Edit">✎</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMP002</td>
+                                    <td>Rendon Labrador</td>
+                                    <td>2026-01-13</td>
+                                    <td>08:15 AM</td>
+                                    <td>05:45 PM</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="openEditAttendanceModal('EMP002', '2026-01-13')" title="Edit">✎</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEAVE BALANCE TAB -->
+            <div class="admin-tab-content" id="leave-tab">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Employee Leave Balance</h2>
+                    </div>
+
+                    <div class="leave-controls">
+                        <input type="text" id="leaveSearchInput" placeholder="Search employee..." class="search-input">
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Name</th>
+                                    <th>Annual Leave</th>
+                                    <th>Sick Leave</th>
+                                    <th>Emergency Leave</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaveTableBody">
+                                <tr>
+                                    <td>EMP001</td>
+                                    <td>Alex Witiwitwiw</td>
+                                    <td>15 days</td>
+                                    <td>10 days</td>
+                                    <td>3 days</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="openEditLeaveModal('EMP001')" title="Edit">✎</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMP002</td>
+                                    <td>Rendon Labrador</td>
+                                    <td>12 days</td>
+                                    <td>10 days</td>
+                                    <td>3 days</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="openEditLeaveModal('EMP002')" title="Edit">✎</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANNOUNCEMENTS TAB -->
+            <div class="admin-tab-content" id="announcements-tab">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Company Announcements</h2>
+                        <button class="btn btn-primary btn-sm" onclick="openCreateAnnouncementModal()">+ Create Announcement</button>
+                    </div>
+
+                    <div class="announcements-list">
+                        <div class="announcement-card">
+                            <div class="announcement-header">
+                                <h3 class="announcement-title">Annual Benefits Open Enrollment</h3>
+                                <span class="badge badge-pinned">Pinned</span>
+                            </div>
+                            <p class="announcement-date">Oct 24, 2026</p>
+                            <p class="announcement-content">Please review and select your health and wellness plans for the 2027 fiscal year by November 15th.</p>
+                            <div class="announcement-actions">
+                                <button class="btn-icon" onclick="openEditAnnouncementModal(1)" title="Edit">✎</button>
+                                <button class="btn-icon btn-danger" onclick="deleteAnnouncement(1)" title="Delete">🗑</button>
+                            </div>
+                        </div>
+
+                        <div class="announcement-card">
+                            <div class="announcement-header">
+                                <h3 class="announcement-title">New Work-from-Home Policy Update</h3>
+                            </div>
+                            <p class="announcement-date">Oct 20, 2026</p>
+                            <p class="announcement-content">The executive team has released updated guidelines regarding hybrid work arrangements. Effective immediately.</p>
+                            <div class="announcement-actions">
+                                <button class="btn-icon" onclick="openEditAnnouncementModal(2)" title="Edit">✎</button>
+                                <button class="btn-icon btn-danger" onclick="deleteAnnouncement(2)" title="Delete">🗑</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- MODALS -->
+
+    <!-- CREATE/EDIT EMPLOYEE MODAL -->
+    <div id="employeeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="section-subtitle" id="employeeModalTitle">Create Employee</h2>
+                <button class="modal-close" onclick="closeEmployeeModal()">&times;</button>
+            </div>
+
+            <form id="employeeForm">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="employeeId" class="form-label">Employee ID *</label>
+                        <input type="text" id="employeeId" placeholder="e.g., EMP001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeName" class="form-label">Full Name *</label>
+                        <input type="text" id="employeeName" placeholder="Enter full name" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="employeeEmail" class="form-label">Email *</label>
+                        <input type="email" id="employeeEmail" placeholder="Enter email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeePosition" class="form-label">Position *</label>
+                        <input type="text" id="employeePosition" placeholder="Enter position" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="employeePassword" class="form-label">Password *</label>
+                        <input type="password" id="employeePassword" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeConfirmPassword" class="form-label">Confirm Password *</label>
+                        <input type="password" id="employeeConfirmPassword" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="employeeStatus" class="form-label">Status *</label>
+                        <select id="employeeStatus" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeEmployeeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDIT ATTENDANCE MODAL -->
+    <div id="attendanceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="section-subtitle">Edit Attendance</h2>
+                <button class="modal-close" onclick="closeAttendanceModal()">&times;</button>
+            </div>
+
+            <form id="attendanceForm">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="attendanceEmployeeName" class="form-label">Employee</label>
+                        <input type="text" id="attendanceEmployeeName" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="attendanceDate" class="form-label">Date *</label>
+                        <input type="date" id="attendanceDate" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="attendanceClockIn" class="form-label">Clock In Time *</label>
+                        <input type="time" id="attendanceClockIn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="attendanceClockOut" class="form-label">Clock Out Time *</label>
+                        <input type="time" id="attendanceClockOut" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeAttendanceModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Attendance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDIT LEAVE BALANCE MODAL -->
+    <div id="leaveModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="section-subtitle">Edit Leave Balance</h2>
+                <button class="modal-close" onclick="closeLeaveModal()">&times;</button>
+            </div>
+
+            <form id="leaveForm">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="leaveEmployeeName" class="form-label">Employee</label>
+                        <input type="text" id="leaveEmployeeName" readonly>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="leaveAnnual" class="form-label">Annual Leave (days) *</label>
+                        <input type="number" id="leaveAnnual" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveSick" class="form-label">Sick Leave (days) *</label>
+                        <input type="number" id="leaveSick" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="leaveEmergency" class="form-label">Emergency Leave (days) *</label>
+                        <input type="number" id="leaveEmergency" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeLeaveModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Leave Balance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CREATE/EDIT ANNOUNCEMENT MODAL -->
+    <div id="announcementModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="section-subtitle" id="announcementModalTitle">Create Announcement</h2>
+                <button class="modal-close" onclick="closeAnnouncementModal()">&times;</button>
+            </div>
+
+            <form id="announcementForm">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="announcementTitle" class="form-label">Title *</label>
+                        <input type="text" id="announcementTitle" placeholder="Announcement title" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="announcementContent" class="form-label">Content *</label>
+                        <textarea id="announcementContent" placeholder="Write announcement content here..." rows="6" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="announcementDate" class="form-label">Date *</label>
+                        <input type="date" id="announcementDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="announcementPinned">
+                            <span>Pin this announcement</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeAnnouncementModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Announcement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script defer src="../scripts/admin.js"></script>
+
+</body>
+</html>

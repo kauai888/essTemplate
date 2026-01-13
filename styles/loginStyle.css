@@ -3,7 +3,7 @@ body#loginBody {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('Images/violet.png') no-repeat center center fixed;
+    background: url('../Images/blueBG.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Segoe UI', sans-serif;
 }

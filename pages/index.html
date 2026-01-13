@@ -1,0 +1,3073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/dashboardStyle.css">
+<!-- Geolocation Service -->
+    <script src="../scripts/geolocationService.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+</head>
+<body>
+    <nav class="navigation-wrapper" id="main-navigation">
+  <div class="navigation-container">
+    <a href="/" class="navigation-logo-link" aria-label="LEXIcore Homepage">
+      <div class="navigation-logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5l10-5zM2 17l10 5l10-5M2 12l10 5l10-5"/></svg>
+      </div>
+      <span class="section-title navigation-brand-name">LEXIcore</span>
+    </a>
+
+
+
+    <div class="navigation-actions">
+      <a href="admin.html" class="btn btn-secondary btn-sm" id="admin-btn" style="margin: 0 var(--spacing-md);">Admin Panel</a>
+      <a href="#" class="btn btn-primary btn-sm" id="sign-out-btn" style="margin: 0 var(--spacing-md);">Sign Out</a>
+    </div>
+  </div>
+</nav>
+
+
+
+<script defer data-name="navigation-logic">
+// Navigation scroll effect
+  let lastScrollTop = 0;
+  const navWrapper = document.getElementById('main-navigation');
+
+  window.addEventListener('scroll', () => {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > 50) {
+      navWrapper.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+      navWrapper.style.padding = 'var(--spacing-xs) 0';
+    } else {
+      navWrapper.style.boxShadow = 'none';
+      navWrapper.style.padding = 'var(--spacing-sm) 0';
+    }
+    
+    lastScrollTop = scrollTop;
+  }, { passive: true });
+</script><main class="dashboard-wrapper">
+<!-- SECTION 1: HERO SNAPSHOT -->
+  <section class="hero-snapshot">
+    <div class="hero-snapshot-inner">
+      <div class="hero-snapshot-grid">
+        <div class="hero-card hero-welcome">
+          <h1 class="hero-title">Welcome back, Alex</h1>
+          <p class="hero-subtitle">January 12, 2026 Monday</p>
+        </div>
+        <div class="hero-card hero-action-card">
+          <button class="btn btn-primary btn-lg action-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>
+            Clock In
+          </button>
+        </div>
+        <div class="hero-card hero-info-card" onclick="openPersonalInfoModal()">
+          <div class="card-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></g></svg>
+          </div>          
+          <div class="card-content">
+            <span class="card-label">Personal Info</span>
+            <span class="card-value">View Profile</span>
+          </div>
+        </div>
+        <div class="hero-card hero-info-card" onclick="openFiledOvertimeModal()">
+          <div class="card-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Filed Overtime</span>
+            <span class="card-value">2 Hours</span>
+          </div>
+        </div>
+        <div class="hero-card hero-info-card" onclick="openLeaveLedgerModal()">
+          <div class="card-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Leave Ledger</span>
+            <span class="card-value">12 Days Left</span>
+          </div>
+        </div>
+        <div class="hero-card hero-info-card" onclick="openChangePasswordModal()">
+          <div class="card-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g></svg>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Change Password</span>
+            <span class="card-value">Update Security</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- SECTION 2: DASHBOARD CARDS -->
+  <section class="features-dashboard">
+    <div class="features-inner">
+      <h2 class="section-title">Your Workspace</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Attendance Summary</h3>
+          <p class="section-content">164 Hours recorded this month. 98% On-time arrival rate.</p>
+          <a href="#" class="btn btn-link btn-sm" onclick="openAttendanceLogModal(event)">View Log</a>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8m8 4H8m8 4H8"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Payslip</h3>
+          <p class="section-content">September 2026 payslip is now available for download.</p>
+          <a href="#" class="btn btn-link btn-sm" onclick="openPayslipModal(event)">View & Download</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- SECTION 3: ANNOUNCEMENTS TIMELINE -->
+  <section class="announcements-timeline">
+    <div class="announcements-inner">
+      <h2 class="section-title">Company Announcements</h2>
+      <div class="timeline-container">
+        <div class="timeline-item pinned">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 24, 2026</span>
+            <h3 class="section-subtitle">Annual Benefits Open Enrollment <span class="badge badge-unread">Pinned</span></h3>
+            <p class="section-content">Please review and select your health and wellness plans for the 2027 fiscal year by November 15th.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 20, 2026</span>
+            <h3 class="section-subtitle">New Work-from-Home Policy Update</h3>
+            <p class="section-content">The executive team has released updated guidelines regarding hybrid work arrangements. Effective immediately.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 15, 2026</span>
+            <h3 class="section-subtitle">Town Hall Recording Available</h3>
+            <p class="section-content">Missed the meeting? You can now watch the full recording of the Town Hall on the internal portal.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <span class="timeline-date">Oct 10, 2026</span>
+            <h3 class="section-subtitle">Office Infrastructure Maintenance</h3>
+            <p class="section-content">Network maintenance will occur this Sunday between 2:00 AM and 6:00 AM. Expect brief outages.</p>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-footer">
+        <a href="#" class="btn btn-outline btn-lg">View All Announcements</a>
+      </div>
+    </div>
+  </section>
+
+<!-- SECTION 4: EXCEL-LIKE ATTENDANCE TABLE (Hidden - shown in modal) -->
+  <section class="attendance-services" id="attendanceTableSection" style="display: none;">
+    <div class="attendance-inner">
+      <div class="attendance-header">
+        <div>
+          <h2 class="section-title">Current Pay Period Attendance</h2>
+          <div style="margin-top: var(--spacing-sm); display: flex; align-items: center; gap: var(--spacing-md);">
+            <label for="date-start" style="font-size: var(--font-size-sm); color: var(--color-on-surface-secondary);">Date :</label>
+            <div class="date-range-picker">
+              <input type="date" id="date-start" class="date-input" value="2026-10-18" aria-label="Start date">
+              <span style="color: var(--color-on-surface-secondary); font-size: var(--font-size-sm);">to</span>
+              <input type="date" id="date-end" class="date-input" value="2026-10-24" aria-label="End date">
+              <button class="btn btn-primary btn-sm" id="apply-date-range" style="margin-left: var(--spacing-md);">Apply</button>
+            </div>
+          </div>
+        </div>
+        <div class="attendance-actions">
+          <button class="btn btn-outline btn-sm">Export to CSV</button>
+          <button class="btn btn-outline btn-sm">Print View</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="attendance-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Total Hours</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jan 09, 2026</td>
+              <td>08:55 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>12:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Coffee Shop, Antipolo</small></td>
+              <td>01:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>01:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>05:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>8.5h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 08, 2026</td>
+              <td>09:02 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasong Tamo</small></td>
+              <td>12:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasong Tamo</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Café Lunch, Pasong</small></td>
+              <td>01:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasong Tamo</small></td>
+              <td>02:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasong Tamo</small></td>
+              <td>05:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasong Tamo</small></td>
+              <td>8.7h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 07, 2026</td>
+              <td>08:48 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Midtown, NY</small></td>
+              <td>12:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Midtown, NY</small></td>
+              <td>01:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Spot, Midtown</small></td>
+              <td>01:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Midtown</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Midtown</small></td>
+              <td>05:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Midtown</small></td>
+              <td>8.4h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 06, 2026</td>
+              <td>09:10 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cogeo</small></td>
+              <td>12:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cogeo</small></td>
+              <td>01:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Food Court, Cogeo</small></td>
+              <td>01:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cogeo</small></td>
+              <td>02:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cogeo</small></td>
+              <td>06:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cogeo</small></td>
+              <td>8.8h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 05, 2026</td>
+              <td>09:00 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati</small></td>
+              <td>12:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Break, Makati</small></td>
+              <td>01:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati</small></td>
+              <td>02:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati</small></td>
+              <td>05:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati</small></td>
+              <td>8.5h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 02, 2026</td>
+              <td>08:50 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>12:25 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Antipolo, Cupang</small></td>
+              <td>01:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Diner, Antipolo</small></td>
+              <td>01:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>02:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>05:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Antipolo</small></td>
+              <td>9.0h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Jan 01, 2026</td>
+              <td>08:30 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Manila, BGC</small></td>
+              <td>12:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Manila, BGC</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Restaurant, Manila</small></td>
+              <td>01:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Manila</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Manila</small></td>
+              <td>05:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Manila</small></td>
+              <td>8.9h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 31, 2025</td>
+              <td>09:05 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Quezon City</small></td>
+              <td>12:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Quezon City</small></td>
+              <td>01:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Venue, QC</small></td>
+              <td>01:55 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Quezon City</small></td>
+              <td>02:25 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Quezon City</small></td>
+              <td>05:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Quezon City</small></td>
+              <td>8.3h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 30, 2025</td>
+              <td>08:45 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati CBD</small></td>
+              <td>12:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Makati CBD</small></td>
+              <td>01:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Café Break, CBD</small></td>
+              <td>01:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati CBD</small></td>
+              <td>02:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati CBD</small></td>
+              <td>05:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Makati CBD</small></td>
+              <td>8.6h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 29, 2025</td>
+              <td>09:15 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Taguig, Fort</small></td>
+              <td>12:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Taguig, Fort</small></td>
+              <td>01:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Place, Fort</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Taguig</small></td>
+              <td>02:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Taguig</small></td>
+              <td>06:05 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Taguig</small></td>
+              <td>8.5h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 26, 2025</td>
+              <td>08:55 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasay City</small></td>
+              <td>12:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Pasay City</small></td>
+              <td>01:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Food Hall, Pasay</small></td>
+              <td>02:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasay</small></td>
+              <td>02:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasay</small></td>
+              <td>05:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Pasay</small></td>
+              <td>8.7h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 25, 2025</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0.0h</td>
+              <td><span class="status-tag status-leave">Holiday</span></td>
+            </tr>
+            <tr>
+              <td>Dec 24, 2025</td>
+              <td>09:00 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Ortigas, San Juan</small></td>
+              <td>12:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Ortigas, San Juan</small></td>
+              <td>01:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Bistro, Ortigas</small></td>
+              <td>01:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, San Juan</small></td>
+              <td>02:20 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, San Juan</small></td>
+              <td>05:30 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, San Juan</small></td>
+              <td>8.4h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 23, 2025</td>
+              <td>08:40 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Las Piñas</small></td>
+              <td>12:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Las Piñas</small></td>
+              <td>01:00 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Lunch Venue, Las Piñas</small></td>
+              <td>01:40 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Las Piñas</small></td>
+              <td>02:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Las Piñas</small></td>
+              <td>05:55 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Las Piñas</small></td>
+              <td>8.9h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+            <tr>
+              <td>Dec 20, 2025</td>
+              <td>09:20 AM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cavite, Kawit</small></td>
+              <td>12:50 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Cavite, Kawit</small></td>
+              <td>01:35 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Restaurant, Kawit</small></td>
+              <td>02:15 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cavite</small></td>
+              <td>02:45 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cavite</small></td>
+              <td>06:10 PM<br><small style="display: block; font-size: 11px; color: #666;">📍 Office, Cavite</small></td>
+              <td>8.8h</td>
+              <td><span class="status-tag status-present">Present</span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5"><strong>Total for this Cut-off</strong></td>
+              <td colspan="3"><strong>128.8h</strong></td>
+              <td colspan="1"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+<!-- ATTENDANCE LOG MODAL -->
+  <div id="attendanceLogModal" class="modal" style="display: none;">
+    <div class="modal-content attendance-log-modal" style="width: 98%; max-width: 1400px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Attendance Log</h2>
+        <button class="modal-close" onclick="closeAttendanceLogModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: var(--spacing-lg);">
+        <div style="margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+          <label style="font-size: var(--font-size-sm); color: var(--color-on-surface-secondary); white-space: nowrap;">Date Range :</label>
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+              <label for="modal-date-from" style="font-size: var(--font-size-sm); color: var(--color-on-surface-secondary); white-space: nowrap;">From :</label>
+              <input type="date" id="modal-date-from" class="date-input" value="2026-01-05" aria-label="Start date">
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+              <label for="modal-date-to" style="font-size: var(--font-size-sm); color: var(--color-on-surface-secondary); white-space: nowrap;">To :</label>
+              <input type="date" id="modal-date-to" class="date-input" value="2026-01-09" aria-label="End date">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="filterAttendanceByDateRange()">Apply</button>
+          </div>
+        </div>
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table class="attendance-table" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Location</th>
+                <th>Time Out</th>
+                <th>Location</th>
+                <th>Time In</th>
+                <th>Location</th>
+                <th>Time Out</th>
+                <th>Location</th>
+                <th>Time In</th>
+                <th>Location</th>
+                <th>Time Out</th>
+                <th>Location</th>
+                <th>Total Hours</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+              <!-- Attendance data will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- PAYSLIP VIEW MODAL -->
+  <div id="payslipModal" class="modal" style="display: none;">
+    <div class="modal-content payslip-modal" style="width: 95%; max-width: 800px;">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Payslip - September 2026</h2>
+        <button class="modal-close" onclick="closePayslipModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: var(--spacing-xl);">
+        <div class="payslip-content" style="background: white; padding: 30px; border-radius: 8px; font-family: Arial, sans-serif;">
+          <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px;">
+            <h3 style="margin: 0 0 5px 0; font-size: 20px;">LEXIcore Corporation</h3>
+            <p style="margin: 5px 0; font-size: 12px; color: #666;">Official Payslip</p>
+          </div>
+
+          <table style="width: 100%; margin-bottom: 20px; font-size: 13px;">
+            <tr>
+              <td style="padding: 8px 0;"><strong>Employee Name:</strong></td>
+              <td>Alex Witiwitwiw</td>
+              <td style="text-align: right;"><strong>Employee ID:</strong></td>
+              <td>EMP-0000-000</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Position:</strong></td>
+              <td>Software Engineer</td>
+              <td style="text-align: right;"><strong>Pay Period:</strong></td>
+              <td>Sept 1 - Sept 30, 2026</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Department:</strong></td>
+              <td>Engineering</td>
+              <td style="text-align: right;"><strong>Payment Date:</strong></td>
+              <td>Oct 5, 2026</td>
+            </tr>
+          </table>
+
+          <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f5f5f5; border-bottom: 2px solid #333;">
+                <th style="padding: 10px; text-align: left; border-right: 1px solid #ddd;">Earnings</th>
+                <th style="padding: 10px; text-align: right;">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">Basic Salary</td>
+                <td style="padding: 8px; text-align: right;">₱ 50,000.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">Allowances</td>
+                <td style="padding: 8px; text-align: right;">₱ 10,000.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">Overtime</td>
+                <td style="padding: 8px; text-align: right;">₱ 5,000.00</td>
+              </tr>
+              <tr style="border-bottom: 2px solid #333; background: #f9f9f9;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;"><strong>Gross Salary</strong></td>
+                <td style="padding: 8px; text-align: right;"><strong>₱ 65,000.00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f5f5f5; border-bottom: 2px solid #333;">
+                <th style="padding: 10px; text-align: left; border-right: 1px solid #ddd;">Deductions</th>
+                <th style="padding: 10px; text-align: right;">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">SSS Contribution</td>
+                <td style="padding: 8px; text-align: right;">₱ (1,350.00)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">PhilHealth</td>
+                <td style="padding: 8px; text-align: right;">₱ (600.00)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">PAG-IBIG Fund</td>
+                <td style="padding: 8px; text-align: right;">₱ (200.00)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;">Withholding Tax</td>
+                <td style="padding: 8px; text-align: right;">₱ (5,500.00)</td>
+              </tr>
+              <tr style="border-bottom: 2px solid #333; background: #f9f9f9;">
+                <td style="padding: 8px; border-right: 1px solid #ddd;"><strong>Total Deductions</strong></td>
+                <td style="padding: 8px; text-align: right;"><strong>₱ (7,650.00)</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table style="width: 100%; margin-bottom: 30px; border-collapse: collapse; font-size: 14px;">
+            <tr style="background: #f0f0f0; border: 2px solid #333;">
+              <td style="padding: 10px; border-right: 1px solid #ddd;"><strong>NET PAY (Amount to be received)</strong></td>
+              <td style="padding: 10px; text-align: right;"><strong>₱ 57,350.00</strong></td>
+            </tr>
+          </table>
+
+          <div style="font-size: 12px; color: #666; border-top: 1px solid #ddd; padding-top: 15px; text-align: center;">
+            <p style="margin: 5px 0;">This is an official payslip from LEXIcore Corporation</p>
+            <p style="margin: 5px 0;">For inquiries, contact HR Department at hr@lexicore.com</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closePayslipModal()">Close</button>
+        <button class="btn btn-primary" onclick="downloadPayslipPDF()">Download as PDF</button>
+      </div>
+    </div>
+  </div>
+
+<!-- SECTION 5: FAST-CREATE PROCESS PANEL -->
+  <section class="process-requests">
+    <div class="process-inner">
+      <h2 class="section-title">Quick Requests</h2>
+      <div class="process-grid">
+        <div class="process-item">
+          <h3 class="section-subtitle">Leave Filing</h3>
+          <p class="section-content">File your vacation, sick, maternity, and other leave requests.</p>
+          <button class="btn btn-accent btn-sm" onclick="openLeaveFilingModal()">File Leave</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">Expense Claim</h3>
+          <p class="section-content">Upload receipts for travel or business expenses.</p>
+          <button class="btn btn-accent btn-sm" onclick="openExpenseClaimModal()">New Claim</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">Request to HR</h3>
+          <p class="section-content">Submit HR requests such as certificates, loans, and documents.</p>
+          <button class="btn btn-accent btn-sm" onclick="openHRRequestModal()">Submit Request</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">Overtime Filing</h3>
+          <p class="section-content">File your overtime hours. pag late IR pag OT thank you.</p>
+          <button class="btn btn-accent btn-sm" onclick="openOvertimeFilingModal()">File OT</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">OB Filing</h3>
+          <p class="section-content">File Official Business trips.</p>
+          <button class="btn btn-accent btn-sm" onclick="openOBFilingModal()">File OB</button>
+        </div>
+        <div class="process-item">
+          <h3 class="section-subtitle">201 Updates</h3>
+          <p class="section-content">Update your personal information and employment details.</p>
+          <button class="btn btn-accent btn-sm" onclick="open201UpdatesModal()">Update 201</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HR REQUEST MODAL -->
+  <div id="hrRequestModal" class="modal" style="display: none;">
+    <div class="modal-content hr-request-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">HR Request Form</h2>
+        <button class="modal-close" onclick="closeHRRequestModal()">&times;</button>
+      </div>
+      
+      <form id="hrRequestForm">
+        <!-- Request Type Selection -->
+        <div class="form-section">
+          <label class="form-label">Select Request Type *</label>
+          <div class="request-type-grid">
+            <div class="request-type-item">
+              <input type="radio" id="coe" name="requestType" value="COE" required>
+              <label for="coe" class="request-type-label">Certificate of Employment (COE)</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="sssLoan" name="requestType" value="SSS Loan" required>
+              <label for="sssLoan" class="request-type-label">SSS Loan</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="sssLoanCalamity" name="requestType" value="SSS Loan (Calamity)" required>
+              <label for="sssLoanCalamity" class="request-type-label">SSS Loan (Calamity)</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="pagibigLoan" name="requestType" value="PAG-IBIG Loan" required>
+              <label for="pagibigLoan" class="request-type-label">PAG-IBIG Loan</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="wdimerp" name="requestType" value="WDIMERP Verification" required>
+              <label for="wdimerp" class="request-type-label">WDIMERP Verification</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="itr" name="requestType" value="ITR" required>
+              <label for="itr" class="request-type-label">ITR (Income Tax Return)</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="payslip" name="requestType" value="Payslip" required>
+              <label for="payslip" class="request-type-label">Payslip</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Info Section -->
+        <div id="additionalInfoSection" style="display: none;">
+          <!-- ITR Fields -->
+          <div id="itrFields" class="form-section" style="display: none;">
+            <div class="form-group">
+              <label for="itrName" class="form-label">Full Name *</label>
+              <input type="text" id="itrName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+              <label for="itrEmail" class="form-label">Personal Email *</label>
+              <input type="email" id="itrEmail" placeholder="Enter your personal email">
+            </div>
+          </div>
+
+          <!-- Payslip Fields -->
+          <div id="payslipFields" class="form-section" style="display: none;">
+            <div class="form-group">
+              <label for="payslipName" class="form-label">Name (on record) *</label>
+              <input type="text" id="payslipName" placeholder="Enter your name as it appears on record">
+            </div>
+            <div class="form-group">
+              <label for="payslipCTC" class="form-label">CTC (Component to Check) *</label>
+              <input type="text" id="payslipCTC" placeholder="e.g., Gross Salary, Deductions, etc.">
+            </div>
+            <div class="form-group">
+              <label for="payslipMonth" class="form-label">Month/Year *</label>
+              <input type="month" id="payslipMonth">
+            </div>
+          </div>
+        </div>
+
+        <!-- Employee Remarks -->
+        <div class="form-section">
+          <label for="employeeRemarks" class="form-label">Remarks (Employee)</label>
+          <textarea id="employeeRemarks" placeholder="Add any additional details or remarks for this request" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+        </div>
+
+        <!-- Approver Comments (Read-only, populated after submission) -->
+        <div class="form-section">
+          <label for="approverComments" class="form-label">Approver Comments</label>
+          <textarea id="approverComments" placeholder="Approver will add comments here" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;" readonly></textarea>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline" onclick="closeHRRequestModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LEAVE FILING MODAL -->
+  <div id="leaveFilingModal" class="modal" style="display: none;">
+    <div class="modal-content leave-filing-modal" style="width: 90%; max-width: 600px;">
+      <div class="modal-header">
+        <h2 class="section-subtitle">File Leave Request</h2>
+        <button class="modal-close" onclick="closeLeaveFilingModal()">&times;</button>
+      </div>
+      
+      <form id="leaveFilingForm">
+        <!-- Leave Type Selection -->
+        <div class="form-section">
+          <label class="form-label">Select Leave Type *</label>
+          <div class="request-type-grid">
+            <div class="request-type-item">
+              <input type="radio" id="vlLeave" name="leaveType" value="VL-Vacation Leave" required onchange="showLeaveOptions()">
+              <label for="vlLeave" class="request-type-label">VL - Vacation Leave</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="slLeave" name="leaveType" value="SL-Sick Leave" required onchange="showLeaveOptions()">
+              <label for="slLeave" class="request-type-label">SL - Sick Leave</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="maternityLeave" name="leaveType" value="Maternity Leave" required onchange="showLeaveOptions()">
+              <label for="maternityLeave" class="request-type-label">Maternity Leave</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="paternityLeave" name="leaveType" value="Paternity Leave" required onchange="showLeaveOptions()">
+              <label for="paternityLeave" class="request-type-label">Paternity Leave</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="bereavementLeave" name="leaveType" value="Bereavement Leave" required onchange="showLeaveOptions()">
+              <label for="bereavementLeave" class="request-type-label">Bereavement Leave</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- VL Half-day Options (Only for Vacation Leave) -->
+        <div id="vlOptionsSection" class="form-section" style="display: none;">
+          <label class="form-label">Leave Duration *</label>
+          <div class="request-type-grid">
+            <div class="request-type-item">
+              <input type="radio" id="vlFirstHalf" name="vlDuration" value="1st Half">
+              <label for="vlFirstHalf" class="request-type-label">1st Half</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="vlSecondHalf" name="vlDuration" value="2nd Half">
+              <label for="vlSecondHalf" class="request-type-label">2nd Half</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="vlWholeDay" name="vlDuration" value="Whole Day">
+              <label for="vlWholeDay" class="request-type-label">Whole Day</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date Range Selection -->
+        <div class="form-section">
+          <label class="form-label">Leave Period *</label>
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="leaveFromDate" style="font-size: var(--font-size-sm); white-space: nowrap;">From :</label>
+              <input type="date" id="leaveFromDate" class="date-input" required style="flex: 1;" aria-label="Leave start date">
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="leaveToDate" style="font-size: var(--font-size-sm); white-space: nowrap;">To :</label>
+              <input type="date" id="leaveToDate" class="date-input" required style="flex: 1;" aria-label="Leave end date">
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason/Remarks -->
+        <div class="form-section">
+          <label for="leaveReason" class="form-label">Reason for Leave</label>
+          <textarea id="leaveReason" placeholder="Please provide reason for your leave request" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline" onclick="closeLeaveFilingModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Leave Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- OVERTIME FILING MODAL -->
+  <div id="overtimeFilingModal" class="modal" style="display: none;">
+    <div class="modal-content overtime-filing-modal" style="width: 90%; max-width: 650px;">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Overtime Filing</h2>
+        <div class="modal-header-actions">
+          <button type="button" class="modal-calendar-btn" title="View Calendar" onclick="openOvertimeCalendar()" style="cursor: pointer; background: none; border: none; color: var(--color-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </button>
+          <button class="modal-close" onclick="closeOvertimeFilingModal()">&times;</button>
+        </div>
+      </div>
+      <form id="overtimeFilingForm">
+        <!-- Date Range Selection -->
+        <div class="form-section">
+          <label class="form-label">Overtime Period *</label>
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="otFromDate" style="font-size: var(--font-size-sm); white-space: nowrap;">From :</label>
+              <input type="date" id="otFromDate" class="date-input" required style="flex: 1;" aria-label="OT start date">
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="otToDate" style="font-size: var(--font-size-sm); white-space: nowrap;">To :</label>
+              <input type="date" id="otToDate" class="date-input" required style="flex: 1;" aria-label="OT end date">
+            </div>
+          </div>
+        </div>
+
+        <!-- Time Filing -->
+        <div class="form-section">
+          <label class="form-label">Time Details *</label>
+          <button type="button" class="btn btn-primary btn-sm" onclick="openOvertimeTimeFilingPanel()" style="width: 100%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="display: inline; margin-right: 8px;"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g></svg>
+            File Time Details
+          </button>
+          <div id="overtimeTimeDetails" style="margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 4px; display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 12px;">Time In:</label>
+                <input type="time" id="otTimeIn" class="date-input" style="width: 100%;">
+              </div>
+              <div>
+                <label style="font-size: 12px;">Time Out:</label>
+                <input type="time" id="otTimeOut" class="date-input" style="width: 100%;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="form-section">
+          <label for="otRemarks" class="form-label">Remarks</label>
+          <textarea id="otRemarks" placeholder="Add any additional details or remarks for this overtime filing" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline" onclick="closeOvertimeFilingModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit OT Filing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- OB FILING MODAL -->
+  <div id="obFilingModal" class="modal" style="display: none;">
+    <div class="modal-content ob-filing-modal" style="width: 90%; max-width: 650px;">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Official Business (OB) Filing</h2>
+        <div class="modal-header-actions">
+          <button type="button" class="modal-calendar-btn" title="View Calendar" onclick="openOBCalendar()" style="cursor: pointer; background: none; border: none; color: var(--color-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </button>
+          <button class="modal-close" onclick="closeOBFilingModal()">&times;</button>
+        </div>
+      </div>
+      <form id="obFilingForm">
+        <!-- Date Range Selection -->
+        <div class="form-section">
+          <label class="form-label">OB Period *</label>
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="obFromDate" style="font-size: var(--font-size-sm); white-space: nowrap;">From :</label>
+              <input type="date" id="obFromDate" class="date-input" required style="flex: 1;" aria-label="OB start date">
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="obToDate" style="font-size: var(--font-size-sm); white-space: nowrap;">To :</label>
+              <input type="date" id="obToDate" class="date-input" required style="flex: 1;" aria-label="OB end date">
+            </div>
+          </div>
+        </div>
+
+        <!-- Time Filing -->
+        <div class="form-section">
+          <label class="form-label">Time Details *</label>
+          <button type="button" class="btn btn-primary btn-sm" onclick="openOBTimeFilingPanel()" style="width: 100%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="display: inline; margin-right: 8px;"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g></svg>
+            File Time Details
+          </button>
+          <div id="obTimeDetails" style="margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 4px; display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 12px;">Time In:</label>
+                <input type="time" id="obTimeIn" class="date-input" style="width: 100%;">
+              </div>
+              <div>
+                <label style="font-size: 12px;">Time Out:</label>
+                <input type="time" id="obTimeOut" class="date-input" style="width: 100%;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OB Purpose -->
+        <div class="form-section">
+          <label for="obPurpose" class="form-label">Purpose of OB</label>
+          <textarea id="obPurpose" placeholder="Describe the purpose and details of your official business" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline" onclick="closeOBFilingModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit OB Filing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 201 UPDATES MODAL -->
+  <div id="updates201Modal" class="modal" style="display: none;">
+    <div class="modal-content updates-201-modal" style="width: 95%; max-width: 800px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h2 class="section-subtitle">201 Personnel Information Updates</h2>
+        <div class="modal-header-actions">
+          <button type="button" class="modal-calendar-btn" title="View Calendar" onclick="open201Calendar()" style="cursor: pointer; background: none; border: none; color: var(--color-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </button>
+          <button class="modal-close" onclick="close201UpdatesModal()">&times;</button>
+        </div>
+      </div>
+      <form id="updates201Form">
+        <!-- Effective Date Range -->
+        <div class="form-section">
+          <label class="form-label">Effective Date Range *</label>          <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="u201FromDate" style="font-size: var(--font-size-sm); white-space: nowrap;">From :</label>
+              <input type="date" id="u201FromDate" class="date-input" required style="flex: 1;" aria-label="Effective start date">
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 200px;">
+              <label for="u201ToDate" style="font-size: var(--font-size-sm); white-space: nowrap;">To :</label>
+              <input type="date" id="u201ToDate" class="date-input" required style="flex: 1;" aria-label="Effective end date">
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal Information Fields -->
+        <div class="form-section">
+          <label class="form-label">Information to Update</label>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 13px;">
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Salutation"> Salutation</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="First Name"> First Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Middle Name"> Middle Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Last Name"> Last Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Name Suffix"> Name Suffix</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Gender"> Gender</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Marital Status"> Marital Status</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Nationality"> Nationality</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Citizenship"> Citizenship</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Father's Name"> Father's Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Mother's Name"> Mother's Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Mother's Maiden Name"> Mother's Maiden Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Spouse"> Spouse</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Dependents"> Dependents</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Email Address"> Email Address</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Mobile No."> Mobile No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Telephone No."> Telephone No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Registered Address"> Registered Address</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Registered Zip Code"> Registered Zip Code</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Residence Status Code"> Residence Status Code</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Emergency Contact Info"> Emergency Contact Info</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="SSS No."> SSS No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="PHIC No."> PHIC No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="HDMF No."> HDMF No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="TIN No."> TIN No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="RDO Code"> RDO Code</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="CTC No."> CTC No.</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Alphanumeric Code"> Alphanumeric Code</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Access Code"> Access Code</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Position"> Position</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Department"> Department</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Company Branch"> Company Branch</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Immediate Superior Last Name"> Immediate Superior Last Name</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Education"> Education</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Active"> Active</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Certification"> Certification</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Original Employment Contract"> Original Employment Contract</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Signature"> Signature</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Spouse Employer Info"> Spouse Employer Information</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Spouse Tax Info"> Spouse Tax Information</label>
+            <label style="display: flex; gap: 8px; align-items: center;"><input type="checkbox" name="u201Fields" value="Reason for Separation Type"> Reason for Separation Type</label>
+          </div>
+        </div>
+
+        <!-- Approver Remarks -->
+        <div class="form-section">
+          <label for="u201ApproverRemarks" class="form-label">Approver Remarks</label>
+          <textarea id="u201ApproverRemarks" placeholder="Approver will add remarks here" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;" readonly></textarea>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline" onclick="close201UpdatesModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Updates</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FILING MODAL -->
+  <div id="filingModal" class="modal" style="display: none;">
+    <div class="modal-content filing-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Filing Form</h2>
+        <div class="modal-header-actions">
+          <button type="button" class="modal-calendar-btn" title="View Filing Calendar" onclick="openFilingCalendar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </button>
+          <button class="modal-close" onclick="closeFilingModal()">&times;</button>
+        </div>
+      </div>
+      
+      <form id="filingForm">
+
+  <!-- EXPENSE CLAIM MODAL -->
+  <div id="expenseClaimModal" class="modal" style="display: none;">
+    <div class="modal-content expense-claim-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Expense Claim Form</h2>
+        <div class="modal-header-actions">
+          <button type="button" class="modal-calendar-btn" title="View Filing Calendar" onclick="openExpenseCalendar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4m8-4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></svg>
+          </button>
+          <button class="modal-close" onclick="closeExpenseClaimModal()">&times;</button>
+        </div>
+      </div>
+      
+      <form id="expenseClaimForm">
+        <!-- Expense Type Selection -->
+        <div class="form-section">
+          <label class="form-label">Select Expense Type *</label>
+          <div class="request-type-grid">
+            <div class="request-type-item">
+              <input type="radio" id="travelExpense" name="expenseType" value="Travel" required>
+              <label for="travelExpense" class="request-type-label">Travel</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="mealsExpense" name="expenseType" value="Meals" required>
+              <label for="mealsExpense" class="request-type-label">Meals</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="equipmentExpense" name="expenseType" value="Equipment" required>
+              <label for="equipmentExpense" class="request-type-label">Equipment</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="trainingExpense" name="expenseType" value="Training" required>
+              <label for="trainingExpense" class="request-type-label">Training</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="clientExpense" name="expenseType" value="Client" required>
+              <label for="clientExpense" class="request-type-label">Client</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="suppliesExpense" name="expenseType" value="Supplies" required>
+              <label for="suppliesExpense" class="request-type-label">Supplies</label>
+            </div>
+            <div class="request-type-item">
+              <input type="radio" id="otherExpense" name="expenseType" value="Other" required>
+              <label for="otherExpense" class="request-type-label">Other</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expense Details -->
+        <div class="form-section">
+          <div class="form-group">
+            <label for="expenseAmount" class="form-label">Amount (PHP) *</label>
+            <input type="number" id="expenseAmount" placeholder="Enter amount" step="0.01" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="expenseDescription" class="form-label">Description of Expense *</label>
+            <textarea id="expenseDescription" placeholder="Describe what the expense was for" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="expenseDate" class="form-label">Date of Expense *</label>
+            <input type="date" id="expenseDate" required>
+          </div>
+        </div>
+
+        <!-- Employee Remarks -->
+        <div class="form-section">
+          <label for="expenseEmployeeRemarks" class="form-label">Remarks (Employee)</label>
+          <textarea id="expenseEmployeeRemarks" placeholder="Add any additional details or remarks for this claim" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+        </div>
+
+        <!-- Approver Comments -->
+        <div class="form-section">
+          <label for="expenseApproverComments" class="form-label">Approver Comments</label>
+          <textarea id="expenseApproverComments" placeholder="Approver will add comments here" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;" readonly></textarea>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline" onclick="closeExpenseClaimModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Claim</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FILING CALENDAR MODAL -->
+  <div id="filingCalendarModal" class="modal" style="display: none;">
+    <div class="modal-content calendar-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Filing Calendar</h2>
+        <button class="modal-close" onclick="closeFilingCalendar()">&times;</button>
+      </div>
+      <div class="calendar-content">
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <h3 id="calendarMonthYear"></h3>
+            <div class="calendar-nav">
+              <button class="calendar-btn" onclick="previousMonth()">&lt;</button>
+              <button class="calendar-btn" onclick="nextMonth()">&gt;</button>
+            </div>
+          </div>
+          <div id="calendar" class="calendar-grid"></div>
+          <div class="calendar-legend">
+            <p><strong>Filing Deadlines:</strong></p>
+            <div class="legend-item"><span class="legend-color deadline"></span> Filing Deadline</div>
+            <div class="legend-item"><span class="legend-color holiday"></span> Holiday</div>
+            <div class="legend-item"><span class="legend-color today"></span> Today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPENSE CALENDAR MODAL -->
+  <div id="expenseCalendarModal" class="modal" style="display: none;">
+    <div class="modal-content calendar-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Expense Filing Calendar</h2>
+        <button class="modal-close" onclick="closeExpenseCalendar()">&times;</button>
+      </div>
+      <div class="calendar-content">
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <h3 id="expenseCalendarMonthYear"></h3>
+            <div class="calendar-nav">
+              <button class="calendar-btn" onclick="previousExpenseMonth()">&lt;</button>
+              <button class="calendar-btn" onclick="nextExpenseMonth()">&gt;</button>
+            </div>
+          </div>
+          <div id="expenseCalendar" class="calendar-grid"></div>
+          <div class="calendar-legend">
+            <p><strong>Expense Filing Dates:</strong></p>
+            <div class="legend-item"><span class="legend-color deadline"></span> Filing Deadline</div>
+            <div class="legend-item"><span class="legend-color holiday"></span> Holiday</div>
+            <div class="legend-item"><span class="legend-color today"></span> Today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- SECTION 6: SUPPORT HUB -->
+  <section class="support-hub-docs">
+    <div class="support-inner">
+      <h2 class="section-title">Documents & Resources</h2>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="support-icon">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Tax Documents</h3>
+          <p class="section-content">Access your W-2 and other annual tax filings here.</p>
+          <a href="#" class="btn btn-link">View Files</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M11 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v3.5M8 9h1m-1 3.994h3m-3 4.003h2"/><path d="M21 15.994c0 4-2.5 6-3.5 6s-3.5-2-3.5-6c1 0 2.5-.5 3.5-1.5c1 1 2.5 1.5 3.5 1.5"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Employee Handbook</h3>
+          <p class="section-content">The definitive guide to culture and policies.</p>
+          <a href="#" class="btn btn-link">Read Guide</a>
+        </div>
+
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Holiday Calendar</h3>
+          <p class="section-content">Full list of corporate holidays for the next year.</p>
+          <a href="#" class="btn btn-link">View Dates</a>
+        </div>
+        <div class="support-card">
+          <div class="support-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 10v4h4"/><path d="m11 14l1.535-1.605a5 5 0 0 1 8 1.5M16 2v4m5 12l-1.535 1.605a5 5 0 0 1-8-1.5"/><path d="M21 22v-4h-4m4-9.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4.3M3 10h4m1-8v4"/></g></svg>
+          </div>
+          <h3 class="section-subtitle">Request History</h3>
+          <p class="section-content">Track the status of all your previous submissions.</p>
+          <a href="#" class="btn btn-link">Check Status</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONAL INFO MODAL -->
+  <div id="personalInfoModal" class="modal" style="display: none;">
+    <div class="modal-content personal-info-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Personal Information</h2>
+        <button class="modal-close" onclick="closePersonalInfoModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <label class="info-label">Full Name</label>
+            <p class="info-value">Alexander Mitchell</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Email Address</label>
+            <p class="info-value">alexander.mitchell@company.com</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Employee ID</label>
+            <p class="info-value">EMP-001</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Department</label>
+            <p class="info-value">Engineering</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Position</label>
+            <p class="info-value">Senior Software Engineer</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Join Date</label>
+            <p class="info-value">January 15, 2020</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Phone Number</label>
+            <p class="info-value">+63 9XX XXX XXXX</p>
+          </div>
+          <div class="info-item">
+            <label class="info-label">Address</label>
+            <p class="info-value">123 Main Street, Antipolo, Rizal</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closePersonalInfoModal()">Close</button>
+          <button class="btn btn-primary">Edit Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILED OVERTIME MODAL -->
+  <div id="filedOvertimeModal" class="modal" style="display: none;">
+    <div class="modal-content filed-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Filed Overtime Records</h2>
+        <button class="modal-close" onclick="closeFiledOvertimeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="filed-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Hours</th>
+                <th>Reason</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>January 10, 2026</td>
+                <td>2 Hours</td>
+                <td>Project Deadline</td>
+                <td><span class="status-tag status-approved">Approved</span></td>
+              </tr>
+              <tr>
+                <td>January 08, 2026</td>
+                <td>3 Hours</td>
+                <td>Client Presentation</td>
+                <td><span class="status-tag status-pending">Pending</span></td>
+              </tr>
+              <tr>
+                <td>January 05, 2026</td>
+                <td>1.5 Hours</td>
+                <td>System Maintenance</td>
+                <td><span class="status-tag status-approved">Approved</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeFiledOvertimeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAVE LEDGER MODAL -->
+  <div id="leaveLedgerModal" class="modal" style="display: none;">
+    <div class="modal-content filed-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Leave Ledger</h2>
+        <button class="modal-close" onclick="closeLeaveLedgerModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="leave-summary">
+          <div class="leave-item">
+            <span class="leave-type">Annual Leave</span>
+            <span class="leave-balance">12 / 15 Days</span>
+          </div>
+          <div class="leave-item">
+            <span class="leave-type">Sick Leave</span>
+            <span class="leave-balance">5 / 5 Days</span>
+          </div>
+          <div class="leave-item">
+            <span class="leave-type">Personal Leave</span>
+            <span class="leave-balance">3 / 5 Days</span>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="filed-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Days</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>January 13-14, 2026</td>
+                <td>Annual Leave</td>
+                <td>2 Days</td>
+                <td><span class="status-tag status-approved">Approved</span></td>
+              </tr>
+              <tr>
+                <td>January 09, 2026</td>
+                <td>Sick Leave</td>
+                <td>1 Day</td>
+                <td><span class="status-tag status-approved">Approved</span></td>
+              </tr>
+              <tr>
+                <td>January 02-03, 2026</td>
+                <td>Annual Leave</td>
+                <td>2 Days</td>
+                <td><span class="status-tag status-approved">Approved</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeLeaveLedgerModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGE PASSWORD MODAL -->
+  <div id="changePasswordModal" class="modal" style="display: none;">
+    <div class="modal-content password-modal">
+      <div class="modal-header">
+        <h2 class="section-subtitle">Change Password</h2>
+        <button class="modal-close" onclick="closeChangePasswordModal()">&times;</button>
+      </div>
+      <form id="changePasswordForm" onsubmit="submitPasswordChange(event)">
+        <div class="form-section">
+          <div class="form-group">
+            <label for="currentPassword" class="form-label">Current Password *</label>
+            <input type="password" id="currentPassword" placeholder="Enter your current password" required>
+          </div>
+          <div class="form-group">
+            <label for="newPassword" class="form-label">New Password *</label>
+            <input type="password" id="newPassword" placeholder="Enter a strong password" required>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label">Confirm Password *</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm your new password" required>
+          </div>
+          <div class="password-requirements">
+            <p><strong>Password Requirements:</strong></p>
+            <ul>
+              <li>At least 8 characters long</li>
+              <li>Contains uppercase and lowercase letters</li>
+              <li>Contains numbers and special characters</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeChangePasswordModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SECTION 7: CONTACT HR -->
+  <section class="contact-hr">
+    <div class="contact-inner">
+      <h2 class="section-title">Contact HR Support</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3 class="section-subtitle">General Inquiries</h3>
+          <p class="section-content">Email: hr.support@Lexicore.com<br>SLA: 24 Business Hours</p>
+          <button class="btn btn-outline btn-sm">Email Now</button>
+        </div>
+        <div class="contact-card">
+          <h3 class="section-subtitle">Payroll Issues</h3>
+          <p class="section-content">Email: payroll@Lexicore.com<br>SLA: 48 Business Hours</p>
+          <button class="btn btn-outline btn-sm">Open Ticket</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script defer data-name="dashboard-interactions">
+  // Employee ID (in production, get from authentication token)
+  const EMPLOYEE_ID = 1;
+
+  /**
+   * HR Request Modal Functions
+   */
+  function openHRRequestModal() {
+    document.getElementById('hrRequestModal').style.display = 'flex';
+  }
+
+  function closeHRRequestModal() {
+    document.getElementById('hrRequestModal').style.display = 'none';
+    document.getElementById('hrRequestForm').reset();
+    document.getElementById('additionalInfoSection').style.display = 'none';
+  }
+
+
+  // Handle request type change
+  document.addEventListener('DOMContentLoaded', function() {
+    const requestTypeRadios = document.querySelectorAll('input[name="requestType"]');
+    const additionalInfoSection = document.getElementById('additionalInfoSection');
+    const itrFields = document.getElementById('itrFields');
+    const payslipFields = document.getElementById('payslipFields');
+
+    requestTypeRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.value === 'ITR') {
+          additionalInfoSection.style.display = 'block';
+          itrFields.style.display = 'block';
+          payslipFields.style.display = 'none';
+        } else if (this.value === 'Payslip') {
+          additionalInfoSection.style.display = 'block';
+          itrFields.style.display = 'none';
+          payslipFields.style.display = 'block';
+        } else {
+          additionalInfoSection.style.display = 'none';
+          itrFields.style.display = 'none';
+          payslipFields.style.display = 'none';
+        }
+      });
+    });
+
+    // Handle form submission
+    document.getElementById('hrRequestForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const requestType = document.querySelector('input[name="requestType"]:checked').value;
+      const employeeRemarks = document.getElementById('employeeRemarks').value;
+      
+      let additionalData = {};
+      if (requestType === 'ITR') {
+        additionalData = {
+          itrName: document.getElementById('itrName').value,
+          itrEmail: document.getElementById('itrEmail').value
+        };
+      } else if (requestType === 'Payslip') {
+        additionalData = {
+          payslipName: document.getElementById('payslipName').value,
+          payslipCTC: document.getElementById('payslipCTC').value,
+          payslipMonth: document.getElementById('payslipMonth').value
+        };
+      }
+
+      const requestData = {
+        employeeId: EMPLOYEE_ID,
+        requestType: requestType,
+        employeeRemarks: employeeRemarks,
+        additionalData: additionalData,
+        status: 'Pending',
+        submittedDate: new Date().toISOString()
+      };
+
+      console.log('HR Request Submitted:', requestData);
+
+      // Show success message
+      alert(`${requestType} request submitted successfully!`);
+      closeHRRequestModal();
+
+      // In production, send this to backend:
+      // const response = await fetch('/api/hr-requests', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(requestData)
+      // });
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('hrRequestModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeHRRequestModal();
+      }
+    });
+
+    /**
+     * Filing Modal Functions
+     */
+    window.openFilingModal = function() {
+      document.getElementById('filingModal').style.display = 'flex';
+    };
+
+    window.closeFilingModal = function() {
+      document.getElementById('filingModal').style.display = 'none';
+      document.getElementById('filingForm').reset();
+    };
+
+    document.getElementById('filingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const filingType = document.querySelector('input[name="filingType"]:checked').value;
+      const employeeRemarks = document.getElementById('filingEmployeeRemarks').value;
+
+      const filingData = {
+        employeeId: EMPLOYEE_ID,
+        filingType: filingType,
+        employeeRemarks: employeeRemarks,
+        status: 'Pending',
+        submittedDate: new Date().toISOString()
+      };
+
+      console.log('Filing Submitted:', filingData);
+      alert(`${filingType} submitted successfully!`);
+      closeFilingModal();
+
+      // In production, send to backend:
+      // await fetch('/api/filings', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(filingData)
+      // });
+    });
+
+    document.getElementById('filingModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFilingModal();
+      }
+    });
+
+    /**
+     * Expense Claim Modal Functions
+     */
+    window.openExpenseClaimModal = function() {
+      document.getElementById('expenseClaimModal').style.display = 'flex';
+    };
+
+    window.closeExpenseClaimModal = function() {
+      document.getElementById('expenseClaimModal').style.display = 'none';
+      document.getElementById('expenseClaimForm').reset();
+    };
+
+    document.getElementById('expenseClaimForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const expenseType = document.querySelector('input[name="expenseType"]:checked').value;
+      const amount = document.getElementById('expenseAmount').value;
+      const description = document.getElementById('expenseDescription').value;
+      const expenseDate = document.getElementById('expenseDate').value;
+      const employeeRemarks = document.getElementById('expenseEmployeeRemarks').value;
+
+      const expenseData = {
+        employeeId: EMPLOYEE_ID,
+        expenseType: expenseType,
+        amount: parseFloat(amount),
+        description: description,
+        expenseDate: expenseDate,
+        employeeRemarks: employeeRemarks,
+        status: 'Pending',
+        submittedDate: new Date().toISOString()
+      };
+
+      console.log('Expense Claim Submitted:', expenseData);
+      alert(`${expenseType} expense claim for PHP ${amount} submitted successfully!`);
+      closeExpenseClaimModal();
+
+      // In production, send to backend:
+      // await fetch('/api/expense-claims', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(expenseData)
+      // });
+    });
+
+    document.getElementById('expenseClaimModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeExpenseClaimModal();
+      }
+    });
+
+    /**
+     * Calendar Functions
+     */
+    let currentFilingMonth = new Date();
+    let currentExpenseMonth = new Date();
+
+    window.openFilingCalendar = function() {
+      document.getElementById('filingCalendarModal').style.display = 'flex';
+      renderFilingCalendar();
+    };
+
+    window.closeFilingCalendar = function() {
+      document.getElementById('filingCalendarModal').style.display = 'none';
+    };
+
+    window.openExpenseCalendar = function() {
+      document.getElementById('expenseCalendarModal').style.display = 'flex';
+      renderExpenseCalendar();
+    };
+
+    window.closeExpenseCalendar = function() {
+      document.getElementById('expenseCalendarModal').style.display = 'none';
+    };
+
+    window.previousMonth = function() {
+      currentFilingMonth.setMonth(currentFilingMonth.getMonth() - 1);
+      renderFilingCalendar();
+    };
+
+    window.nextMonth = function() {
+      currentFilingMonth.setMonth(currentFilingMonth.getMonth() + 1);
+      renderFilingCalendar();
+    };
+
+    window.previousExpenseMonth = function() {
+      currentExpenseMonth.setMonth(currentExpenseMonth.getMonth() - 1);
+      renderExpenseCalendar();
+    };
+
+    window.nextExpenseMonth = function() {
+      currentExpenseMonth.setMonth(currentExpenseMonth.getMonth() + 1);
+      renderExpenseCalendar();
+    };
+
+    function renderFilingCalendar() {
+      const year = currentFilingMonth.getFullYear();
+      const month = currentFilingMonth.getMonth();
+      
+      document.getElementById('calendarMonthYear').textContent = 
+        new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+      const calendar = document.getElementById('calendar');
+      calendar.innerHTML = '';
+
+      // Day headers
+      const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      dayHeaders.forEach(day => {
+        const header = document.createElement('div');
+        header.className = 'calendar-day-header';
+        header.textContent = day;
+        calendar.appendChild(header);
+      });
+
+      // Previous month days
+      for (let i = firstDay - 1; i >= 0; i--) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day other-month';
+        day.textContent = daysInPrevMonth - i;
+        calendar.appendChild(day);
+      }
+
+      // Current month days
+      const today = new Date();
+      for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day';
+        day.textContent = i;
+
+        const date = new Date(year, month, i);
+        
+        // Mark filing deadlines (e.g., 5th, 15th of month)
+        if (i === 5 || i === 15) {
+          day.classList.add('deadline');
+        }
+        
+        // Mark holidays (example dates)
+        if ((month === 11 && i === 25) || (month === 0 && i === 1)) {
+          day.classList.add('holiday');
+        }
+        
+        // Mark today
+        if (date.toDateString() === today.toDateString()) {
+          day.classList.add('today');
+        }
+
+        calendar.appendChild(day);
+      }
+
+      // Next month days
+      const remainingDays = 42 - (firstDay + daysInMonth);
+      for (let i = 1; i <= remainingDays; i++) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day other-month';
+        day.textContent = i;
+        calendar.appendChild(day);
+      }
+    }
+
+    function renderExpenseCalendar() {
+      const year = currentExpenseMonth.getFullYear();
+      const month = currentExpenseMonth.getMonth();
+      
+      document.getElementById('expenseCalendarMonthYear').textContent = 
+        new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+      const calendar = document.getElementById('expenseCalendar');
+      calendar.innerHTML = '';
+
+      // Day headers
+      const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      dayHeaders.forEach(day => {
+        const header = document.createElement('div');
+        header.className = 'calendar-day-header';
+        header.textContent = day;
+        calendar.appendChild(header);
+      });
+
+      // Previous month days
+      for (let i = firstDay - 1; i >= 0; i--) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day other-month';
+        day.textContent = daysInPrevMonth - i;
+        calendar.appendChild(day);
+      }
+
+      // Current month days
+      const today = new Date();
+      for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day';
+        day.textContent = i;
+
+        const date = new Date(year, month, i);
+        
+        // Mark expense filing deadlines (e.g., 10th of month)
+        if (i === 10 || i === 25) {
+          day.classList.add('deadline');
+        }
+        
+        // Mark holidays
+        if ((month === 11 && i === 25) || (month === 0 && i === 1)) {
+          day.classList.add('holiday');
+        }
+        
+        // Mark today
+        if (date.toDateString() === today.toDateString()) {
+          day.classList.add('today');
+        }
+
+        calendar.appendChild(day);
+      }
+
+      // Next month days
+      const remainingDays = 42 - (firstDay + daysInMonth);
+      for (let i = 1; i <= remainingDays; i++) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day other-month';
+        day.textContent = i;
+        calendar.appendChild(day);
+      }
+    }
+
+    // Close calendars when clicking outside
+    document.getElementById('filingCalendarModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFilingCalendar();
+      }
+    });
+
+    document.getElementById('expenseCalendarModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeExpenseCalendar();
+      }
+    });
+
+    /**
+     * Personal Info Modal Functions
+     */
+    window.openPersonalInfoModal = function() {
+      document.getElementById('personalInfoModal').style.display = 'flex';
+    };
+
+    window.closePersonalInfoModal = function() {
+      document.getElementById('personalInfoModal').style.display = 'none';
+    };
+
+    document.getElementById('personalInfoModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePersonalInfoModal();
+      }
+    });
+
+    /**
+     * Filed Overtime Modal Functions
+     */
+    window.openFiledOvertimeModal = function() {
+      document.getElementById('filedOvertimeModal').style.display = 'flex';
+    };
+
+    window.closeFiledOvertimeModal = function() {
+      document.getElementById('filedOvertimeModal').style.display = 'none';
+    };
+
+    document.getElementById('filedOvertimeModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFiledOvertimeModal();
+      }
+    });
+
+    /**
+     * Leave Ledger Modal Functions
+     */
+    window.openLeaveLedgerModal = function() {
+      document.getElementById('leaveLedgerModal').style.display = 'flex';
+    };
+
+    window.closeLeaveLedgerModal = function() {
+      document.getElementById('leaveLedgerModal').style.display = 'none';
+    };
+
+    document.getElementById('leaveLedgerModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLeaveLedgerModal();
+      }
+    });
+
+    /**
+     * Change Password Modal Functions
+     */
+    window.openChangePasswordModal = function() {
+      document.getElementById('changePasswordModal').style.display = 'flex';
+    };
+
+    window.closeChangePasswordModal = function() {
+      document.getElementById('changePasswordModal').style.display = 'none';
+      document.getElementById('changePasswordForm').reset();
+    };
+
+    window.submitPasswordChange = function(event) {
+      event.preventDefault();
+      
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // Validation
+      if (newPassword !== confirmPassword) {
+        alert('New passwords do not match!');
+        return;
+      }
+
+      if (newPassword.length < 8) {
+        alert('Password must be at least 8 characters long!');
+        return;
+      }
+
+      // Check for uppercase, lowercase, numbers, and special characters
+      const hasUpperCase = /[A-Z]/.test(newPassword);
+      const hasLowerCase = /[a-z]/.test(newPassword);
+      const hasNumbers = /\d/.test(newPassword);
+      const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword);
+
+      if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+        alert('Password must contain uppercase, lowercase, numbers, and special characters!');
+        return;
+      }
+
+      console.log('Password change submitted:', { currentPassword, newPassword });
+      alert('Password updated successfully!');
+      closeChangePasswordModal();
+
+      // In production, send to backend:
+      // await fetch('/api/auth/change-password', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ currentPassword, newPassword })
+      // });
+    };
+
+    document.getElementById('changePasswordModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeChangePasswordModal();
+      }
+    });
+  });
+
+  /**
+   * Initialize button state based on current clock status
+   */
+  async function initializeClockButtonState() {
+    try {
+      const status = await GeolocationService.getStatus(EMPLOYEE_ID);
+      const clockButton = document.querySelector('.hero-action-card .btn-primary, .hero-action-card .btn-secondary');
+      
+      if (clockButton && status.data) {
+        const isClockedIn = status.data.status === 'clocked-in';
+        
+        if (isClockedIn) {
+          clockButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock Out';
+          clockButton.classList.remove('btn-primary');
+          clockButton.classList.add('btn-secondary');
+        } else {
+          clockButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock In';
+          clockButton.classList.remove('btn-secondary');
+          clockButton.classList.add('btn-primary');
+        }
+      }
+    } catch (error) {
+      console.log('Could not fetch clock status:', error);
+    }
+  }
+
+  // Initialize on page load
+  window.addEventListener('DOMContentLoaded', initializeClockButtonState);
+
+  /**
+   * Handle Sign Out button click
+   */
+  const signOutBtn = document.getElementById('sign-out-btn');
+  if (signOutBtn) {
+    signOutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Show confirmation dialog
+      if (confirm('Are you sure you want to sign out?')) {
+        // Reset clock status on sign out
+        this.textContent = 'Signing Out...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          // Redirect to login page (adjust URL as needed)
+          window.location.href = './login.html';
+        }, 1000);
+      }
+    });
+  }
+
+  // Handle Quick Action Button Clicks with Geolocation
+  const actionButtons = document.querySelectorAll('.action-trigger');
+  actionButtons.forEach(button => {
+    button.addEventListener('click', async function() {
+      const isClockIn = this.textContent.includes('Clock In');
+      const isClockOut = this.textContent.includes('Clock Out') || this.textContent.includes('Clock Out');
+      
+      if (!isClockIn && !isClockOut) {
+        // For other buttons, use original behavior
+        const originalText = this.innerHTML;
+        this.innerHTML = 'Processing...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          this.innerHTML = 'Success!';
+          this.style.backgroundColor = 'var(--color-accent)';
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.disabled = false;
+            this.style.backgroundColor = '';
+          }, 2000);
+        }, 1000);
+        return;
+      }
+
+      // Geolocation-based clock in/out
+      const originalText = this.innerHTML;
+      this.innerHTML = 'Getting location...';
+      this.disabled = true;
+
+      try {
+        let result;
+        if (isClockIn) {
+          result = await GeolocationService.sendTimeIn(EMPLOYEE_ID);
+        } else {
+          result = await GeolocationService.sendTimeOut(EMPLOYEE_ID);
+        }
+
+        if (result.success) {
+          this.innerHTML = '✓ Success!';
+          this.style.backgroundColor = 'var(--color-accent)';
+          
+          // Show location details
+          const locationData = result.data.data.location;
+          const timestamp = new Date(result.data.data.timestamp);
+          const timeStr = timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          
+          console.log(`${isClockIn ? 'Clocked In' : 'Clocked Out'} at:`, locationData);
+          
+          // Update attendance table with geolocation
+          updateAttendanceWithGeoLocation(isClockIn, locationData, timeStr);
+          
+          // Change button text and state after successful clock in
+          if (isClockIn) {
+            const self = this;
+            setTimeout(() => {
+              self.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock Out';
+              self.classList.remove('btn-primary');
+              self.classList.add('btn-secondary');
+              self.disabled = false;
+              self.style.backgroundColor = '';
+            }, 3000);
+          } else {
+            // After clock out, change back to Clock In
+            const self = this;
+            setTimeout(() => {
+              self.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></g></svg>\n            Clock In';
+              self.classList.remove('btn-secondary');
+              self.classList.add('btn-primary');
+              self.disabled = false;
+              self.style.backgroundColor = '';
+            }, 3000);
+          }
+          
+          // Show notification to user
+          showLocationNotification(
+            isClockIn ? 'Clocked In' : 'Clocked Out',
+            locationData.address,
+            locationData
+          );
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.disabled = false;
+            this.style.backgroundColor = '';
+          }, 3000);
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        this.innerHTML = '✗ Error';
+        this.style.backgroundColor = '#dc3545';
+        
+        // Show error to user
+        showErrorNotification(error.message);
+        
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.disabled = false;
+          this.style.backgroundColor = '';
+        }, 3000);
+      }
+    });
+  });
+
+  /**
+   * Show location notification to user
+   */
+  function showLocationNotification(title, address, locationData) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    `;
+    
+    notification.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 8px;">${title}</div>
+      <div style="font-size: 14px; opacity: 0.95;">
+        📍 ${address}<br>
+        <small style="opacity: 0.8;">Lat: ${locationData.latitude.toFixed(4)}, Lon: ${locationData.longitude.toFixed(4)}</small>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 5000);
+  }
+
+  /**
+   * Show error notification to user
+   */
+  function showErrorNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #dc3545;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    `;
+    
+    notification.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 4px;">⚠️ Error</div>
+      <div style="font-size: 14px;">${message}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 5000);
+  }
+
+  // Initialize - Check current clock status on page load
+  async function initializeClockStatus() {
+    try {
+      const status = await GeolocationService.getStatus(EMPLOYEE_ID);
+      if (status.success) {
+        updateClockButtonStatus(status.data.data.status);
+      }
+    } catch (error) {
+      console.log('Could not load clock status:', error);
+    }
+  }
+
+  /**
+   * Update clock button based on current status
+   */
+  function updateClockButtonStatus(status) {
+    const clockButtons = document.querySelectorAll('.action-trigger');
+    clockButtons.forEach(button => {
+      if (button.textContent.includes('Clock')) {
+        if (status === 'clocked-in') {
+          button.textContent = '⏹ Clock Out';
+          button.style.backgroundColor = 'var(--color-secondary)';
+        } else if (status === 'clocked-out' || status === 'not-clocked-in') {
+          button.textContent = '▶ Clock In';
+          button.style.backgroundColor = 'var(--color-primary)';
+        }
+      }
+    });
+  }
+
+  /**
+   * Add new attendance record to table
+   */
+  function addAttendanceRecord(date, checkInTime, checkInLocation, checkOutTime, checkOutLocation, checkInTime2, checkOutTime2, hours) {
+    const tbody = document.querySelector('.attendance-table tbody');
+    
+    // Create new row
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td>${date}</td>
+      <td>${checkInTime}</td>
+      <td><span class="location-badge">📍 ${checkInLocation.name}</span></td>
+      <td>${checkOutTime || '—'}</td>
+      <td>${checkOutLocation ? `<span class="location-badge">📍 ${checkOutLocation.name}</span>` : '—'}</td>
+      <td>${checkInTime2 || '—'}</td>
+      <td>${checkOutTime2 || '—'}</td>
+      <td>${hours}</td>
+      <td><span class="status-tag status-present">Present</span></td>
+    `;
+    
+    // Insert at the beginning (after header)
+    if (tbody.rows.length > 0) {
+      tbody.insertBefore(newRow, tbody.rows[0]);
+    } else {
+      tbody.appendChild(newRow);
+    }
+
+    // Remove last row if we have more than 6 rows to maintain display
+    if (tbody.rows.length > 6) {
+      tbody.removeChild(tbody.rows[tbody.rows.length - 1]);
+    }
+
+    // Update total hours
+    updateTotalHours();
+  }
+
+  /**
+   * Update total hours in the footer
+   */
+  function updateTotalHours() {
+    const tbody = document.querySelector('.attendance-table tbody');
+    let totalHours = 0;
+
+    Array.from(tbody.rows).forEach(row => {
+      const hoursCell = row.cells[7]?.textContent;
+      if (hoursCell) {
+        const hours = parseFloat(hoursCell);
+        if (!isNaN(hours)) {
+          totalHours += hours;
+        }
+      }
+    });
+
+    const tfoot = document.querySelector('.attendance-table tfoot tr');
+    if (tfoot && tfoot.cells[5]) {
+      tfoot.cells[5].innerHTML = `<strong>${totalHours.toFixed(1)}h</strong>`;
+    }
+  }
+
+  /**
+   * Update attendance table with real geolocation data
+   * Handles multiple clock in/out entries per day
+   */
+  function updateAttendanceWithGeoLocation(isClockIn, locationData, time) {
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    
+    const tbody = document.querySelector('.attendance-table tbody');
+    const firstRow = tbody.rows[0];
+
+    if (isClockIn) {
+      // Check if today already has a row
+      let todayRow = null;
+      for (let i = 0; i < tbody.rows.length; i++) {
+        if (tbody.rows[i].cells[0].textContent.includes(today.getDate().toString())) {
+          todayRow = tbody.rows[i];
+          break;
+        }
+      }
+
+      if (!todayRow) {
+        // Create new row for today
+        addAttendanceRecord(
+          dateStr,
+          time,
+          {
+            name: locationData.address,
+            coords: `${locationData.latitude.toFixed(4)}, ${locationData.longitude.toFixed(4)}`
+          },
+          null,
+          null,
+          null,
+          null,
+          '0h'
+        );
+      } else {
+        // Check if first clock-in is empty or if this is second clock-in
+        const firstCheckInCell = todayRow.cells[1];
+        const secondCheckInCell = todayRow.cells[5];
+        
+        if (!firstCheckInCell.textContent || firstCheckInCell.textContent.trim() === '') {
+          // Update first clock-in
+          firstCheckInCell.textContent = time;
+          todayRow.cells[2].innerHTML = `<span class="location-badge">📍 ${locationData.address}</span><br><small style="color: var(--color-on-surface-secondary);">${locationData.latitude.toFixed(4)}, ${locationData.longitude.toFixed(4)}</small>`;
+        } else {
+          // Update second clock-in (after lunch break)
+          secondCheckInCell.textContent = time;
+        }
+      }
+    } else {
+      // Clock out - determine if first or second clock-out
+      if (firstRow) {
+        const firstCheckOutCell = firstRow.cells[3];
+        const secondCheckOutCell = firstRow.cells[6];
+        
+        // If first check-out is empty, fill it; otherwise fill second check-out
+        if (!firstCheckOutCell.textContent || firstCheckOutCell.textContent.trim() === '') {
+          firstCheckOutCell.textContent = time;
+          firstRow.cells[4].innerHTML = `<span class="location-badge">📍 ${locationData.address}</span><br><small style="color: var(--color-on-surface-secondary);">${locationData.latitude.toFixed(4)}, ${locationData.longitude.toFixed(4)}</small>`;
+        } else {
+          secondCheckOutCell.textContent = time;
+        }
+        
+        // Calculate total hours worked
+        calculateTotalHoursForDay(firstRow);
+        updateTotalHours();
+      }
+    }
+  }
+
+  /**
+   * Calculate total hours for the day accounting for breaks
+   */
+  function calculateTotalHoursForDay(row) {
+    try {
+      const checkIn1 = row.cells[1].textContent;
+      const checkOut1 = row.cells[3].textContent;
+      const checkIn2 = row.cells[5].textContent;
+      const checkOut2 = row.cells[6].textContent;
+
+      let totalHours = 0;
+
+      // Calculate first shift
+      if (checkIn1 && checkOut1) {
+        const hours1 = parseFloat(calculateHoursWorked(checkIn1, checkOut1));
+        totalHours += isNaN(hours1) ? 0 : hours1;
+      }
+
+      // Calculate second shift
+      if (checkIn2 && checkOut2) {
+        const hours2 = parseFloat(calculateHoursWorked(checkIn2, checkOut2));
+        totalHours += isNaN(hours2) ? 0 : hours2;
+      }
+
+      row.cells[7].textContent = totalHours.toFixed(1) + 'h';
+    } catch (e) {
+      console.error('Error calculating hours:', e);
+    }
+  }
+
+  /**
+   * Calculate hours worked between two times
+   */
+  function calculateHoursWorked(startTime, endTime) {
+    try {
+      const [startHour, startMin] = startTime.match(/\d+/g).slice(0, 2).map(Number);
+      const [endHour, endMin] = endTime.match(/\d+/g).slice(0, 2).map(Number);
+      const isPM = endTime.includes('PM');
+      
+      let endHourAdjusted = endHour;
+      if (isPM && endHour !== 12) endHourAdjusted = endHour + 12;
+      if (!isPM && endHour === 12) endHourAdjusted = 0;
+
+      const startTotalMin = startHour * 60 + startMin;
+      const endTotalMin = endHourAdjusted * 60 + endMin;
+      const diffMin = endTotalMin - startTotalMin;
+      const hours = (diffMin / 60).toFixed(1);
+
+      return hours + 'h';
+    } catch (e) {
+      return '0h';
+    }
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeClockStatus);
+  } else {
+    initializeClockStatus();
+  }
+
+  // Simple Scroll Reveal Effect
+  const revealElements = document.querySelectorAll('.feature-card, .process-item, .support-card, .contact-card');
+  
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  revealElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'all 0.5s ease-out';
+    observer.observe(el);
+  });
+
+  // Date Range Picker Handler
+  const dateStartInput = document.getElementById('date-start');
+  const dateEndInput = document.getElementById('date-end');
+  const applyDateRangeBtn = document.getElementById('apply-date-range');
+
+  // Validate and apply date range
+  function validateAndApplyDateRange() {
+    const startDate = new Date(dateStartInput.value);
+    const endDate = new Date(dateEndInput.value);
+
+    if (startDate > endDate) {
+      alert('Start date must be before end date');
+      return;
+    }
+
+    // Format dates for display
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    const formattedStart = startDate.toLocaleDateString('en-US', options);
+    const formattedEnd = endDate.toLocaleDateString('en-US', options);
+
+    // Update the section title to show selected range
+    const sectionTitle = document.querySelector('.attendance-services .section-title');
+    sectionTitle.textContent = `Attendance (${formattedStart} - ${formattedEnd})`;
+
+    // Show confirmation
+    applyDateRangeBtn.textContent = 'Applied!';
+    applyDateRangeBtn.style.backgroundColor = 'var(--color-accent)';
+    
+    setTimeout(() => {
+      applyDateRangeBtn.textContent = 'Apply';
+      applyDateRangeBtn.style.backgroundColor = '';
+    }, 2000);
+  }
+
+  if (applyDateRangeBtn) {
+    applyDateRangeBtn.addEventListener('click', validateAndApplyDateRange);
+    
+    // Allow Enter key to apply
+    dateEndInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        validateAndApplyDateRange();
+      }
+    });
+  }
+
+  /* CREDENTIAL MANAGEMENT FUNCTIONALITY */
+  const addCredentialBtn = document.getElementById('add-credential-btn');
+  const credentialModal = document.getElementById('credential-modal');
+  const credentialForm = document.getElementById('credential-form');
+  const credentialsTbody = document.getElementById('credentials-tbody');
+
+  // Open modal for adding new credential
+  addCredentialBtn.addEventListener('click', () => {
+    credentialForm.reset();
+    document.querySelector('.credential-modal-header h3').textContent = 'Add Professional Credential';
+    credentialForm.querySelector('button[type="submit"]').textContent = 'Add Credential';
+    credentialForm.dataset.editingIndex = -1;
+    openCredentialModal();
+  });
+
+  function openCredentialModal() {
+    credentialModal.style.display = 'flex';
+  }
+
+  function closeCredentialModal() {
+    credentialModal.style.display = 'none';
+    credentialForm.reset();
+  }
+
+  // Close modal when clicking outside
+  credentialModal.addEventListener('click', (e) => {
+    if (e.target === credentialModal) {
+      closeCredentialModal();
+    }
+  });
+
+  // Edit credential
+  function editCredential(button) {
+    const row = button.closest('tr');
+    const cells = row.querySelectorAll('td');
+    
+    document.getElementById('cred-type').value = cells[0].textContent.trim();
+    document.getElementById('cred-name').value = cells[1].textContent.trim();
+    document.getElementById('cred-org').value = cells[2].textContent.trim();
+    document.getElementById('cred-issue-date').value = formatDateForInput(cells[3].textContent.trim());
+    document.getElementById('cred-expiry-date').value = formatDateForInput(cells[4].textContent.trim());
+    
+    credentialForm.dataset.editingRow = row;
+    document.querySelector('.credential-modal-header h3').textContent = 'Edit Professional Credential';
+    credentialForm.querySelector('button[type="submit"]').textContent = 'Update Credential';
+    openCredentialModal();
+  }
+
+  // Delete credential
+  function deleteCredential(button) {
+    if (confirm('Are you sure you want to delete this credential?')) {
+      button.closest('tr').style.opacity = '0.5';
+      button.closest('tr').style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        button.closest('tr').remove();
+        showNotification('Credential Deleted', 'The credential has been removed.', 'success');
+      }, 300);
+    }
+  }
+
+  // Format date for input field
+  function formatDateForInput(dateStr) {
+    if (!dateStr || dateStr === '—') return '';
+    
+    const date = new Date(dateStr);
+    if (isNaN(date)) return '';
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+
+  // Format date for display
+  function formatDateForDisplay(dateStr) {
+    if (!dateStr) return '—';
+    
+    const date = new Date(dateStr + 'T00:00:00');
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    return date.toLocaleDateString('en-US', options);
+  }
+
+  // Check if credential is expiring soon
+  function getCredentialStatus(expiryDate) {
+    if (!expiryDate) return 'Active';
+    
+    const today = new Date();
+    const expiry = new Date(expiryDate + 'T00:00:00');
+    const daysUntilExpiry = Math.floor((expiry - today) / (1000 * 60 * 60 * 24));
+    
+    if (daysUntilExpiry < 0) {
+      return 'Expired';
+    } else if (daysUntilExpiry <= 90) {
+      return 'Expiring Soon';
+    } else {
+      return 'Active';
+    }
+  }
+
+  // Get status badge HTML
+  function getStatusBadgeHtml(status) {
+    const statusMap = {
+      'Active': { bg: '#c8e6c9', color: '#2e7d32' },
+      'Expiring Soon': { bg: '#fff3e0', color: '#f57c00' },
+      'Expired': { bg: '#ffcdd2', color: '#c62828' }
+    };
+    
+    const styles = statusMap[status] || statusMap['Active'];
+    return `<span class="status-tag" style="background: ${styles.bg}; color: ${styles.color};">${status}</span>`;
+  }
+
+  // Submit credential form
+  credentialForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const credType = document.getElementById('cred-type').value;
+    const credName = document.getElementById('cred-name').value;
+    const credOrg = document.getElementById('cred-org').value;
+    const issueDate = document.getElementById('cred-issue-date').value;
+    const expiryDate = document.getElementById('cred-expiry-date').value;
+    
+    const issueDateFormatted = formatDateForDisplay(issueDate);
+    const expiryDateFormatted = formatDateForDisplay(expiryDate);
+    const status = getCredentialStatus(expiryDate);
+    const statusBadge = getStatusBadgeHtml(status);
+    
+    const editingRow = credentialForm.dataset.editingRow;
+    
+    if (editingRow) {
+      // Update existing row
+      editingRow.innerHTML = `
+        <td>${credType}</td>
+        <td>${credName}</td>
+        <td>${credOrg}</td>
+        <td>${issueDateFormatted}</td>
+        <td>${expiryDateFormatted}</td>
+        <td>${statusBadge}</td>
+        <td style="display: flex; gap: 8px;">
+          <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+          <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+        </td>
+      `;
+      showNotification('Credential Updated', 'Your credential has been updated successfully.', 'success');
+    } else {
+      // Add new row
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${credType}</td>
+        <td>${credName}</td>
+        <td>${credOrg}</td>
+        <td>${issueDateFormatted}</td>
+        <td>${expiryDateFormatted}</td>
+        <td>${statusBadge}</td>
+        <td style="display: flex; gap: 8px;">
+          <button class="btn btn-sm btn-outline" onclick="editCredential(this)">Edit</button>
+          <button class="btn btn-sm" style="background: #dc3545; color: white;" onclick="deleteCredential(this)">Delete</button>
+        </td>
+      `;
+      credentialsTbody.insertBefore(newRow, credentialsTbody.firstChild);
+      showNotification('Credential Added', 'Your credential has been added successfully.', 'success');
+    }
+    
+    closeCredentialModal();
+  });
+
+  // Show notification helper
+  function showNotification(title, message, type = 'info') {
+    const bgColor = type === 'success' ? '#4caf50' : type === 'error' ? '#dc3545' : '#2196f3';
+    
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${bgColor};
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      animation: slideInRight 0.3s ease;
+    `;
+    
+    notification.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 8px;">${title}</div>
+      <div style="font-size: 14px; opacity: 0.95;">${message}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, 4000);
+  }
+</script><footer class="footer-section">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-brand-column">
+        <div class="footer-logo">
+          <span class="footer-logo-text">LEXI<span>core</span></span>
+        </div>
+        <p class="footer-brand-description section-content">
+          Empowering modern enterprises with intelligent self-service solutions. Streamlining attendance, payroll, and HR management through a unified, professional dashboard.
+        </p>
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6M2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></g></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6c2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4c-.9-4.2 4-6.6 7-3.8c1.1 0 3-1.2 3-1.2"/></svg>
+          </a>
+          <a href="#" class="footer-social-icon" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-links-grid">
+        <div class="footer-link-column">
+          <h2 class="footer-column-title section-subtitle">Platform</h2>
+          <nav class="footer-nav">
+            <a href="#" class="footer-link">Attendance Tracking</a>
+            <a href="#" class="footer-link">Leave Management</a>
+            <a href="#" class="footer-link">Payroll Access</a>
+            <a href="#" class="footer-link">Employee Profile</a>
+            <a href="#" class="footer-link">HR Announcements</a>
+          </nav>
+        </div>
+
+        <div class="footer-link-column">
+          <h2 class="footer-column-title section-subtitle">Company</h2>
+          <nav class="footer-nav">
+            <a href="/Homepage" class="footer-link">About LEXIcore</a>
+            <a href="#" class="footer-link">Our Solutions</a>
+            <a href="#" class="footer-link">Security & Privacy</a>
+            <a href="#" class="footer-link">Careers</a>
+            <a href="#" class="footer-link">Contact Support</a>
+          </nav>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <p class="footer-copyright section-content">&copy; 2026 LEXIcore Enterprise Solutions. All rights reserved.</p>
+        <div class="footer-legal-links">
+          <a href="#" class="footer-legal-link">Terms of Service</a>
+          <a href="#" class="footer-legal-link">Privacy Policy</a>
+          <a href="#" class="footer-legal-link">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Attendance Log Modal and Payslip Modal Scripts -->
+<script defer data-name="modal-functions">
+  /**
+   * ATTENDANCE LOG MODAL FUNCTIONS
+   */
+  // Sample attendance data with geolocation
+  const attendanceData = [
+    { date: 'Jan 09, 2026', dateObj: new Date('2026-01-09'), timeIn1: '08:55 AM', locIn1: 'Antipolo, Cupang (14.5994°N, 121.6011°E)', timeOut1: '12:00 PM', locOut1: 'Antipolo, Cupang (14.5994°N, 121.6011°E)', timeIn2: '01:00 PM', locIn2: 'Coffee Shop, Antipolo (14.6012°N, 121.6005°E)', timeOut2: '01:30 PM', locOut2: 'Office, Antipolo (14.5990°N, 121.6015°E)', timeIn3: '01:45 PM', locIn3: 'Office, Antipolo (14.5990°N, 121.6015°E)', timeOut3: '05:30 PM', locOut3: 'Office, Antipolo (14.5990°N, 121.6015°E)', hours: '8.5h', status: 'Present' },
+    { date: 'Jan 08, 2026', dateObj: new Date('2026-01-08'), timeIn1: '09:02 AM', locIn1: 'Pasong Tamo (14.5667°N, 121.0267°E)', timeOut1: '12:20 PM', locOut1: 'Pasong Tamo (14.5667°N, 121.0267°E)', timeIn2: '01:00 PM', locIn2: 'Café Lunch, Pasong (14.5668°N, 121.0270°E)', timeOut2: '01:35 PM', locOut2: 'Office, Pasong Tamo (14.5665°N, 121.0265°E)', timeIn3: '02:00 PM', locIn3: 'Office, Pasong Tamo (14.5665°N, 121.0265°E)', timeOut3: '05:45 PM', locOut3: 'Office, Pasong Tamo (14.5665°N, 121.0265°E)', hours: '8.7h', status: 'Present' },
+    { date: 'Jan 07, 2026', dateObj: new Date('2026-01-07'), timeIn1: '08:48 AM', locIn1: 'Midtown, NY (40.7580°N, 73.9855°W)', timeOut1: '12:15 PM', locOut1: 'Midtown, NY (40.7580°N, 73.9855°W)', timeIn2: '01:05 PM', locIn2: 'Lunch Spot, Midtown (40.7489°N, 73.9680°W)', timeOut2: '01:40 PM', locOut2: 'Office, Midtown (40.7614°N, 73.9776°W)', timeIn3: '02:10 PM', locIn3: 'Office, Midtown (40.7614°N, 73.9776°W)', timeOut3: '05:15 PM', locOut3: 'Office, Midtown (40.7614°N, 73.9776°W)', hours: '8.4h', status: 'Present' },
+    { date: 'Jan 06, 2026', dateObj: new Date('2026-01-06'), timeIn1: '09:10 AM', locIn1: 'Cogeo (14.5500°N, 121.0150°E)', timeOut1: '12:30 PM', locOut1: 'Cogeo (14.5500°N, 121.0150°E)', timeIn2: '01:15 PM', locIn2: 'Food Court, Cogeo (14.5505°N, 121.0155°E)', timeOut2: '01:50 PM', locOut2: 'Office, Cogeo (14.5495°N, 121.0145°E)', timeIn3: '02:20 PM', locIn3: 'Office, Cogeo (14.5495°N, 121.0145°E)', timeOut3: '06:00 PM', locOut3: 'Office, Cogeo (14.5495°N, 121.0145°E)', hours: '8.8h', status: 'Present' },
+    { date: 'Jan 05, 2026', dateObj: new Date('2026-01-05'), timeIn1: '09:00 AM', locIn1: 'Makati (14.5547°N, 121.0244°E)', timeOut1: '12:10 PM', locOut1: 'Makati (14.5547°N, 121.0244°E)', timeIn2: '01:00 PM', locIn2: 'Lunch Break, Makati (14.5540°N, 121.0240°E)', timeOut2: '01:45 PM', locOut2: 'Office, Makati (14.5550°N, 121.0250°E)', timeIn3: '02:15 PM', locIn3: 'Office, Makati (14.5550°N, 121.0250°E)', timeOut3: '05:30 PM', locOut3: 'Office, Makati (14.5550°N, 121.0250°E)', hours: '8.5h', status: 'Present' },
+  ];
+
+  window.openAttendanceLogModal = function(e) {
+    if (e) e.preventDefault();
+    document.getElementById('attendanceLogModal').style.display = 'flex';
+    populateAttendanceTable(attendanceData);
+  };
+
+  window.closeAttendanceLogModal = function() {
+    document.getElementById('attendanceLogModal').style.display = 'none';
+  };
+
+  window.filterAttendanceByDateRange = function() {
+    const fromDate = document.getElementById('modal-date-from').value;
+    const toDate = document.getElementById('modal-date-to').value;
+    
+    if (!fromDate || !toDate) {
+      alert('Please select both From and To dates');
+      return;
+    }
+    
+    const from = new Date(fromDate);
+    const to = new Date(toDate);
+    
+    if (from > to) {
+      alert('From date must be before To date');
+      return;
+    }
+    
+    // Filter attendance data for date range
+    const filtered = attendanceData.filter(record => {
+      const recordDate = new Date(record.dateObj);
+      return recordDate >= from && recordDate <= to;
+    });
+    
+    if (filtered.length === 0) {
+      alert('No attendance records found in the selected date range');
+      populateAttendanceTable(attendanceData); // Show all records
+    } else {
+      populateAttendanceTable(filtered.slice(0, 100)); // Limit to 100 rows
+    }
+  };
+
+  function populateAttendanceTable(records) {
+    const tbody = document.getElementById('attendanceTableBody');
+    tbody.innerHTML = '';
+    
+    records.slice(0, 100).forEach(record => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${record.date}</td>
+        <td><strong>${record.timeIn1}</strong></td>
+        <td><small style="display: block; color: #666; margin-top: 3px;">📍 ${record.locIn1}</small></td>
+        <td><strong>${record.timeOut1}</strong></td>
+        <td><small style="display: block; color: #666; margin-top: 3px;">📍 ${record.locOut1}</small></td>
+        <td><strong>${record.timeIn2}</strong></td>
+        <td><small style="display: block; color: #666; margin-top: 3px;">📍 ${record.locIn2}</small></td>
+        <td><strong>${record.timeOut2}</strong></td>
+        <td><small style="display: block; color: #666; margin-top: 3px;">📍 ${record.locOut2}</small></td>
+        <td><strong>${record.timeIn3}</strong></td>
+        <td><small style="display: block; color: #666; margin-top: 3px;">📍 ${record.locIn3}</small></td>
+        <td><strong>${record.timeOut3}</strong></td>
+        <td><small style="display: block; color: #666; margin-top: 3px;">📍 ${record.locOut3}</small></td>
+        <td><strong>${record.hours}</strong></td>
+        <td><span class="status-tag status-present">${record.status}</span></td>
+      `;
+      row.style.borderBottom = '1px solid #ddd';
+      tbody.appendChild(row);
+    });
+  }
+
+  document.getElementById('attendanceLogModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeAttendanceLogModal();
+    }
+  });
+
+  /**
+   * LEAVE FILING MODAL FUNCTIONS
+   */
+  window.openLeaveFilingModal = function(e) {
+    if (e) e.preventDefault();
+    document.getElementById('leaveFilingModal').style.display = 'flex';
+    // Reset form
+    document.getElementById('leaveFilingForm').reset();
+    document.getElementById('vlOptionsSection').style.display = 'none';
+  };
+
+  window.closeLeaveFilingModal = function() {
+    document.getElementById('leaveFilingModal').style.display = 'none';
+    document.getElementById('leaveFilingForm').reset();
+    document.getElementById('vlOptionsSection').style.display = 'none';
+  };
+
+  window.showLeaveOptions = function() {
+    const selectedLeave = document.querySelector('input[name="leaveType"]:checked').value;
+    const vlOptionsSection = document.getElementById('vlOptionsSection');
+    
+    // Show half-day options only for vacation leave
+    if (selectedLeave === 'VL-Vacation Leave') {
+      vlOptionsSection.style.display = 'block';
+      // Make duration required for VL
+      document.querySelectorAll('input[name="vlDuration"]').forEach(input => {
+        input.required = true;
+      });
+    } else {
+      vlOptionsSection.style.display = 'none';
+      // Make duration not required for other leave types
+      document.querySelectorAll('input[name="vlDuration"]').forEach(input => {
+        input.required = false;
+      });
+    }
+  };
+
+  // Handle Leave Filing Form Submission
+  document.getElementById('leaveFilingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const leaveType = document.querySelector('input[name="leaveType"]:checked').value;
+    const fromDate = document.getElementById('leaveFromDate').value;
+    const toDate = document.getElementById('leaveToDate').value;
+    const reason = document.getElementById('leaveReason').value;
+    
+    // Validation
+    if (!fromDate || !toDate) {
+      alert('Please select both From and To dates');
+      return;
+    }
+    
+    const from = new Date(fromDate);
+    const to = new Date(toDate);
+    
+    if (from > to) {
+      alert('From date must be before or equal to To date');
+      return;
+    }
+    
+    let duration = '';
+    if (leaveType === 'VL-Vacation Leave') {
+      const selectedDuration = document.querySelector('input[name="vlDuration"]:checked');
+      if (!selectedDuration) {
+        alert('Please select leave duration for Vacation Leave');
+        return;
+      }
+      duration = selectedDuration.value;
+    }
+    
+    // Prepare submission data
+    const submissionData = {
+      leaveType: leaveType,
+      duration: duration,
+      fromDate: fromDate,
+      toDate: toDate,
+      reason: reason,
+      submittedAt: new Date().toLocaleString()
+    };
+    
+    console.log('Leave Filing Submitted:', submissionData);
+    alert(`Leave request submitted successfully!\\n\\nType: ${leaveType}${duration ? '\\nDuration: ' + duration : ''}\\nFrom: ${fromDate}\\nTo: ${toDate}`);
+    closeLeaveFilingModal();
+  });
+
+  document.getElementById('leaveFilingModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeLeaveFilingModal();
+    }
+  });
+
+  /**
+   * OVERTIME FILING MODAL FUNCTIONS
+   */
+  window.openOvertimeFilingModal = function(e) {
+    if (e) e.preventDefault();
+    document.getElementById('overtimeFilingModal').style.display = 'flex';
+    document.getElementById('overtimeFilingForm').reset();
+    document.getElementById('overtimeTimeDetails').style.display = 'none';
+  };
+
+  window.closeOvertimeFilingModal = function() {
+    document.getElementById('overtimeFilingModal').style.display = 'none';
+    document.getElementById('overtimeFilingForm').reset();
+    document.getElementById('overtimeTimeDetails').style.display = 'none';
+  };
+
+  window.openOvertimeTimeFilingPanel = function() {
+    const panel = document.getElementById('overtimeTimeDetails');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.openOvertimeCalendar = function() {
+    alert('Calendar view for Overtime Filing (Feature to be implemented)');
+  };
+
+  document.getElementById('overtimeFilingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fromDate = document.getElementById('otFromDate').value;
+    const toDate = document.getElementById('otToDate').value;
+    const timeIn = document.getElementById('otTimeIn').value;
+    const timeOut = document.getElementById('otTimeOut').value;
+    const remarks = document.getElementById('otRemarks').value;
+
+    if (!fromDate || !toDate) {
+      alert('Please select both From and To dates');
+      return;
+    }
+
+    console.log('OT Filing Submitted:', { fromDate, toDate, timeIn, timeOut, remarks });
+    alert(`Overtime filing submitted!\\nPeriod: ${fromDate} to ${toDate}`);
+    closeOvertimeFilingModal();
+  });
+
+  document.getElementById('overtimeFilingModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeOvertimeFilingModal();
+    }
+  });
+
+  /**
+   * OB FILING MODAL FUNCTIONS
+   */
+  window.openOBFilingModal = function(e) {
+    if (e) e.preventDefault();
+    document.getElementById('obFilingModal').style.display = 'flex';
+    document.getElementById('obFilingForm').reset();
+    document.getElementById('obTimeDetails').style.display = 'none';
+  };
+
+  window.closeOBFilingModal = function() {
+    document.getElementById('obFilingModal').style.display = 'none';
+    document.getElementById('obFilingForm').reset();
+    document.getElementById('obTimeDetails').style.display = 'none';
+  };
+
+  window.openOBTimeFilingPanel = function() {
+    const panel = document.getElementById('obTimeDetails');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.openOBCalendar = function() {
+    alert('Calendar view for OB Filing (Feature to be implemented)');
+  };
+
+  document.getElementById('obFilingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fromDate = document.getElementById('obFromDate').value;
+    const toDate = document.getElementById('obToDate').value;
+    const timeIn = document.getElementById('obTimeIn').value;
+    const timeOut = document.getElementById('obTimeOut').value;
+    const purpose = document.getElementById('obPurpose').value;
+
+    if (!fromDate || !toDate) {
+      alert('Please select both From and To dates');
+      return;
+    }
+
+    console.log('OB Filing Submitted:', { fromDate, toDate, timeIn, timeOut, purpose });
+    alert(`OB filing submitted!\\nPeriod: ${fromDate} to ${toDate}`);
+    closeOBFilingModal();
+  });
+
+  document.getElementById('obFilingModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeOBFilingModal();
+    }
+  });
+
+  /**
+   * 201 UPDATES MODAL FUNCTIONS
+   */
+  window.open201UpdatesModal = function(e) {
+    if (e) e.preventDefault();
+    document.getElementById('updates201Modal').style.display = 'flex';
+    document.getElementById('updates201Form').reset();
+  };
+
+  window.close201UpdatesModal = function() {
+    document.getElementById('updates201Modal').style.display = 'none';
+    document.getElementById('updates201Form').reset();
+  };
+
+  window.open201Calendar = function() {
+    alert('Calendar view for 201 Updates (Feature to be implemented)');
+  };
+
+  document.getElementById('updates201Form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fromDate = document.getElementById('u201FromDate').value;
+    const toDate = document.getElementById('u201ToDate').value;
+    const selectedFields = Array.from(document.querySelectorAll('input[name="u201Fields"]:checked')).map(el => el.value);
+
+    if (!fromDate || !toDate) {
+      alert('Please select both From and To dates');
+      return;
+    }
+
+    if (selectedFields.length === 0) {
+      alert('Please select at least one field to update');
+      return;
+    }
+
+    console.log('201 Updates Submitted:', { fromDate, toDate, fields: selectedFields });
+    alert(`201 Updates submitted!\\nEffective Period: ${fromDate} to ${toDate}\\nFields Updated: ${selectedFields.length}`);
+    close201UpdatesModal();
+  });
+
+  document.getElementById('updates201Modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      close201UpdatesModal();
+    }
+  });
+
+  /**
+   * PAYSLIP MODAL FUNCTIONS
+   */
+  window.openPayslipModal = function(e) {
+    if (e) e.preventDefault();
+    document.getElementById('payslipModal').style.display = 'flex';
+  };
+
+  window.closePayslipModal = function() {
+    document.getElementById('payslipModal').style.display = 'none';
+  };
+
+  window.downloadPayslipPDF = function() {
+    // In production, this would generate a PDF using a library like jsPDF
+    alert('PDF download initiated. (In production, use jsPDF library)');
+    
+    // Example implementation with jsPDF:
+    // const element = document.querySelector('.payslip-content');
+    // const opt = {
+    //   margin: 10,
+    //   filename: 'payslip-september-2026.pdf',
+    //   image: { type: 'jpeg', quality: 0.98 },
+    //   html2canvas: { scale: 2 },
+    //   jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+    // };
+    // html2pdf().set(opt).from(element).save();
+  };
+
+  document.getElementById('payslipModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closePayslipModal();
+    }
+  });
+</script>
+
+<script defer data-name="footer-interactivity">
+  const newsletterForm = document.querySelector('.footer-newsletter-form');
+  
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = newsletterForm.querySelector('.footer-newsletter-input');
+      const email = input.value;
+      
+      if (email) {
+        const originalBtn = newsletterForm.querySelector('.footer-newsletter-btn');
+        const originalContent = originalBtn.innerHTML;
+        
+        originalBtn.innerHTML = '<span style="font-size: 12px; font-weight: bold;">OK</span>';
+        originalBtn.style.color = 'var(--color-accent)';
+        input.value = '';
+        input.placeholder = 'Thank you for subscribing!';
+        input.disabled = true;
+        
+        setTimeout(() => {
+          originalBtn.innerHTML = originalContent;
+          originalBtn.style.color = 'var(--color-primary)';
+          input.placeholder = 'Work email address';
+          input.disabled = false;
+        }, 3000);
+      }
+    });
+  }
+</script>
+
+
+
+</body>
+</html>
