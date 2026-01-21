@@ -1,11 +1,3 @@
-/**
- * Request Validation Middleware
- * Validates incoming requests
- */
-
-/**
- * Validate request body
- */
 const validateRequest = (requiredFields) => {
   return (req, res, next) => {
     const { body } = req;
@@ -28,9 +20,6 @@ const validateRequest = (requiredFields) => {
   };
 };
 
-/**
- * Sanitize user input
- */
 const sanitizeInput = (req, res, next) => {
   if (req.body) {
     Object.keys(req.body).forEach((key) => {

@@ -134,7 +134,7 @@
             display: none;
         }
 
-        .email-display {
+        .sms-display {
             background: #f8f9fa;
             padding: 10px;
             border-radius: 4px;
@@ -150,10 +150,10 @@
         <div class="otp-container">
             <div class="otp-header">
                 <h2>Verify Your Identity</h2>
-                <p>Enter the 6-digit OTP sent to your email</p>
+                <p>Enter the 6-digit OTP sent to your sms</p>
             </div>
 
-            <div class="email-display" id="emailDisplay"></div>
+            <div class="sms-display" id="smsDisplay"></div>
 
             <form id="otpForm">
                 <div class="otp-inputs">
@@ -183,27 +183,25 @@
 
     <script>
         let userId = null;
-        let timeLeft = 600; // 10 minutes in seconds
+        let timeLeft = 600;
         let resendAttempts = 0;
         const maxResendAttempts = 3;
 
-        // Get userId from URL or sessionStorage
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             userId = params.get('userId') || sessionStorage.getItem('pendingUserId');
-            const email = sessionStorage.getItem('pendingUserEmail');
+            const sms = sessionStorage.getItem('pendingUserSms');
 
             if (!userId) {
                 window.location.href = './login.html';
                 return;
             }
 
-            document.getElementById('emailDisplay').textContent = `Code sent to: ${email}`;
+            document.getElementById('SmsDisplay').textContent = `Code sent to: ${sms}`;
             startTimer();
             setupOTPInputs();
         });
 
-        // Setup OTP input auto-focus
         function setupOTPInputs() {
             const inputs = document.querySelectorAll('.otp-input');
             inputs.forEach((input, index) => {
@@ -230,18 +228,15 @@
             });
         }
 
-        // Get OTP from inputs
         function getOTP() {
             const inputs = document.querySelectorAll('.otp-input');
             return Array.from(inputs).map(input => input.value).join('');
         }
 
-        // Clear OTP inputs
         function clearOTPInputs() {
             document.querySelectorAll('.otp-input').forEach(input => input.value = '');
         }
 
-        // Show error message
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
@@ -251,14 +246,12 @@
             }, 5000);
         }
 
-        // Show success message
         function showSuccess(message) {
             const successDiv = document.getElementById('successMessage');
             successDiv.textContent = message;
             successDiv.style.display = 'block';
         }
 
-        // Timer
         function startTimer() {
             const timerInterval = setInterval(() => {
                 timeLeft--;
@@ -275,7 +268,6 @@
             }, 1000);
         }
 
-        // Verify OTP
         document.getElementById('otpForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const otp = getOTP();
@@ -305,10 +297,10 @@
                     localStorage.setItem('userId', data.userId);
                     
                     sessionStorage.removeItem('pendingUserId');
-                    sessionStorage.removeItem('pendingUserEmail');
+                    sessionStorage.removeItem('pendingUserSms');
                     
                     setTimeout(() => {
-                        window.location.href = '../Dashboard/index.html';
+                        window.location.href = '../public/index.html';
                     }, 2000);
                 } else {
                     showError(data.message || 'Invalid OTP');
@@ -324,7 +316,6 @@
             }
         });
 
-        // Resend OTP
         function resendOTP() {
             if (resendAttempts >= maxResendAttempts) {
                 showError(`Maximum resend attempts (${maxResendAttempts}) reached. Please try again later.`);
@@ -332,7 +323,7 @@
             }
 
             resendAttempts++;
-            showSuccess('OTP resent to your email');
+            showSuccess('OTP resent to your Sms');
             clearOTPInputs();
             document.querySelector('.otp-input').focus();
             timeLeft = 600;

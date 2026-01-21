@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Approver Dashboard - LEXIcore</title>
     <link rel="stylesheet" href="../src/styles/ApproverStyle.css">
+    <script src="../src/scripts/approver.js" defer></script>
 </head>
 <body>
     <nav class="navigation-wrapper" id="main-navigation">
@@ -16,21 +17,7 @@
       <span class="section-title navigation-brand-name">LEXIcore</span>
     </a>
 
-    <div class="navigation-desktop-menu">
-      <ul class="navigation-links-list">
-        <li><a href="approver.html" class="navigation-link">Approver Dashboard</a></li>
-        <li><a href="#" class="navigation-link">Pending Requests</a></li>
-        <li><a href="#" class="navigation-link">Team Members</a></li>
-        <li><a href="#" class="navigation-link">Reports</a></li>
-        <li><a href="#" class="navigation-link">Settings</a></li>
-      </ul>
-    </div>
-
     <div class="navigation-actions">
-      <button class="navigation-action-btn" aria-label="Notifications">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.268 21a2 2 0 0 0 3.464 0m-10.47-5.674A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-        <span class="navigation-badge">5</span>
-      </button>
       <button class="navigation-action-btn navigation-profile-trigger" aria-label="User Profile">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></g></svg>
       </button>
@@ -44,83 +31,18 @@
 
 <div class="navigation-mobile-overlay" id="mobile-overlay" aria-hidden="true">
   <div class="navigation-overlay-header">
-    <div class="navigation-logo-link">
+    <a href="/" class="navigation-logo-link" aria-label="LEXIcore Homepage">
       <div class="navigation-logo-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5l10-5zM2 17l10 5l10-5M2 12l10 5l10-5"/></svg>
       </div>
       <span class="section-title navigation-brand-name">LEXIcore</span>
-    </div>
+    </a>
     <button class="navigation-mobile-close" id="mobile-menu-close" aria-label="Close menu">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 16l3-3l3 3"/></g></svg>
     </button>
   </div>
-  
-  <div class="navigation-overlay-content">
-    <ul class="navigation-mobile-links">
-      <li class="navigation-mobile-item"><a href="approver.html" class="navigation-mobile-link">Approver Dashboard</a></li>
-      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Pending Requests</a></li>
-      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Team Members</a></li>
-      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Reports</a></li>
-      <li class="navigation-mobile-item"><a href="#" class="navigation-mobile-link">Settings</a></li>
-    </ul>
-    
-    <div class="navigation-overlay-footer">
-      <a href="#" class="btn btn-primary btn-lg navigation-full-btn">Sign Out</a>
-    </div>
-  </div>
 </div>
-
-<script defer data-name="navigation-logic">
-  const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
-  const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
-  const mobileOverlay = document.getElementById('mobile-overlay');
-  const bodyElement = document.body;
-
-  function openMobileMenu() {
-    mobileOverlay.classList.add('is-open');
-    mobileOverlay.setAttribute('aria-hidden', 'false');
-    mobileMenuOpenBtn.setAttribute('aria-expanded', 'true');
-    bodyElement.style.overflow = 'hidden';
-  }
-
-  function closeMobileMenu() {
-    mobileOverlay.classList.remove('is-open');
-    mobileOverlay.setAttribute('aria-hidden', 'true');
-    mobileMenuOpenBtn.setAttribute('aria-expanded', 'false');
-    bodyElement.style.overflow = '';
-  }
-
-  mobileMenuOpenBtn.addEventListener('click', openMobileMenu);
-  mobileMenuCloseBtn.addEventListener('click', closeMobileMenu);
-
-  mobileOverlay.addEventListener('click', (e) => {
-    if (e.target === mobileOverlay) {
-      closeMobileMenu();
-    }
-  });
-
-  const mobileLinks = mobileOverlay.querySelectorAll('.navigation-mobile-link');
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', closeMobileMenu);
-  });
-
-  let lastScrollTop = 0;
-  const navWrapper = document.getElementById('main-navigation');
-
-  window.addEventListener('scroll', () => {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (scrollTop > 50) {
-      navWrapper.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
-      navWrapper.style.padding = 'var(--spacing-xs) 0';
-    } else {
-      navWrapper.style.boxShadow = 'none';
-      navWrapper.style.padding = 'var(--spacing-sm) 0';
-    }
-    
-    lastScrollTop = scrollTop;
-  }, { passive: true });
-</script>
+</div>
 
 <main class="dashboard-wrapper">
   <!-- SECTION 1: HERO SNAPSHOT -->
@@ -215,7 +137,7 @@
               <td><span class="badge" style="background: #f3e5f5; color: #7b1fa2;">Expense Claim</span></td>
               <td>Travel Expenses - Conference</td>
               <td>Jan 08, 2026</td>
-              <td>$1,245.50</td>
+              <td>₱1,245.50</td>
               <td><span class="status-tag" style="background: #fff3e0; color: #f57c00;">Pending</span></td>
               <td style="display: flex; gap: 8px;">
                 <button class="btn btn-sm btn-accent" onclick="approveRequest(this, 'Michael Chen')">Approve</button>
@@ -263,7 +185,7 @@
               <td><span class="badge" style="background: #f3e5f5; color: #7b1fa2;">Expense Claim</span></td>
               <td>Training Materials</td>
               <td>Jan 07, 2026</td>
-              <td>$875.00</td>
+              <td>₱875.00</td>
               <td><span class="status-tag" style="background: #fff3e0; color: #f57c00;">Pending</span></td>
               <td style="display: flex; gap: 8px;">
                 <button class="btn btn-sm btn-accent" onclick="approveRequest(this, 'David Martinez')">Approve</button>
@@ -300,46 +222,7 @@
     </div>
   </section>
 
-  <!-- SECTION 3: QUICK STATS CARDS -->
-  <section class="features-dashboard">
-    <div class="features-inner">
-      <h2 class="section-title">Approval Metrics</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 12l2 2l4-4m6 2a9 9 0 1 1-18 0a9 9 0 0 1 18 0z"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Approved This Month</h3>
-          <p class="section-content">127 Total Requests approved. Average processing time: 2.4 hours.</p>
-          <a href="#" class="btn btn-link btn-sm">View Details</a>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Pending Requests</h3>
-          <p class="section-content">8 Pending requests requiring your attention today. 3 are overdue.</p>
-          <a href="#" class="btn btn-link btn-sm">Review Now</a>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Team Performance</h3>
-          <p class="section-content">Your team has maintained an average approval accuracy of 98.5%.</p>
-          <a href="#" class="btn btn-link btn-sm">View Report</a>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 20a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1Zm17-4a8 8 0 1 0-16 0m8-12v4m-2-4h4"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Team Members</h3>
-          <p class="section-content">Managing 12 direct reports. All team members are active and on schedule.</p>
-          <a href="#" class="btn btn-link btn-sm">View Team</a>
-        </div>
-      </div>
-    </div>
-  </section>
+
 
   <!-- SECTION 4: RECENT ACTIVITIES -->
   <section class="announcements-timeline">
@@ -385,307 +268,10 @@
     </div>
   </section>
 
-  <!-- SECTION 5: APPROVAL PROCESS GUIDE -->
-  <section class="process-requests">
-    <div class="process-inner">
-      <h2 class="section-title">Approval Guidelines</h2>
-      <div class="process-grid">
-        <div class="process-item">
-          <h3 class="section-subtitle">Leave Requests</h3>
-          <p class="section-content">Verify employee's leave balance and ensure proper documentation is provided.</p>
-          <button class="btn btn-accent btn-sm" onclick="alert('Review leave request guidelines')">View Guidelines</button>
-        </div>
-        <div class="process-item">
-          <h3 class="section-subtitle">Expense Claims</h3>
-          <p class="section-content">Check receipts match policy limits and business purpose is documented.</p>
-          <button class="btn btn-accent btn-sm" onclick="alert('Review expense policy')">View Policy</button>
-        </div>
-        <div class="process-item">
-          <h3 class="section-subtitle">Overtime Logs</h3>
-          <p class="section-content">Confirm work necessity and overtime limits per company policy.</p>
-          <button class="btn btn-accent btn-sm" onclick="alert('Review overtime guidelines')">View Guidelines</button>
-        </div>
-        <div class="process-item">
-          <h3 class="section-subtitle">Attendance Adjustments</h3>
-          <p class="section-content">Review employee's reason and verify against geolocation records.</p>
-          <button class="btn btn-accent btn-sm" onclick="alert('Review adjustment policy')">View Policy</button>
-        </div>
-        <div class="process-item">
-          <h3 class="section-subtitle">Training Grants</h3>
-          <p class="section-content">Verify course relevance to role and ensure budget availability.</p>
-          <button class="btn btn-accent btn-sm" onclick="alert('Review training policy')">View Policy</button>
-        </div>
-        <div class="process-item">
-          <h3 class="section-subtitle">Team Alerts</h3>
-          <p class="section-content">Review team performance metrics and address any concerns.</p>
-          <button class="btn btn-accent btn-sm" onclick="alert('View team alerts')">Check Alerts</button>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- SECTION 6: TEAM PERFORMANCE OVERVIEW -->
-  <section class="support-hub-docs">
-    <div class="support-inner">
-      <h2 class="section-title">Team Overview</h2>
-      <div class="support-grid">
-        <div class="support-card">
-          <div class="support-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Team Members</h3>
-          <p class="section-content">12 active employees. 1 on approved leave. All others on schedule.</p>
-          <a href="#" class="btn btn-link">Manage Team</a>
-        </div>
-        <div class="support-card">
-          <div class="support-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Attendance Rate</h3>
-          <p class="section-content">Average attendance this month: 97.8%. Above department average.</p>
-          <a href="#" class="btn btn-link">View Details</a>
-        </div>
-        <div class="support-card">
-          <div class="support-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Leave Balance Status</h3>
-          <p class="section-content">Team avg. leave remaining: 8.2 days. 2 employees near limit.</p>
-          <a href="#" class="btn btn-link">Check Status</a>
-        </div>
-        <div class="support-card">
-          <div class="support-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M16 1v6M8 1v6M3 9h18"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Overtime Tracking</h3>
-          <p class="section-content">This month: 48 total overtime hours approved across team.</p>
-          <a href="#" class="btn btn-link">View Breakdown</a>
-        </div>
-        <div class="support-card">
-          <div class="support-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Compliance Report</h3>
-          <p class="section-content">All team members in compliance with company policies.</p>
-          <a href="#" class="btn btn-link">View Report</a>
-        </div>
-        <div class="support-card">
-          <div class="support-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
-          </div>
-          <h3 class="section-subtitle">Quick Actions</h3>
-          <p class="section-content">Generate reports, send bulk notifications, or update policies.</p>
-          <a href="#" class="btn btn-link">More Options</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 7: CONTACT & SUPPORT -->
-  <section class="contact-hr">
-    <div class="contact-inner">
-      <h2 class="section-title">HR & Administrative Support</h2>
-      <div class="contact-grid">
-        <div class="contact-card">
-          <h3 class="section-subtitle">HR Support</h3>
-          <p class="section-content">Email: hr.support@Lexicore.com<br>SLA: 24 Business Hours</p>
-          <button class="btn btn-outline btn-sm">Email Support</button>
-        </div>
-        <div class="contact-card">
-          <h3 class="section-subtitle">Live Chat</h3>
-          <p class="section-content">Available Mon-Fri<br>09:00 AM - 05:00 PM EST</p>
-          <button class="btn btn-primary btn-sm">Start Chat</button>
-        </div>
-        <div class="contact-card">
-          <h3 class="section-subtitle">System Administrator</h3>
-          <p class="section-content">Technical issues or system access problems.</p>
-          <button class="btn btn-outline btn-sm">Contact Admin</button>
-        </div>
-        <div class="contact-card">
-          <h3 class="section-subtitle">Policy Questions</h3>
-          <p class="section-content">Email: policies@Lexicore.com<br>For approval guidelines and policy clarifications.</p>
-          <button class="btn btn-secondary btn-sm">Ask Question</button>
-        </div>
-        <div class="contact-card">
-          <h3 class="section-subtitle">Training Resources</h3>
-          <p class="section-content">Access training materials and approval best practices.</p>
-          <button class="btn btn-accent btn-sm">View Resources</button>
-        </div>
-        <div class="contact-card">
-          <h3 class="section-subtitle">Feedback</h3>
-          <p class="section-content">Help us improve the approval process with your feedback.</p>
-          <button class="btn btn-outline btn-sm">Send Feedback</button>
-        </div>
-      </div>
-    </div>
-  </section>
 </main>
 
-<script defer data-name="approver-interactions">
-  /**
-   * Approve Request Handler
-   */
-  function approveRequest(button, employeeName) {
-    const originalText = button.textContent;
-    button.textContent = 'Processing...';
-    button.disabled = true;
 
-    setTimeout(() => {
-      // Move row to approved list
-      const row = button.closest('tr');
-      row.style.opacity = '0.5';
-      button.textContent = '✓ Approved';
-      button.style.backgroundColor = 'var(--color-accent)';
-      
-      showNotification('Success', `Request from ${employeeName} has been approved!`, 'success');
-      
-      setTimeout(() => {
-        row.style.display = 'none';
-        updatePendingCount();
-      }, 2000);
-    }, 1000);
-  }
-
-  /**
-   * Reject Request Handler
-   */
-  function rejectRequest(button) {
-    const feedback = prompt('Please provide a reason for rejection:');
-    if (feedback) {
-      const originalText = button.textContent;
-      button.textContent = 'Processing...';
-      button.disabled = true;
-
-      setTimeout(() => {
-        const row = button.closest('tr');
-        row.style.opacity = '0.5';
-        button.textContent = '✓ Rejected';
-        button.style.backgroundColor = '#dc3545';
-        
-        showNotification('Request Rejected', 'Feedback has been sent to the employee.', 'info');
-        
-        setTimeout(() => {
-          row.style.display = 'none';
-          updatePendingCount();
-        }, 2000);
-      }, 1000);
-    }
-  }
-
-  /**
-   * Update pending count
-   */
-  function updatePendingCount() {
-    const visibleRows = document.querySelectorAll('.attendance-table tbody tr:not([style*="display: none"])');
-    const badge = document.querySelector('.navigation-badge');
-    if (badge) {
-      badge.textContent = visibleRows.length;
-    }
-  }
-
-  /**
-   * Show notification
-   */
-  function showNotification(title, message, type = 'info') {
-    const bgColor = type === 'success' ? '#4caf50' : type === 'error' ? '#dc3545' : '#2196f3';
-    
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: ${bgColor};
-      color: white;
-      padding: 16px 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 10000;
-      max-width: 400px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    `;
-    
-    notification.innerHTML = `
-      <div style="font-weight: 600; margin-bottom: 8px;">${title}</div>
-      <div style="font-size: 14px; opacity: 0.95;">${message}</div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transition = 'opacity 0.3s ease-out';
-      setTimeout(() => notification.remove(), 300);
-    }, 4000);
-  }
-
-  /**
-   * Handle Sign Out
-   */
-  const signOutBtn = document.getElementById('sign-out-btn');
-  if (signOutBtn) {
-    signOutBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (confirm('Are you sure you want to sign out?')) {
-        this.textContent = 'Signing Out...';
-        this.disabled = true;
-        
-        setTimeout(() => {
-          window.location.href = './login.html';
-        }, 1000);
-      }
-    });
-  }
-
-  /**
-   * Filter requests
-   */
-  const filterType = document.getElementById('filter-type');
-  if (filterType) {
-    filterType.addEventListener('change', function(e) {
-      const filterValue = this.value;
-      const tbody = document.querySelector('.attendance-table tbody');
-      const rows = tbody.querySelectorAll('tr');
-
-      rows.forEach(row => {
-        if (!filterValue) {
-          row.style.display = '';
-        } else {
-          const requestType = row.cells[1].textContent.toLowerCase();
-          if (requestType.includes(filterValue)) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
-        }
-      });
-    });
-  }
-
-  // Initialize - Simple scroll reveal effect
-  const revealElements = document.querySelectorAll('.feature-card, .process-item, .support-card, .contact-card');
-  
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  revealElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'all 0.5s ease-out';
-    observer.observe(el);
-  });
-</script>
 
 <footer class="footer-section">
   <div class="footer-container">

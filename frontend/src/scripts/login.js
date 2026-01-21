@@ -38,7 +38,6 @@ function showError(message) {
             const data = await res.json();
 
             if (res.ok && data.requiresOTP) {
-                // Save user info to sessionStorage for OTP page
                 sessionStorage.setItem('pendingUserId', data.userId);
                 sessionStorage.setItem('pendingUserEmail', data.email);
                 
@@ -47,12 +46,11 @@ function showError(message) {
                     window.location.href = `otp-verify.html?userId=${data.userId}`;
                 }, 1500);
             } else if (res.ok) {
-                // Fallback if OTP is not required (shouldn't happen with new system)
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role);
                 showSuccess(`Welcome ${data.role}!`);
                 setTimeout(() => {
-                    window.location.href = '../Dashboard/index.html';
+                    window.location.href = 'public/index.html';
                 }, 1500);
             } else {
                 showError(data.message || 'Login failed. Please try again.');

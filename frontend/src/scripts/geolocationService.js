@@ -1,8 +1,3 @@
-/**
- * Geolocation Service for Client-Side
- * Handles getting geolocation data and sending to backend
- */
-
 const GeolocationService = (() => {
   const API_BASE = 'http://localhost:5000/api';
 
@@ -72,8 +67,6 @@ const GeolocationService = (() => {
       }
 
       const data = await response.json();
-      
-      // Try to get the most specific location
       const address = data.address;
       if (address) {
         return (
@@ -103,6 +96,8 @@ const GeolocationService = (() => {
       const coords = await getCoordinates();
       const address = await reverseGeocode(coords.latitude, coords.longitude);
 
+      console.log(`Sending time-in request to: ${API_BASE}/attendance/time-in`);
+      
       const response = await fetch(`${API_BASE}/attendance/time-in`, {
         method: 'POST',
         headers: {
@@ -145,6 +140,8 @@ const GeolocationService = (() => {
       const coords = await getCoordinates();
       const address = await reverseGeocode(coords.latitude, coords.longitude);
 
+      console.log(`Sending time-out request to: ${API_BASE}/attendance/time-out`);
+
       const response = await fetch(`${API_BASE}/attendance/time-out`, {
         method: 'POST',
         headers: {
@@ -159,10 +156,19 @@ const GeolocationService = (() => {
         })
       });
 
-      const data = await response.json();
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let data;
+      
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        data = await response.text();
+        console.error('Non-JSON response received:', data);
+      }
 
       if (!response.ok) {
-        throw new Error(data.message || 'Time out failed');
+        throw new Error(data.message || data || `Server error: ${response.status}`);
       }
 
       return {
@@ -170,6 +176,7 @@ const GeolocationService = (() => {
         data
       };
     } catch (error) {
+      console.error('sendTimeOut error:', error);
       return {
         success: false,
         error: error.message

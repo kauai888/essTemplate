@@ -1,6 +1,3 @@
-// Geolocation Service
-// Uses geofetch to get user coordinates and reverse geocoding for address
-
 /**
  * Get geolocation coordinates using browser Geolocation API
  * @returns {Promise<{latitude: number, longitude: number}>}

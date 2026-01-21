@@ -244,16 +244,12 @@
     </div>
 
     <script>
-        /**
-         * Setup Admin Access
-         * Stores credentials in localStorage for testing
-         */
+
         function setupAdmin() {
             const adminId = document.getElementById('adminId').value.trim();
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('message');
 
-            // Validation
             if (!adminId) {
                 showMessage('❌ Admin ID is required', 'error');
                 return;
@@ -270,16 +266,14 @@
             }
 
             try {
-                // Store admin credentials
-                localStorage.setItem('token', btoa(adminId + ':' + password)); // Simple encoding
+
+                localStorage.setItem('token', btoa(adminId + ':' + password));
                 localStorage.setItem('role', 'admin');
                 localStorage.setItem('userId', adminId);
                 localStorage.setItem('adminSetupTime', new Date().toISOString());
 
-                // Show success message
                 showMessage(`✅ Admin Access Configured!\n\nID: ${adminId}\nRole: admin\n\nRedirecting to admin panel...`, 'success');
 
-                // Redirect after 2 seconds
                 setTimeout(() => {
                     window.location.href = '../frontend/public/admin.html';
                 }, 2000);
@@ -290,9 +284,6 @@
             }
         }
 
-        /**
-         * Clear All Authentication Data
-         */
         function clearAccess() {
             if (confirm('Are you sure you want to clear all admin credentials?')) {
                 try {
@@ -304,11 +295,9 @@
 
                     showMessage('✅ All credentials cleared.\n\nYou will need to log in again.', 'success');
 
-                    // Clear inputs
                     document.getElementById('adminId').value = 'ADMIN001';
                     document.getElementById('password').value = 'admin123';
 
-                    // Reset after 2 seconds
                     setTimeout(() => {
                         location.reload();
                     }, 2000);
@@ -320,18 +309,12 @@
             }
         }
 
-        /**
-         * Display Message
-         */
         function showMessage(text, type) {
             const messageDiv = document.getElementById('message');
             messageDiv.textContent = text;
             messageDiv.className = 'message ' + type;
         }
 
-        /**
-         * Check Current Status
-         */
         function checkStatus() {
             const token = localStorage.getItem('token');
             const role = localStorage.getItem('role');
@@ -344,19 +327,16 @@
             console.log('Is Admin:', role === 'admin' ? '✓ Yes' : '✗ No');
         }
 
-        // Check status on load
         window.addEventListener('load', function() {
             checkStatus();
             console.log('%c Admin Setup Loaded', 'color: #667eea; font-size: 16px; font-weight: bold;');
         });
 
-        // Handle form submission
         document.getElementById('setupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             setupAdmin();
         });
 
-        // Allow Enter key to submit
         document.getElementById('password').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 setupAdmin();

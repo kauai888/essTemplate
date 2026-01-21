@@ -1,8 +1,3 @@
-/**
- * Application Configuration
- * Centralized app settings and constants
- */
-
 module.exports = {
   app: {
     name: 'ESS - Employee Self-Service',
@@ -19,7 +14,7 @@ module.exports = {
   security: {
     bcryptRounds: 10,
     maxLoginAttempts: 5,
-    lockoutDuration: 15 * 60 * 1000, // 15 minutes
+    lockoutDuration: 15 * 60 * 1000,
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',

@@ -28,7 +28,6 @@
     </nav>
 
     <main class="admin-wrapper">
-        <!-- SECTION 1: ADMIN HEADER -->
         <section class="admin-header">
             <div class="admin-header-content">
                 <h1 class="admin-title">Administration Dashboard</h1>
@@ -36,7 +35,6 @@
             </div>
         </section>
 
-        <!-- SECTION 2: ADMIN NAVIGATION TABS -->
         <section class="admin-tabs-section">
             <div class="admin-tabs">
                 <button class="admin-tab active" data-tab="employees">
@@ -58,10 +56,8 @@
             </div>
         </section>
 
-        <!-- SECTION 3: TAB CONTENTS -->
         <section class="admin-content">
 
-            <!-- EMPLOYEES TAB -->
             <div class="admin-tab-content active" id="employees-tab">
                 <div class="admin-section">
                     <div class="section-header">
@@ -114,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- ATTENDANCE TAB -->
             <div class="admin-tab-content" id="attendance-tab">
                 <div class="admin-section">
                     <div class="section-header">
@@ -164,7 +159,6 @@
                 </div>
             </div>
 
-            <!-- LEAVE BALANCE TAB -->
             <div class="admin-tab-content" id="leave-tab">
                 <div class="admin-section">
                     <div class="section-header">
@@ -214,7 +208,6 @@
                 </div>
             </div>
 
-            <!-- ANNOUNCEMENTS TAB -->
             <div class="admin-tab-content" id="announcements-tab">
                 <div class="admin-section">
                     <div class="section-header">
@@ -225,11 +218,11 @@
                     <div class="announcements-list">
                         <div class="announcement-card">
                             <div class="announcement-header">
-                                <h3 class="announcement-title">Annual Benefits Open Enrollment</h3>
+                                <h3 class="announcement-title">Pag-ibig loan application</h3>
                                 <span class="badge badge-pinned">Pinned</span>
                             </div>
-                            <p class="announcement-date">Oct 24, 2026</p>
-                            <p class="announcement-content">Please review and select your health and wellness plans for the 2027 fiscal year by November 15th.</p>
+                            <p class="announcement-date">Oct 24, 2025</p>
+                            <p class="announcement-content"><a href="#"><u>see the attached file</u></a> for guidelines.</p>
                             <div class="announcement-actions">
                                 <button class="btn-icon" onclick="openEditAnnouncementModal(1)" title="Edit">✎</button>
                                 <button class="btn-icon btn-danger" onclick="deleteAnnouncement(1)" title="Delete">🗑</button>
@@ -238,10 +231,10 @@
 
                         <div class="announcement-card">
                             <div class="announcement-header">
-                                <h3 class="announcement-title">New Work-from-Home Policy Update</h3>
+                                <h3 class="announcement-title">Loans SSS, PhilHealth</h3>
                             </div>
-                            <p class="announcement-date">Oct 20, 2026</p>
-                            <p class="announcement-content">The executive team has released updated guidelines regarding hybrid work arrangements. Effective immediately.</p>
+                            <p class="announcement-date">Oct 20, 2025</p>
+                            <p class="announcement-content"><a href="#"><u>see the attached file</u></a> for guidelines.</p>
                             <div class="announcement-actions">
                                 <button class="btn-icon" onclick="openEditAnnouncementModal(2)" title="Edit">✎</button>
                                 <button class="btn-icon btn-danger" onclick="deleteAnnouncement(2)" title="Delete">🗑</button>
@@ -254,9 +247,6 @@
         </section>
     </main>
 
-    <!-- MODALS -->
-
-    <!-- CREATE/EDIT EMPLOYEE MODAL -->
     <div id="employeeModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -316,7 +306,6 @@
         </div>
     </div>
 
-    <!-- EDIT ATTENDANCE MODAL -->
     <div id="attendanceModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -355,7 +344,6 @@
         </div>
     </div>
 
-    <!-- EDIT LEAVE BALANCE MODAL -->
     <div id="leaveModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -397,7 +385,6 @@
         </div>
     </div>
 
-    <!-- CREATE/EDIT ANNOUNCEMENT MODAL -->
     <div id="announcementModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
