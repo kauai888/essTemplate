@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 /**
  * Create a new employee
  * @route POST /api/admin/employees
@@ -25,25 +25,20 @@ exports.createEmployee = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.BCRYPT_ROUNDS || 10));
 
-    // TODO: Implement database query
-    // const query = `
-    //   INSERT INTO users 
-    //   (employee_id, username, email, phone, password_hash, role, status, first_name, department, designation, created_at)
-    //   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, CURRENT_TIMESTAMP)
-    //   RETURNING id, employee_id, name, email, role, status
-    // `;
-    // const result = await pool.query(query, [employeeId, name, email, phone, hashedPassword, role || 'employee', status || 'active', name, department, designation]);
+    const pool = require('../config/database');
+    const query = `
+      INSERT INTO users 
+      (employee_id, username, email, phone, password_hash, role, status, first_name, department, designation, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, CURRENT_TIMESTAMP)
+      RETURNING id, employee_id, first_name, email, role, status
+    `;
+    const result = await pool.query(query, [employeeId, name, email, phone, hashedPassword, role || 'employee', status || 'active', name, department, designation]);
+    const createdEmployee = result.rows[0];
 
     res.status(201).json({
       success: true,
       message: 'Employee created successfully',
-      data: {
-        employeeId,
-        name,
-        email,
-        role: role || 'employee',
-        status: status || 'active'
-      }
+      data: createdEmployee
     });
   } catch (error) {
     console.error('Error creating employee:', error);
@@ -68,31 +63,48 @@ exports.getEmployees = async (req, res) => {
     const { page = 1, limit = 10, search, department, status } = req.query;
     const offset = (page - 1) * limit;
 
-    // TODO: Implement database query with filters
-    // const whereConditions = [];
-    // const params = [];
-    // if (search) {
-    //   whereConditions.push(`(first_name ILIKE $${params.length + 1} OR employee_id ILIKE $${params.length + 1})`);
-    //   params.push(`%${search}%`);
-    // }
-    // if (department) {
-    //   whereConditions.push(`department = $${params.length + 1}`);
-    //   params.push(department);
-    // }
-    // if (status) {
-    //   whereConditions.push(`status = $${params.length + 1}`);
-    //   params.push(status);
-    // }
+    const pool = require('../config/database');
+    const whereConditions = [];
+    const params = [];
+    
+    if (search) {
+      whereConditions.push(`(first_name ILIKE $${params.length + 1} OR employee_id ILIKE $${params.length + 1})`);
+      params.push(`%${search}%`);
+    }
+    if (department) {
+      whereConditions.push(`department = $${params.length + 1}`);
+      params.push(department);
+    }
+    if (status) {
+      whereConditions.push(`status = $${params.length + 1}`);
+      params.push(status);
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    params.push(parseInt(limit), parseInt(offset));
+    
+    const query = `
+      SELECT id, employee_id, first_name, last_name, email, phone, department, designation, role, status, created_at
+      FROM users 
+      ${whereClause}
+      ORDER BY created_at DESC
+      LIMIT $${params.length - 1} OFFSET $${params.length}
+    `;
+    
+    const countQuery = `SELECT COUNT(*) as total FROM users ${whereClause}`;
+    const result = await pool.query(query, params);
+    const countResult = await pool.query(countQuery, params.slice(0, -2));
+    const total = parseInt(countResult.rows[0].total);
 
     res.json({
       success: true,
       data: {
-        employees: [],
+        employees: result.rows,
         pagination: {
           page: parseInt(page),
           limit: parseInt(limit),
-          total: 0,
-          pages: 0
+          total: total,
+          pages: Math.ceil(total / parseInt(limit))
         }
       }
     });
@@ -113,17 +125,24 @@ exports.getEmployee = async (req, res) => {
   try {
     const { employeeId } = req.params;
 
-    // TODO: Implement database query
-    // const query = `
-    //   SELECT id, employee_id, first_name, last_name, email, phone, department, designation, role, status, join_date, created_at
-    //   FROM users 
-    //   WHERE employee_id = $1
-    // `;
-    // const result = await pool.query(query, [employeeId]);
+    const pool = require('../config/database');
+    const query = `
+      SELECT id, employee_id, first_name, last_name, email, phone, department, designation, role, status, join_date, created_at
+      FROM users 
+      WHERE employee_id = $1
+    `;
+    const result = await pool.query(query, [employeeId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
 
     res.json({
       success: true,
-      data: {}
+      data: result.rows[0]
     });
   } catch (error) {
     console.error('Error fetching employee:', error);
@@ -143,17 +162,26 @@ exports.updateEmployee = async (req, res) => {
     const { employeeId } = req.params;
     const { name, email, phone, department, designation, status } = req.body;
 
-    // TODO: Implement database query
-    // const query = `
-    //   UPDATE users 
-    //   SET first_name = $1, email = $2, phone = $3, department = $4, designation = $5, status = $6, updated_at = CURRENT_TIMESTAMP
-    //   WHERE employee_id = $7
-    //   RETURNING id, employee_id, name, email, status
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      UPDATE users 
+      SET first_name = $1, email = $2, phone = $3, department = $4, designation = $5, status = $6, updated_at = CURRENT_TIMESTAMP
+      WHERE employee_id = $7
+      RETURNING id, employee_id, first_name, email, status
+    `;
+    const result = await pool.query(query, [name, email, phone, department, designation, status, employeeId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
 
     res.json({
       success: true,
-      message: 'Employee updated successfully'
+      message: 'Employee updated successfully',
+      data: result.rows[0]
     });
   } catch (error) {
     console.error('Error updating employee:', error);
@@ -172,12 +200,21 @@ exports.deleteEmployee = async (req, res) => {
   try {
     const { employeeId } = req.params;
 
-    // TODO: Implement database query (soft delete recommended)
-    // const query = `
-    //   UPDATE users 
-    //   SET status = 'deleted', updated_at = CURRENT_TIMESTAMP
-    //   WHERE employee_id = $1
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      UPDATE users 
+      SET status = 'deleted', updated_at = CURRENT_TIMESTAMP
+      WHERE employee_id = $1
+      RETURNING id, employee_id
+    `;
+    const result = await pool.query(query, [employeeId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
 
     res.json({
       success: true,
@@ -191,13 +228,6 @@ exports.deleteEmployee = async (req, res) => {
     });
   }
 };
-
-/**
- * ============================================
- * ATTENDANCE MANAGEMENT
- * ============================================
- */
-
 /**
  * Get attendance records
  * @route GET /api/admin/attendance
@@ -210,26 +240,43 @@ exports.getAttendance = async (req, res) => {
   try {
     const { employeeId, date, page = 1, limit = 20 } = req.query;
 
-    // TODO: Implement database query with filtering
-    // const whereConditions = [];
-    // const params = [];
-    // if (employeeId) {
-    //   whereConditions.push(`employee_id = $${params.length + 1}`);
-    //   params.push(employeeId);
-    // }
-    // if (date) {
-    //   whereConditions.push(`attendance_date = $${params.length + 1}`);
-    //   params.push(date);
-    // }
+    const pool = require('../config/database');
+    const whereConditions = [];
+    const params = [];
+    
+    if (employeeId) {
+      whereConditions.push(`employee_id = $${params.length + 1}`);
+      params.push(employeeId);
+    }
+    if (date) {
+      whereConditions.push(`attendance_date = $${params.length + 1}`);
+      params.push(date);
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    params.push(parseInt(limit), parseInt(offset));
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    const query = `
+      SELECT * FROM attendance_records 
+      ${whereClause}
+      ORDER BY attendance_date DESC, time_in DESC
+      LIMIT $${params.length - 1} OFFSET $${params.length}
+    `;
+    
+    const countQuery = `SELECT COUNT(*) as total FROM attendance_records ${whereClause}`;
+    const result = await pool.query(query, params);
+    const countResult = await pool.query(countQuery, params.slice(0, -2));
+    const total = parseInt(countResult.rows[0].total);
 
     res.json({
       success: true,
       data: {
-        attendance: [],
+        attendance: result.rows,
         pagination: {
           page: parseInt(page),
           limit: parseInt(limit),
-          total: 0
+          total: total
         }
       }
     });
@@ -260,17 +307,26 @@ exports.updateAttendance = async (req, res) => {
       });
     }
 
-    // TODO: Implement database query
-    // const query = `
-    //   UPDATE attendance_records 
-    //   SET time_in = $1, time_out = $2, remarks = $3, edited_by = $4, edited_at = CURRENT_TIMESTAMP
-    //   WHERE id = $5
-    //   RETURNING *
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      UPDATE attendance_records 
+      SET time_in = $1, time_out = $2, remarks = $3, edited_by = $4, edited_at = CURRENT_TIMESTAMP
+      WHERE id = $5
+      RETURNING *
+    `;
+    const result = await pool.query(query, [timeIn, timeOut, remarks, req.user.id, recordId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Attendance record not found'
+      });
+    }
 
     res.json({
       success: true,
-      message: 'Attendance record updated successfully'
+      message: 'Attendance record updated successfully',
+      data: result.rows[0]
     });
   } catch (error) {
     console.error('Error updating attendance:', error);
@@ -280,13 +336,6 @@ exports.updateAttendance = async (req, res) => {
     });
   }
 };
-
-/**
- * ============================================
- * LEAVE BALANCE MANAGEMENT
- * ============================================
- */
-
 /**
  * Get leave balance for employees
  * @route GET /api/admin/leave-balance
@@ -296,19 +345,21 @@ exports.getLeaveBalance = async (req, res) => {
   try {
     const { employeeId } = req.query;
 
-    // TODO: Implement database query
-    // const whereClause = employeeId ? `WHERE employee_id = $1` : '';
-    // const params = employeeId ? [employeeId] : [];
-    // const query = `
-    //   SELECT * FROM leave_balance 
-    //   ${whereClause}
-    //   ORDER BY financial_year DESC
-    // `;
+    const pool = require('../config/database');
+    const whereClause = employeeId ? `WHERE employee_id = $1` : '';
+    const params = employeeId ? [employeeId] : [];
+    
+    const query = `
+      SELECT * FROM leave_balance 
+      ${whereClause}
+      ORDER BY financial_year DESC
+    `;
+    const result = await pool.query(query, params);
 
     res.json({
       success: true,
       data: {
-        leaveBalances: []
+        leaveBalances: result.rows
       }
     });
   } catch (error) {
@@ -337,17 +388,27 @@ exports.updateLeaveBalance = async (req, res) => {
       });
     }
 
-    // TODO: Implement database query
-    // const query = `
-    //   UPDATE leave_balance 
-    //   SET annual_leave_used = $1, sick_leave_used = $2, emergency_leave_used = $3, updated_at = CURRENT_TIMESTAMP
-    //   WHERE employee_id = $4
-    //   RETURNING *
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      UPDATE leave_balance 
+      SET leave_used = $1, updated_at = CURRENT_TIMESTAMP
+      WHERE employee_id = $2
+      RETURNING *
+    `;
+    const totalLeaveUsed = annualLeaveUsed + sickLeaveUsed + emergencyLeaveUsed;
+    const result = await pool.query(query, [totalLeaveUsed, employeeId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Leave balance not found for employee'
+      });
+    }
 
     res.json({
       success: true,
-      message: 'Leave balance updated successfully'
+      message: 'Leave balance updated successfully',
+      data: result.rows[0]
     });
   } catch (error) {
     console.error('Error updating leave balance:', error);
@@ -357,12 +418,6 @@ exports.updateLeaveBalance = async (req, res) => {
     });
   }
 };
-
-/**
- * ============================================
- * ANNOUNCEMENTS MANAGEMENT
- * ============================================
- */
 
 /**
  * Create announcement
@@ -380,22 +435,19 @@ exports.createAnnouncement = async (req, res) => {
       });
     }
 
-    // TODO: Implement database query
-    // const query = `
-    //   INSERT INTO announcements 
-    //   (title, content, created_by, announcement_date, is_pinned, target_role, target_department, expiry_date, created_at)
-    //   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
-    //   RETURNING id, title, announcement_date
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      INSERT INTO announcements 
+      (title, content, created_by, announcement_date, is_pinned, target_role, target_department, expiry_date, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
+      RETURNING id, title, announcement_date
+    `;
+    const result = await pool.query(query, [title, content, req.user.id, announcementDate, isPinned || false, targetRole, targetDepartment, expiryDate]);
 
     res.status(201).json({
       success: true,
       message: 'Announcement created successfully',
-      data: {
-        id: 'announcement_id_from_db',
-        title,
-        announcementDate
-      }
+      data: result.rows[0]
     });
   } catch (error) {
     console.error('Error creating announcement:', error);
@@ -415,17 +467,18 @@ exports.getAnnouncements = async (req, res) => {
   try {
     const { active = true } = req.query;
 
-    // TODO: Implement database query
-    // const query = `
-    //   SELECT * FROM announcements 
-    //   WHERE is_active = $1
-    //   ORDER BY is_pinned DESC, announcement_date DESC
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      SELECT * FROM announcements 
+      WHERE is_active = $1
+      ORDER BY is_pinned DESC, announcement_date DESC
+    `;
+    const result = await pool.query(query, [active === 'true' || active === true]);
 
     res.json({
       success: true,
       data: {
-        announcements: []
+        announcements: result.rows
       }
     });
   } catch (error) {
@@ -446,17 +499,26 @@ exports.updateAnnouncement = async (req, res) => {
     const { announcementId } = req.params;
     const { title, content, isPinned, expiryDate } = req.body;
 
-    // TODO: Implement database query
-    // const query = `
-    //   UPDATE announcements 
-    //   SET title = $1, content = $2, is_pinned = $3, expiry_date = $4, updated_at = CURRENT_TIMESTAMP
-    //   WHERE id = $5
-    //   RETURNING *
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      UPDATE announcements 
+      SET title = $1, content = $2, is_pinned = $3, expiry_date = $4, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $5
+      RETURNING *
+    `;
+    const result = await pool.query(query, [title, content, isPinned, expiryDate, announcementId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Announcement not found'
+      });
+    }
 
     res.json({
       success: true,
-      message: 'Announcement updated successfully'
+      message: 'Announcement updated successfully',
+      data: result.rows[0]
     });
   } catch (error) {
     console.error('Error updating announcement:', error);
@@ -475,12 +537,21 @@ exports.deleteAnnouncement = async (req, res) => {
   try {
     const { announcementId } = req.params;
 
-    // TODO: Implement database query (soft delete recommended)
-    // const query = `
-    //   UPDATE announcements 
-    //   SET is_active = false, updated_at = CURRENT_TIMESTAMP
-    //   WHERE id = $1
-    // `;
+    const pool = require('../config/database');
+    const query = `
+      UPDATE announcements 
+      SET is_active = false, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+      RETURNING id
+    `;
+    const result = await pool.query(query, [announcementId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Announcement not found'
+      });
+    }
 
     res.json({
       success: true,

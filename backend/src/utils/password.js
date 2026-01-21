@@ -3,12 +3,9 @@
  * Password hashing and validation helpers
  */
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const config = require('../config/app');
 
-/**
- * Hash Password
- */
 const hashPassword = async (password) => {
   try {
     const salt = await bcrypt.genSalt(config.security.bcryptRounds);
@@ -18,9 +15,7 @@ const hashPassword = async (password) => {
   }
 };
 
-/**
- * Compare Password
- */
+
 const comparePassword = async (password, hashedPassword) => {
   try {
     return await bcrypt.compare(password, hashedPassword);
@@ -29,10 +24,6 @@ const comparePassword = async (password, hashedPassword) => {
   }
 };
 
-/**
- * Validate Password Strength
- * Minimum 8 characters, 1 uppercase, 1 number
- */
 const validatePasswordStrength = (password) => {
   const minLength = 8;
   const hasUppercase = /[A-Z]/.test(password);

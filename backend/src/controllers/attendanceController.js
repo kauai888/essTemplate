@@ -10,21 +10,18 @@ exports.timeIn = (req, res) => {
   try {
     const { employeeId, latitude, longitude, address, accuracy } = req.body;
 
-    // Validate required fields
     if (!employeeId || latitude === undefined || longitude === undefined) {
       return res.status(400).json({
         message: 'Missing required fields: employeeId, latitude, longitude'
       });
     }
 
-    // Validate coordinates are valid numbers
     if (typeof latitude !== 'number' || typeof longitude !== 'number') {
       return res.status(400).json({
         message: 'Latitude and longitude must be numbers'
       });
     }
 
-    // Check if already clocked in today
     const todayRecords = AttendanceRecord.getByEmployeeIdAndDate(
       employeeId,
       new Date()
@@ -37,7 +34,6 @@ exports.timeIn = (req, res) => {
       });
     }
 
-    // Create attendance record
     const record = AttendanceRecord.create(
       employeeId,
       'time-in',
@@ -78,21 +74,18 @@ exports.timeOut = (req, res) => {
   try {
     const { employeeId, latitude, longitude, address, accuracy } = req.body;
 
-    // Validate required fields
     if (!employeeId || latitude === undefined || longitude === undefined) {
       return res.status(400).json({
         message: 'Missing required fields: employeeId, latitude, longitude'
       });
     }
 
-    // Validate coordinates are valid numbers
     if (typeof latitude !== 'number' || typeof longitude !== 'number') {
       return res.status(400).json({
         message: 'Latitude and longitude must be numbers'
       });
     }
 
-    // Check if clocked in
     const latestTimeIn = AttendanceRecord.getLatestTimeIn(employeeId);
     if (!latestTimeIn) {
       return res.status(400).json({
@@ -100,7 +93,6 @@ exports.timeOut = (req, res) => {
       });
     }
 
-    // Check if already clocked out
     const latestTimeOut = AttendanceRecord.getLatestTimeOut(employeeId);
     if (latestTimeOut && latestTimeOut.timestamp > latestTimeIn.timestamp) {
       return res.status(409).json({
@@ -108,7 +100,6 @@ exports.timeOut = (req, res) => {
       });
     }
 
-    // Create attendance record
     const record = AttendanceRecord.create(
       employeeId,
       'time-out',
@@ -117,7 +108,6 @@ exports.timeOut = (req, res) => {
       address || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
     );
 
-    // Calculate hours worked
     const hoursWorked = (record.timestamp - latestTimeIn.timestamp) / (1000 * 60 * 60);
 
     res.status(201).json({
@@ -166,7 +156,6 @@ exports.getAttendance = (req, res) => {
 
     let records = AttendanceRecord.getByEmployeeId(parseInt(employeeId));
 
-    // Filter by date range if provided
     if (startDate || endDate) {
       const start = startDate ? new Date(startDate) : new Date(0);
       const end = endDate ? new Date(endDate) : new Date();
@@ -176,7 +165,6 @@ exports.getAttendance = (req, res) => {
       );
     }
 
-    // Filter by type if provided
     if (type) {
       records = records.filter(r => r.type === type);
     }

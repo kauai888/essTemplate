@@ -1,8 +1,13 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Redis = require('redis');
+let Redis;
+try {
+  Redis = require('redis');
+} catch (e) {
+  Redis = null;
+}
 
-const redisClient = process.env.CACHE_PROVIDER === 'redis' ? Redis.createClient({
+const redisClient = Redis && process.env.CACHE_PROVIDER === 'redis' ? Redis.createClient({
   host: process.env.REDIS_HOST || 'localhost',
   port: process.env.REDIS_PORT || 6379,
   password: process.env.REDIS_PASSWORD || null
@@ -62,18 +67,31 @@ exports.login = async (req, res) => {
       });
     }
 
-    // TODO: Fetch user from database
-    // const user = await User.findOne({ username });
-    // if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    const pool = require('../config/database');
+    const userQuery = `SELECT * FROM users WHERE username = $1`;
+    const userResult = await pool.query(userQuery, [username]);
     
-    // TODO: Validate password
-    // const validPassword = await bcrypt.compare(password, user.password_hash);
-    // if (!validPassword) return res.status(401).json({ success: false, message: 'Invalid password' });
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'User not found' 
+      });
+    }
+
+    const user = userResult.rows[0];
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!validPassword) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid password' 
+      });
+    }
 
     // Generate OTP
     const otp = generateOTP();
-    const userId = 'user_id_from_db';
-    const phone = 'phone_from_db';
+    const userId = user.id;
+    const phone = user.phone;
     
     await storeOTP(userId, otp, phone);
 
@@ -83,9 +101,10 @@ exports.login = async (req, res) => {
       success: true,
       message: 'OTP sent to registered phone number',
       data: {
-        userId,
+        userId: userId,
         phone: phone ? phone.slice(-4) : 'hidden',
-        requiresOTP: true
+        requiresOTP: true,
+        email: user.email
       }
     });
   } catch (error) {
@@ -172,16 +191,33 @@ exports.verifyOTP = async (req, res) => {
       { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
     );
 
+    const pool = require('../config/database');
+    const userQuery = `SELECT id, employee_id, first_name, last_name, email, role, status FROM users WHERE id = $1`;
+    const userResult = await pool.query(userQuery, [userId]);
+    const user = userResult.rows[0];
+
     await deleteOTP(userId);
 
     res.json({
       success: true,
       message: 'Login successful',
       data: {
+        accessToken: token,
         token,
         refreshToken,
         expiresIn: process.env.JWT_EXPIRES_IN || '24h',
-        userId
+        userId: user.id,
+        user: {
+          id: user.id,
+          employeeId: user.employee_id,
+          name: `${user.first_name} ${user.last_name}`,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          role: user.role,
+          status: user.status
+        },
+        role: user.role
       }
     });
   } catch (error) {

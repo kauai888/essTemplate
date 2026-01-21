@@ -3,9 +3,6 @@
  * Standardized API response formatting
  */
 
-/**
- * Success Response
- */
 const successResponse = (res, data, message = 'Success', statusCode = 200) => {
   res.status(statusCode).json({
     success: true,
@@ -14,9 +11,6 @@ const successResponse = (res, data, message = 'Success', statusCode = 200) => {
   });
 };
 
-/**
- * Error Response
- */
 const errorResponse = (res, message = 'Error', statusCode = 500, error = null) => {
   res.status(statusCode).json({
     success: false,
@@ -25,9 +19,6 @@ const errorResponse = (res, message = 'Error', statusCode = 500, error = null) =
   });
 };
 
-/**
- * Paginated Response
- */
 const paginatedResponse = (res, data, totalCount, page, limit, message = 'Success') => {
   const totalPages = Math.ceil(totalCount / limit);
 

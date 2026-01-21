@@ -30,5 +30,20 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-const PORT = config.app.port;
-app.listen(PORT, () => console.log(`✓ Server running on port ${PORT}`));
+let PORT = config.app.port;
+
+// Function to find an available port
+function startServer(port) {
+  const server = app.listen(port, () => {
+    console.log(`✓ Server running on port ${port}`);
+  }).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} in use, trying port ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+}
+
+startServer(PORT);
